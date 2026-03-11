@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rajasthan Royal Guide 🏰</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --saffron: #E8621A;
+  --saffron-glow: rgba(232,98,26,0.3);
+  --gold: #C8971A;
+  --gold-light: #F5D06A;
+  --gold-glow: rgba(200,151,26,0.2);
+  --deep: #0E0500;
+  --card: #1A0900;
+  --card2: #221100;
+  --card3: #2A1500;
+  --sand: #F5E6CC;
+  --sand-dim: rgba(245,230,204,0.7);
+  --sand-faint: rgba(245,230,204,0.12);
+  --text: #F0DFC0;
+  --text-dim: rgba(240,223,192,0.6);
+  --text-faint: rgba(240,223,192,0.35);
+  --border: rgba(200,151,26,0.18);
+  --border-bright: rgba(200,151,26,0.4);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--deep);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ===================== FLOATING PARTICLES ===================== */
+.particles {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.particle {
+  position: absolute;
+  font-size: 1.4rem;
+  animation: drift linear infinite;
+  opacity: 0;
+  user-select: none;
+}
+@keyframes drift {
+  0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+  5%   { opacity: 0.35; }
+  90%  { opacity: 0.2; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+}
+
+/* ===================== TOP ACCENT ===================== */
+.top-accent {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 999;
+  background: linear-gradient(90deg, var(--saffron), var(--gold), var(--gold-light), var(--gold), var(--saffron));
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer { 0%{background-position:0% 0%} 100%{background-position:200% 0%} }
+
+/* ===================== HERO ===================== */
+.hero {
+  min-height: 100vh;
+  background: var(--deep);
+  position: relative;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  overflow: hidden;
+  padding: 60px 20px 80px;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 60%, rgba(232,98,26,0.12) 0%, transparent 100%),
+    radial-gradient(ellipse 50% 40% at 80% 30%, rgba(200,151,26,0.1) 0%, transparent 100%),
+    radial-gradient(ellipse 40% 60% at 50% 90%, rgba(232,98,26,0.06) 0%, transparent 100%);
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(200,151,26,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,151,26,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: orbPulse 6s ease-in-out infinite alternate;
+}
+.hero-orb-1 { width: 400px; height: 400px; top: -100px; left: -100px; background: rgba(232,98,26,0.08); }
+.hero-orb-2 { width: 300px; height: 300px; bottom: -80px; right: -80px; background: rgba(200,151,26,0.09); animation-delay: -3s; }
+@keyframes orbPulse { from{opacity:0.5; transform:scale(1);} to{opacity:1; transform:scale(1.2);} }
+
+.hero-stickers {
+  position: absolute; inset: 0; pointer-events: none;
+  overflow: hidden;
+}
+.hs { position: absolute; font-size: 2rem; animation: floatSticker ease-in-out infinite; opacity: 0.18; }
+.hs:nth-child(1)  { top: 12%; left: 5%;  font-size:2.2rem; animation-duration:7s; animation-delay:0s; }
+.hs:nth-child(2)  { top: 20%; right:8%; font-size:1.8rem; animation-duration:9s; animation-delay:-2s; }
+.hs:nth-child(3)  { top: 60%; left:3%;  font-size:2.4rem; animation-duration:8s; animation-delay:-4s; }
+.hs:nth-child(4)  { top: 75%; right:5%; font-size:2rem;   animation-duration:6s; animation-delay:-1s; }
+.hs:nth-child(5)  { top: 40%; left:90%; font-size:1.6rem; animation-duration:10s; animation-delay:-5s; }
+.hs:nth-child(6)  { top: 85%; left:20%; font-size:1.4rem; animation-duration:7s; animation-delay:-3s; }
+@keyframes floatSticker {
+  0%,100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-18px) rotate(5deg); }
+}
+
+.hero-content { position:relative; z-index:2; text-align:center; max-width:820px; }
+.hero-badge {
+  display: inline-flex; align-items:center; gap:10px;
+  border: 1px solid var(--border-bright);
+  background: rgba(200,151,26,0.08);
+  border-radius: 100px;
+  padding: 8px 22px;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.3em;
+  color: var(--gold-light);
+  font-size: 0.78rem;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.2s forwards;
+  backdrop-filter: blur(10px);
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.2rem, 9vw, 7rem);
+  font-weight: 900;
+  color: var(--sand);
+  line-height: 1.04;
+  margin-bottom: 12px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease 0.4s forwards;
+}
+.hero h1 em { font-style:italic; color: var(--saffron); }
+.hero-tagline {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.55s forwards;
+}
+.hero-sub {
+  font-size: 1rem; color: var(--text-dim); line-height: 1.75;
+  max-width: 540px; margin: 0 auto 44px;
+  opacity: 0; animation: fadeUp 0.8s ease 0.7s forwards;
+}
+.hero-stats {
+  display: flex; gap: 32px; justify-content: center; flex-wrap: wrap;
+  margin-bottom: 44px;
+  opacity: 0; animation: fadeUp 0.8s ease 0.85s forwards;
+}
+.hero-stat { text-align:center; }
+.hero-stat .num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.2rem; color: var(--gold-light); letter-spacing:0.05em; line-height:1;
+}
+.hero-stat .lbl { font-size:0.7rem; color: var(--text-faint); letter-spacing:0.15em; text-transform:uppercase; margin-top:2px; }
+.hero-stat-sep { width:1px; background: var(--border); align-self:stretch; }
+
+/* ===================== TIMELINE BTNS ===================== */
+.timeline-selector {
+  display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+  opacity:0; animation: fadeUp 0.8s ease 1s forwards;
+}
+.timeline-btn {
+  position: relative; overflow: hidden;
+  background: var(--card2);
+  border: 1.5px solid var(--border-bright);
+  color: var(--sand);
+  font-family: 'DM Sans', sans-serif;
+  padding: 18px 36px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  min-width: 160px;
+}
+.timeline-btn::before {
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(135deg, var(--saffron), var(--gold));
+  opacity:0; transition: opacity 0.3s;
+}
+.timeline-btn:hover, .timeline-btn.active {
+  border-color: var(--saffron);
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(232,98,26,0.35);
+}
+.timeline-btn:hover::before, .timeline-btn.active::before { opacity:1; }
+.timeline-btn .btn-date {
+  display:block; position:relative; z-index:1;
+  font-family:'Bebas Neue', sans-serif;
+  font-size:2rem; letter-spacing:0.05em; line-height:1; margin-bottom:4px;
+}
+.timeline-btn .btn-label {
+  position:relative; z-index:1;
+  font-size:0.72rem; opacity:0.75; letter-spacing:0.12em; text-transform:uppercase;
+}
+.timeline-btn .btn-sticker {
+  position:relative; z-index:1; font-size:1.3rem; margin-bottom:6px; display:block;
+}
+
+/* ===================== SCROLL HINT ===================== */
+.scroll-hint {
+  position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  color: var(--text-faint); font-size:0.7rem; letter-spacing:0.2em;
+  animation: fadeUp 1s ease 1.4s both;
+}
+.scroll-hint .arrow { animation: bounce 1.5s ease-in-out infinite; font-size:1rem; }
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+/* ===================== MAIN WRAP ===================== */
+.main-content { max-width:1060px; margin:0 auto; padding:0 20px 80px; position:relative; z-index:1; }
+
+/* ===================== SECTION BANNERS ===================== */
+.section-banner {
+  background: linear-gradient(135deg, var(--card2) 0%, var(--card3) 100%);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 36px;
+  margin: 48px 0 28px;
+  position: relative; overflow: hidden;
+}
+.section-banner::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, transparent, var(--saffron), var(--gold), var(--saffron), transparent);
+}
+.section-banner-inner { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+.banner-emoji { font-size:2.8rem; flex-shrink:0; }
+.banner-title { font-family:'Playfair Display', serif; font-size:1.6rem; font-weight:700; color:var(--sand); margin-bottom:4px; }
+.banner-sub { font-size:0.85rem; color:var(--text-dim); }
+
+/* ===================== ROUTE BAR ===================== */
+.route-bar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 28px;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.route-stop { display:flex; align-items:center; gap:8px; }
+.route-dot { width:10px; height:10px; border-radius:50%; background:var(--saffron); flex-shrink:0; }
+.route-dot.gold { background:var(--gold); }
+.route-dot.blue { background:#4A7FCC; }
+.route-lbl { font-family:'Bebas Neue',sans-serif; font-size:0.65rem; letter-spacing:0.2em; color:var(--gold); opacity:0.6; display:block; }
+.route-name { font-size:0.88rem; color:var(--text); font-weight:600; }
+.route-arrow { color:var(--gold); opacity:0.4; font-size:1.1rem; }
+
+/* ===================== PILLS ===================== */
+.pills-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:32px; }
+.pill {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 7px 16px;
+  font-size: 0.78rem; font-weight:600;
+  color: var(--text-dim);
+  display:flex; align-items:center; gap:7px;
+}
+.pill .pi { font-size:0.95rem; }
+
+/* ===================== DAY NAV ===================== */
+.day-nav { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px; }
+.day-nav-btn {
+  background: var(--card2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 16px;
+  font-size: 0.78rem; font-weight:600; cursor:pointer;
+  color: var(--text-dim); transition: all 0.2s;
+  font-family:'DM Sans',sans-serif;
+}
+.day-nav-btn:hover { border-color:var(--saffron); color:var(--saffron); background:rgba(232,98,26,0.08); }
+
+/* ===================== DAY CARDS ===================== */
+.days-grid { display:flex; flex-direction:column; gap:20px; }
+
+.day-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.day-card:hover { border-color: var(--border-bright); box-shadow: 0 0 40px rgba(200,151,26,0.07); }
+
+.day-card-header {
+  background: linear-gradient(135deg, var(--card2) 0%, var(--card3) 100%);
+  padding: 22px 28px;
+  display: flex; align-items: center; gap: 18px;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: background 0.3s;
+}
+.day-card-header:hover { background: linear-gradient(135deg, var(--card3), #331900); }
+.day-card-header::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity:0.3;
+}
+.day-number {
+  font-family:'Bebas Neue', sans-serif;
+  font-size:4rem; color:var(--gold);
+  line-height:1; opacity:0.25; flex-shrink:0; min-width:60px;
+}
+.day-sticker { font-size:2.2rem; flex-shrink:0; }
+.day-info { flex:1; }
+.day-lbl { font-family:'Bebas Neue',sans-serif; font-size:0.65rem; letter-spacing:0.25em; color:var(--saffron); opacity:0.8; margin-bottom:3px; }
+.day-title { font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:700; color:var(--sand); margin-bottom:4px; }
+.day-sub { font-size:0.78rem; color:var(--text-faint); }
+.day-toggle { color:var(--gold); font-size:1.2rem; transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); flex-shrink:0; opacity:0.7; }
+.day-card.open .day-toggle { transform:rotate(180deg); opacity:1; }
+
+.day-body { display:none; padding:28px; border-top:1px solid var(--border); }
+.day-card.open .day-body { display:block; animation: slideDown 0.35s ease; }
+@keyframes slideDown { from{opacity:0; transform:translateY(-8px)} to{opacity:1; transform:translateY(0)} }
+
+/* ===================== STEPS ===================== */
+.steps { position:relative; }
+.steps::before {
+  content:''; position:absolute; left:22px; top:8px; bottom:8px; width:2px;
+  background: linear-gradient(to bottom, var(--saffron), var(--gold), var(--saffron));
+  opacity:0.15; border-radius:2px;
+}
+.step { display:flex; gap:18px; margin-bottom:30px; position:relative; }
+.step-icon {
+  width:46px; height:46px; border-radius:50%;
+  border: 1.5px solid var(--border-bright);
+  background: var(--card2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem; flex-shrink:0; position:relative; z-index:1;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.step:hover .step-icon { border-color:var(--saffron); transform:scale(1.1); }
+.step-body { flex:1; padding-top:6px; }
+.step-time {
+  font-family:'Bebas Neue',sans-serif; font-size:0.7rem;
+  letter-spacing:0.2em; color:var(--saffron); margin-bottom:4px; opacity:0.9;
+}
+.step-title { font-weight:700; font-size:1rem; color:var(--sand); margin-bottom:7px; }
+.step-desc { font-size:0.87rem; color:var(--text-dim); line-height:1.7; margin-bottom:10px; }
+
+/* ===================== TAGS ===================== */
+.tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.tag {
+  font-size:0.68rem; font-weight:600;
+  padding: 4px 11px; border-radius:100px; letter-spacing:0.04em;
+}
+.tag.t  { background:rgba(74,127,204,0.15); color:#7EB4F5; border:1px solid rgba(74,127,204,0.2); }
+.tag.f  { background:rgba(232,98,26,0.12); color:#F5A070; border:1px solid rgba(232,98,26,0.2); }
+.tag.s  { background:rgba(200,151,26,0.12); color:#E5C060; border:1px solid rgba(200,151,26,0.2); }
+.tag.c  { background:rgba(100,200,100,0.08); color:#80D080; border:1px solid rgba(100,200,100,0.15); }
+.tag.w  { background:rgba(200,100,200,0.08); color:#D090D0; border:1px solid rgba(200,100,200,0.15); }
+.tag.b  { background:rgba(200,50,50,0.1); color:#F08080; border:1px solid rgba(200,50,50,0.15); }
+
+/* ===================== INFO BOXES ===================== */
+.info-box {
+  background: rgba(200,151,26,0.07);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px; margin: 12px 0;
+  font-size: 0.85rem; color: var(--text-dim); line-height:1.65;
+}
+.info-box strong { color: var(--sand); }
+.warn-box {
+  background: rgba(232,98,26,0.08);
+  border-left: 3px solid var(--saffron);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px; margin: 12px 0;
+  font-size: 0.85rem; color: rgba(245,160,112,0.9); line-height:1.65;
+}
+.warn-box strong { color: var(--sand); }
+
+/* ===================== TABLES ===================== */
+.tbl { width:100%; border-collapse:collapse; font-size:0.83rem; margin:14px 0; border-radius:10px; overflow:hidden; }
+.tbl th {
+  background: var(--card3);
+  color: var(--gold-light); font-weight:600; padding:10px 14px;
+  text-align:left; font-size:0.75rem; letter-spacing:0.06em;
+}
+.tbl td { padding:10px 14px; border-bottom:1px solid rgba(200,151,26,0.08); vertical-align:top; line-height:1.5; color:var(--text-dim); }
+.tbl tr:last-child td { border-bottom:none; }
+.tbl tr:nth-child(even) td { background:rgba(255,255,255,0.02); }
+.rec { color:var(--gold-light); font-weight:700; }
+
+/* ===================== PLACES GRID ===================== */
+.places-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px,1fr)); gap:14px; margin:16px 0; }
+.place-card {
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding:18px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.place-card:hover { border-color:var(--gold); transform:translateY(-3px); }
+.place-card .pe { font-size:2rem; margin-bottom:10px; display:block; }
+.place-card h4 { font-weight:700; font-size:0.9rem; color:var(--sand); margin-bottom:5px; }
+.place-card p { font-size:0.79rem; color:var(--text-dim); line-height:1.6; }
+.place-card .entry { font-size:0.72rem; color:var(--saffron); font-weight:600; margin-top:8px; }
+
+/* ===================== BUDGET SECTION ===================== */
+.budget-block {
+  background: linear-gradient(135deg, var(--card) 0%, var(--card2) 100%);
+  border: 1px solid var(--border-bright);
+  border-radius: 20px; padding:36px;
+  margin: 40px 0; position:relative; overflow:hidden;
+}
+.budget-block::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background: linear-gradient(90deg, var(--saffron), var(--gold), var(--saffron));
+}
+.budget-block h3 {
+  font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--gold-light);
+  margin-bottom:24px; display:flex; align-items:center; gap:12px;
+}
+.brow {
+  display:flex; justify-content:space-between; align-items:center;
+  padding: 12px 0; border-bottom:1px solid rgba(200,151,26,0.1);
+  font-size:0.88rem; color:var(--text-dim);
+}
+.brow:last-child { border-bottom:none; font-weight:700; color:var(--sand); font-size:0.95rem; margin-top:8px; padding-top:16px; border-top:1px solid var(--border-bright); }
+.brow .amt { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; color:var(--gold); letter-spacing:0.04em; }
+.brow:last-child .amt { color:var(--saffron); font-size:1.6rem; }
+
+/* ===================== TIPS GRID ===================== */
+.tips-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:16px; margin-top:24px; }
+.tip-card {
+  background: var(--card2);
+  border:1px solid var(--border);
+  border-radius:14px; padding:22px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.tip-card:hover { border-color:var(--gold); transform:translateY(-3px); }
+.tip-card .ti { font-size:1.8rem; margin-bottom:12px; display:block; }
+.tip-card h4 { font-weight:700; font-size:0.9rem; color:var(--sand); margin-bottom:8px; }
+.tip-card p { font-size:0.81rem; color:var(--text-dim); line-height:1.65; }
+
+/* ===================== CHECKLIST ===================== */
+.checklist { list-style:none; margin:16px 0; }
+.checklist li {
+  display:flex; align-items:flex-start; gap:12px;
+  padding: 12px 0; border-bottom:1px solid var(--border);
+  font-size:0.87rem; color:var(--text-dim); line-height:1.5;
+}
+.checklist li:last-child { border-bottom:none; }
+.checklist li .ck { font-size:1rem; flex-shrink:0; margin-top:1px; }
+.checklist li strong { color:var(--sand); }
+
+/* ===================== HIDDEN SECTIONS ===================== */
+.tl-section { display:none; }
+.tl-section.visible { display:block; animation: fadeUp 0.5s ease; }
+
+/* ===================== ALERT BADGE ===================== */
+.action-badge {
+  display:inline-flex; align-items:center; gap:10px;
+  background: rgba(232,98,26,0.1);
+  border:1px solid rgba(232,98,26,0.3);
+  border-radius:12px; padding:14px 20px;
+  font-size:0.85rem; color:rgba(245,160,112,0.95); line-height:1.5;
+  margin-bottom:20px; width:100%;
+}
+.action-badge .ab-icon { font-size:1.4rem; flex-shrink:0; }
+
+/* ===================== FOOTER ===================== */
+.site-footer {
+  background: var(--card);
+  border-top:1px solid var(--border);
+  text-align:center; padding:44px 20px;
+  color:var(--text-faint); font-size:0.8rem; letter-spacing:0.06em;
+}
+.site-footer strong { color:var(--gold); }
+.footer-stickers { font-size:1.5rem; margin-bottom:12px; letter-spacing:8px; }
+
+/* ===================== DIVIDER ===================== */
+.ornament-divider {
+  display:flex; align-items:center; gap:16px;
+  color:var(--gold); opacity:0.3; margin:8px 0;
+  font-family:'Bebas Neue',sans-serif; font-size:0.7rem; letter-spacing:0.3em;
+}
+.ornament-divider::before, .ornament-divider::after {
+  content:''; flex:1; height:1px; background:var(--gold);
+}
+
+/* ===================== ANIMATIONS ===================== */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media(max-width:600px) {
+  .hero h1 { font-size:3rem; }
+  .places-grid { grid-template-columns:1fr; }
+  .tips-grid { grid-template-columns:1fr; }
+  .tbl { font-size:0.75rem; }
+  .tbl th, .tbl td { padding:8px 10px; }
+  .budget-block { padding:24px 20px; }
+  .day-card-header { flex-wrap:wrap; }
+  .hero-stats { gap:20px; }
+}
+
+/* Scroll reveal */
+.reveal { opacity:0; transform:translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.shown { opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- PARTICLES -->
+<div class="particles" id="particles"></div>
+<div class="top-accent"></div>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+
+  <div class="hero-stickers">
+    <span class="hs">🏰</span>
+    <span class="hs">⚔️</span>
+    <span class="hs">🐫</span>
+    <span class="hs">🌅</span>
+    <span class="hs">🎆</span>
+    <span class="hs">🦚</span>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-badge">✦ &nbsp; PERSONAL ROYAL TRAVEL GUIDE &nbsp; ✦</div>
+    <h1>Into the Land of<br><em>Rajput Glory</em></h1>
+    <p class="hero-tagline">🏯 Forts · Battles · Beauty · History 🦚</p>
+    <p class="hero-sub">A 4-day handcrafted journey through Rajasthan's living forts and royal palaces — for two friends meeting in Delhi. Pick your date and get your complete royal roadmap.</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="num">4</div>
+        <div class="lbl">Epic Days</div>
+      </div>
+      <div class="hero-stat-sep"></div>
+      <div class="hero-stat">
+        <div class="num">2</div>
+        <div class="lbl">Travelers</div>
+      </div>
+      <div class="hero-stat-sep"></div>
+      <div class="hero-stat">
+        <div class="num">₹5K</div>
+        <div class="lbl">Per Person</div>
+      </div>
+      <div class="hero-stat-sep"></div>
+      <div class="hero-stat">
+        <div class="num">6+</div>
+        <div class="lbl">Forts & Palaces</div>
+      </div>
+    </div>
+
+    <div class="timeline-selector">
+      <button class="timeline-btn" onclick="selectTL('mar18')" id="btn-mar18">
+        <span class="btn-sticker">🗓️</span>
+        <span class="btn-date">MAR 18</span>
+        <span class="btn-label">Timeline One · 18–22 March</span>
+      </button>
+      <button class="timeline-btn" onclick="selectTL('mar27')" id="btn-mar27">
+        <span class="btn-sticker">🗓️</span>
+        <span class="btn-date">MAR 27</span>
+        <span class="btn-label">Timeline Two · 27–31 March</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>SELECT A DATE ABOVE THEN SCROLL</span>
+    <span class="arrow">▼</span>
+  </div>
+</section>
+
+<!-- ==================== TIMELINE 1 ==================== -->
+<section class="tl-section" id="section-mar18">
+<div class="main-content">
+
+  <div class="section-banner reveal">
+    <div class="section-banner-inner">
+      <span class="banner-emoji">📅</span>
+      <div>
+        <div class="banner-title">Timeline One — March 18 to 22</div>
+        <div class="banner-sub">Pleasant weather · 26–30°C daytime · Perfect fort-walking conditions</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="route-bar reveal">
+    <div class="route-stop"><div class="route-dot blue"></div><div><span class="route-lbl">YOU START HERE</span><span class="route-name">Greater Noida</span></div></div>
+    <div class="route-arrow">⟶</div>
+    <div class="route-stop"><div class="route-dot"></div><div><span class="route-lbl">FRIEND FROM VARANASI</span><span class="route-name">New Delhi</span></div></div>
+    <div class="route-arrow">⟶</div>
+    <div class="route-stop"><div class="route-dot gold"></div><div><span class="route-lbl">TRIP BEGINS 🎉</span><span class="route-name">Jaipur, Rajasthan</span></div></div>
+  </div>
+
+  <div class="pills-row reveal">
+    <div class="pill"><span class="pi">👥</span> 2 Travelers</div>
+    <div class="pill"><span class="pi">💰</span> ₹4,000–5,000 per person</div>
+    <div class="pill"><span class="pi">🌡️</span> 26–30°C · Comfortable</div>
+    <div class="pill"><span class="pi">🏰</span> Rajput History Focus</div>
+  </div>
+
+  <div class="day-nav reveal">
+    <button class="day-nav-btn" onclick="scrollTo18('d0-18')">🚆 Day 0 — Getting There</button>
+    <button class="day-nav-btn" onclick="scrollTo18('d1-18')">🏰 Day 1 — Fort Circuit</button>
+    <button class="day-nav-btn" onclick="scrollTo18('d2-18')">🏛️ Day 2 — City Palace</button>
+    <button class="day-nav-btn" onclick="scrollTo18('d3-18')">🐒 Day 3 — Temples</button>
+    <button class="day-nav-btn" onclick="scrollTo18('d4-18')">🚆 Day 4 — Return</button>
+  </div>
+
+  <div class="days-grid">
+
+    <!-- DAY 0 -->
+    <div class="day-card reveal" id="d0-18">
+      <div class="day-card-header" onclick="toggleCard(this)">
+        <div class="day-number">00</div>
+        <div class="day-sticker">🚆</div>
+        <div class="day-info">
+          <div class="day-lbl">March 17 Night → March 18 Morning</div>
+          <div class="day-title">The Grand Meetup — Delhi Rendezvous</div>
+          <div class="day-sub">Greater Noida metro · Varanasi night train · Old Delhi breakfast · Jaipur by evening</div>
+        </div>
+        <div class="day-toggle">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="action-badge"><span class="ab-icon">⚡</span> <strong>Book First:</strong> Go to IRCTC.co.in RIGHT NOW and book all 3 trains below. 60-day advance booking is open. March trains fill fast — waiting list = stress.</div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon">🚇</div>
+            <div class="step-body">
+              <div class="step-time">YOUR JOURNEY · MARCH 18 · 7:00 AM START</div>
+              <div class="step-title">Greater Noida → New Delhi (Metro)</div>
+              <div class="step-desc">Board Noida Metro Aqua Line from your nearest station (Pari Chowk / GNIDA Office). Ride to <strong>Sector 51</strong>, then transfer to Delhi Metro <strong>Blue Line</strong> towards Dwarka side. Get off at <strong>Rajiv Chowk</strong>, then change to Yellow Line and ride to <strong>New Delhi Station</strong>. Total 1.5 hrs, no traffic, no stress.</div>
+              <div class="tags">
+                <span class="tag t">🚇 Metro Aqua + Blue Line</span>
+                <span class="tag c">₹60–80 total</span>
+                <span class="tag s">Leave by 7:00 AM</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🚂</div>
+            <div class="step-body">
+              <div class="step-time">FRIEND'S JOURNEY · VARANASI → DELHI · BOOK NIGHT TRAIN (MAR 17)</div>
+              <div class="step-title">Recommended: Shiv Ganga Express 12559 — The Classic Overnight</div>
+              <div class="step-desc">Friend boards in Varanasi on the evening of March 17 and wakes up in Delhi. This is the most reliable daily train on this route — sleeps 10–11 hours, arrives fresh, costs very little.</div>
+              <table class="tbl">
+                <tr><th>Train</th><th>Departs BSB</th><th>Arrives NDLS</th><th>Fare (approx)</th></tr>
+                <tr><td><span class="rec">✦ Shiv Ganga Exp 12559</span></td><td>~6:30 PM (Mar 17)</td><td>~5:30 AM (Mar 18)</td><td>SL ₹420 / 3AC ₹1,100</td></tr>
+                <tr><td>Poorva Express 12381</td><td>~8:00 PM (Mar 17)</td><td>~8:30 AM (Mar 18)</td><td>SL ₹430</td></tr>
+                <tr><td>Vande Bharat 22435</td><td>3:00 PM (Mar 18)</td><td>11:00 PM (Mar 18)</td><td>CC ₹1,435</td></tr>
+              </table>
+              <div class="info-box">💡 <strong>Best Choice:</strong> Shiv Ganga 3AC (₹1,100) — worth the upgrade for overnight. Friend arrives NDLS ~5:30 AM, freshens up at a café near station, meets you by 9 AM. You both have a smooth morning.</div>
+              <div class="tags">
+                <span class="tag t">🚂 Train from BSB/Varanasi Jn</span>
+                <span class="tag c">SL ₹420 · 3AC ₹1,100</span>
+                <span class="tag b">📱 Book on IRCTC now</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">☕</div>
+            <div class="step-body">
+              <div class="step-time">9:00 AM — NEW DELHI STATION</div>
+              <div class="step-title">🎉 The Meetup + Breakfast</div>
+              <div class="step-desc">Meet at the main exit of New Delhi Railway Station (Paharganj side, Gate 2). Head straight to a nearby dhaba or <strong>Haldiram's on Paharganj</strong> — paratha, chole bhature, or poha with chai. Budget ₹80–120 each. Store heavy luggage at station cloak room (₹30/bag) if needed.</div>
+              <div class="tags">
+                <span class="tag f">🍽️ Haldiram's Paharganj</span>
+                <span class="tag c">₹80–120 pp</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🕌</div>
+            <div class="step-body">
+              <div class="step-time">10:00 AM — 1:30 PM · OPTIONAL OLD DELHI QUICK TOUR</div>
+              <div class="step-title">Chandni Chowk + Paranthe Wali Gali + Jama Masjid View</div>
+              <div class="step-desc">Since you're catching an afternoon train, use the morning wisely. Walk (or cycle rickshaw) to Chandni Chowk — eat the legendary stuffed parathas at <strong>Paranthe Wali Gali</strong> (lane 1556, Gali Paranthe Wali). Then walk to Jama Masjid for the view. Metro back to NDLS by 1:30 PM.</div>
+              <div class="tags">
+                <span class="tag s">🕌 Chandni Chowk · Free</span>
+                <span class="tag f">🥙 Paranthe Wali Gali ₹80–100</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🚆</div>
+            <div class="step-body">
+              <div class="step-time">DELHI → JAIPUR · MARCH 18 AFTERNOON</div>
+              <div class="step-title">Board Your Jaipur Train — Reach by Evening</div>
+              <table class="tbl">
+                <tr><th>Train</th><th>Departs NDLS</th><th>Arrives Jaipur</th><th>Duration</th><th>Fare</th></tr>
+                <tr><td><span class="rec">✦ Vande Bharat 26482</span></td><td>3:10 PM</td><td>7:00 PM</td><td>3h 50m</td><td>CC ~₹850</td></tr>
+                <tr><td>Ashram Express 12916</td><td>2:55 PM</td><td>8:15 PM</td><td>5h 20m</td><td>SL ~₹180</td></tr>
+                <tr><td>JP Double Decker 12986</td><td>5:25 PM</td><td>10:00 PM</td><td>4h 35m</td><td>CC ~₹400</td></tr>
+              </table>
+              <div class="info-box">🎯 <strong>Pick Vande Bharat 3:10 PM</strong> — fastest, AC, clean, arrives Jaipur 7 PM. Enough time for hotel check-in, dinner, and early sleep before the big fort day. Budget pick: Ashram Express SL (₹180) — slower but ₹670 cheaper.</div>
+              <div class="tags">
+                <span class="tag t">🚆 From New Delhi (NDLS)</span>
+                <span class="tag c">SL ₹180 · CC ₹850</span>
+                <span class="tag b">📱 Book IRCTC</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🏨</div>
+            <div class="step-body">
+              <div class="step-time">7:00–8:00 PM — JAIPUR ARRIVAL</div>
+              <div class="step-title">Hotel Check-In + First Dinner in the Pink City 🌆</div>
+              <div class="step-desc">Rapido/Ola auto from Jaipur station to your hotel (₹80–100). Recommended stays: <strong>Hotel Pearl Palace</strong> (heritage feel, ~₹700/night twin) or <strong>Moustache Jaipur Hostel</strong> (private room ~₹800, great vibe). Dinner at <strong>LMB — Laxmi Misthan Bhandar</strong>, Johari Bazaar — try their Dal Baati Churma (₹150–200). Sleep early — tomorrow is 7 AM rise.</div>
+              <div class="tags">
+                <span class="tag s">🏨 Pearl Palace / Moustache Hostel</span>
+                <span class="tag c">₹700–800/night twin</span>
+                <span class="tag f">🍛 LMB Johari Bazaar</span>
+                <span class="tag b">Book on Zostel / MakeMyTrip</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-card reveal" id="d1-18">
+      <div class="day-card-header" onclick="toggleCard(this)">
+        <div class="day-number">01</div>
+        <div class="day-sticker">🏰</div>
+        <div class="day-info">
+          <div class="day-lbl">March 19 — Day One in Rajasthan</div>
+          <div class="day-title">The Fort Trinity — Amber, Jaigarh & Nahargarh</div>
+          <div class="day-sub">UNESCO World Heritage · Rajput Military History · Best Sunset in Jaipur</div>
+        </div>
+        <div class="day-toggle">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="info-box">🎫 <strong>Composite Ticket (₹300 for Indians):</strong> Buy at Amber Fort gate. Valid 2 days — covers Amber, Nahargarh, Albert Hall Museum, Jantar Mantar, Hawa Mahal, and more. This single ticket saves you ₹300+. Don't skip it.</div>
+        <div class="steps">
+
+          <div class="step">
+            <div class="step-icon">🌅</div>
+            <div class="step-body">
+              <div class="step-time">6:30 AM</div>
+              <div class="step-title">Early Rise ☀️ — The Forts Belong to You Before 9 AM</div>
+              <div class="step-desc">Quick breakfast at hotel or street chai stall. Leave by 7:15 AM. Morning light at Amber Fort is unreal — golden, soft, and the crowds haven't arrived yet. This is the hour photographers pay guides thousands for.</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🏰</div>
+            <div class="step-body">
+              <div class="step-time">7:30 AM — 11:30 AM · 4 HOURS</div>
+              <div class="step-title">🏰 Amber Fort (Amer Fort) — The Crown of Rajput India</div>
+              <div class="step-desc">Built in 1592 by Raja Man Singh I — the Kachwaha Rajput general of Emperor Akbar — Amber Fort is the story of a warrior clan that survived by being the smartest in the room. Not just fighters — diplomats, astronomers, architects. This UNESCO site is where all three meet in stone.</div>
+              <div class="places-grid">
+                <div class="place-card">
+                  <span class="pe">✨</span>
+                  <h4>Sheesh Mahal</h4>
+                  <p>Palace of Mirrors. Thousands of hand-cut convex glass inlays — one candle makes it look like a galaxy. Zenith of Rajput decorative art.</p>
+                </div>
+                <div class="place-card">
+                  <span class="pe">🚪</span>
+                  <h4>Ganesh Pol Gateway</h4>
+                  <p>Three-storied ceremonial gate for the Maharaja's return from battle. Painted frescoes of peacocks, war scenes and deities on every surface.</p>
+                </div>
+                <div class="place-card">
+                  <span class="pe">👑</span>
+                  <h4>Diwan-i-Aam & Khas</h4>
+                  <p>Public and private audience halls. Here Rajput kings met Mughal emperors. Feel the weight of those conversations in the marble columns.</p>
+                </div>
+                <div class="place-card">
+                  <span class="pe">🌊</span>
+                  <h4>Maota Lake View</h4>
+                  <p>The fort reflecting in the lake below — best morning photo of your trip. Get here early for clear reflections before boats disturb the water.</p>
+                  <div class="entry">✦ Included in composite ticket ₹300</div>
+                </div>
+              </div>
+              <div class="info-box">🎭 <strong>Light & Sound Show Tonight at 7 PM:</strong> The entire fort is lit dramatically while the Kachwaha Rajput story is narrated. 50 dramatic minutes. Buy tickets at fort entrance in the morning. Hindi: ₹295.</div>
+              <div class="tags">
+                <span class="tag t">Auto from hotel ₹100–150</span>
+                <span class="tag c">₹300 composite ticket</span>
+                <span class="tag s">Arrive before 8 AM for empty fort</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">⚔️</div>
+            <div class="step-body">
+              <div class="step-time">11:30 AM — 1:00 PM</div>
+              <div class="step-title">⚔️ Jaigarh Fort — The War Machine on the Hill</div>
+              <div class="step-desc">Connected to Amber by a secret underground tunnel (royals escaped through this during sieges), Jaigarh is pure military. No marble, no mirrors — just thick sandstone walls, watchtowers, and the <strong>Jaivana Cannon</strong>: the world's largest cannon on wheels, fired exactly once in its 300-year history. The army tested it — the cannonball landed 35 km away and created a small lake.</div>
+              <div class="info-box">Jaigarh's water harvesting system collected monsoon rain in a massive underground tank — supplying the entire fort complex without a single pump. Pure Rajput engineering genius.</div>
+              <div class="tags">
+                <span class="tag t">10-min walk from Amber (uphill)</span>
+                <span class="tag c">Included in composite ticket</span>
+                <span class="tag s">⚙️ Jaivana Cannon — don't miss</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🍜</div>
+            <div class="step-body">
+              <div class="step-time">1:00 PM — 2:30 PM</div>
+              <div class="step-title">🍜 Lunch by Jal Mahal — The Water Palace</div>
+              <div class="step-desc">Head back towards Jaipur. Stop roadside near Jal Mahal — the palace floating in Man Sagar Lake. You can't enter (ongoing restoration) but the roadside view + photo is among Jaipur's most iconic. Eat at any local dhaba on the Amer Road — Rajasthani thali ₹150–200 each. Hydrate well.</div>
+              <div class="tags">
+                <span class="tag f">🏯 Jal Mahal view (free, roadside)</span>
+                <span class="tag c">₹150–200 thali</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🌄</div>
+            <div class="step-body">
+              <div class="step-time">4:00 PM — 7:00 PM</div>
+              <div class="step-title">🌄 Nahargarh Fort — Sunset Throne of Jaipur</div>
+              <div class="step-desc">Built 1734 by Maharaja Sawai Jai Singh II as his watchtower retreat on the Aravalli ridge. The fort contains nine identical suites — one for each of his queens — built equal so no queen could feel lesser. The story is carved into the architecture. From the top: all of Jaipur spreads below you like a map.</div>
+              <div class="warn-box">⏰ Enter by 4:30 PM. The rooftop restaurant <strong>Padao</strong> (₹200 entry includes a cold drink) fills up by 5:30 PM. Claim your spot. Watch the city turn gold at sunset ~6:15 PM — this is the moment.</div>
+              <div class="tags">
+                <span class="tag t">Auto from city ₹150 (steep road, auto recommended)</span>
+                <span class="tag c">Entry ₹50 + Padao ₹200</span>
+                <span class="tag s">🌅 Best sunset in Jaipur</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🎭</div>
+            <div class="step-body">
+              <div class="step-time">7:00 PM (If energy permits)</div>
+              <div class="step-title">🎭 Light & Sound Show — Amber Fort at Night</div>
+              <div class="step-desc">Come back down for the evening show. The fort is lit in layered amber and gold while the narrator speaks the saga of the Kachwaha Rajputs — their wars, marriages into Mughal courts, their art. 50 minutes. Goosebumps guaranteed.</div>
+              <div class="tags">
+                <span class="tag c">Hindi ₹295 · English ₹395</span>
+                <span class="tag b">Pre-book at fort in morning</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🌙</div>
+            <div class="step-body">
+              <div class="step-time">9:00 PM</div>
+              <div class="step-title">🌙 Dinner: Rawat Misthan Bhandar</div>
+              <div class="step-desc">Jaipur's most beloved local shop on Station Road. Famous for pyaaz ki kachori (₹20 each, crispy onion-stuffed fried bread). Quick, cheap, perfect for tired travelers. ₹100–150 each. Get extras to eat in the auto home.</div>
+              <div class="tags">
+                <span class="tag f">Rawat Misthan Bhandar · Station Road</span>
+                <span class="tag c">₹100–150 pp</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-card reveal" id="d2-18">
+      <div class="day-card-header" onclick="toggleCard(this)">
+        <div class="day-number">02</div>
+        <div class="day-sticker">🏛️</div>
+        <div class="day-info">
+          <div class="day-lbl">March 20 — Day Two</div>
+          <div class="day-title">City Palace · Jantar Mantar · Hawa Mahal · Pink City Bazaars</div>
+          <div class="day-sub">Rajput science · Royal museums · Old city walk · Shopping</div>
+        </div>
+        <div class="day-toggle">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon">🏛️</div>
+            <div class="step-body">
+              <div class="step-time">8:00 AM — 11:00 AM</div>
+              <div class="step-title">🏛️ City Palace — Where Royals Still Live</div>
+              <div class="step-desc">Founded by Maharaja Sawai Jai Singh II in 1727 when he moved his capital from Amber. Unique fact: <strong>part of it is still the private residence of the royal family</strong>. You walk through a living palace. The <strong>Mubarak Mahal</strong> houses 18th-century royal garments. Two massive silver urns in the Diwan-i-Khas (world's largest silver objects) — used to carry Ganges water to England so the Maharaja could maintain religious purity abroad.</div>
+              <div class="tags">
+                <span class="tag c">₹75 (composite ticket)</span>
+                <span class="tag s">Hire local guide ₹300 — worth every rupee</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🔭</div>
+            <div class="step-body">
+              <div class="step-time">11:00 AM — 12:00 PM</div>
+              <div class="step-title">🔭 Jantar Mantar — The Rajput Scientist's Observatory</div>
+              <div class="step-desc">Same Maharaja, same mind. Jai Singh II built 5 observatories across India — this is the largest. The <strong>Samrat Yantra</strong> (Supreme Instrument) is the world's largest sundial, accurate to 2 seconds. Most tourists rush through this in 20 minutes. You'll spend an hour — because understanding that a Rajput king calculated planetary positions before telescopes existed changes how you see these "warriors."</div>
+              <div class="tags">
+                <span class="tag c">Included in composite ticket</span>
+                <span class="tag s">🏛️ UNESCO World Heritage Site</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">📸</div>
+            <div class="step-body">
+              <div class="step-time">12:00 PM — 12:30 PM</div>
+              <div class="step-title">📸 Hawa Mahal — Five Stories of Purdah Architecture</div>
+              <div class="step-desc">953 tiny jharokha windows — built so royal women could observe street life without being seen. The facade looks like a honeycomb crown. Go inside for the view, but honestly the exterior shot from the tea shop directly across the road is the photo you'll use forever.</div>
+              <div class="tags">
+                <span class="tag c">Included in composite ticket</span>
+                <span class="tag s">Best photo: from street (free)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🍽️</div>
+            <div class="step-body">
+              <div class="step-time">1:00 PM — 2:30 PM</div>
+              <div class="step-title">🍽️ Lunch at LMB + Johari Bazaar Walk</div>
+              <div class="step-desc"><strong>LMB (Laxmi Misthan Bhandar)</strong> on Johari Bazaar has been open since 1954. Try the Rajasthani thali (₹200) or dal baati churma as a single dish. After lunch, walk through Johari Bazaar — Jaipur's gem and jewelry market where Rajput traders operated for centuries. You don't have to buy — just absorbing the silver, gemstones, and noise is the experience.</div>
+              <div class="tags">
+                <span class="tag f">🍛 LMB Johari Bazaar · Since 1954</span>
+                <span class="tag c">₹150–250 pp</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🏺</div>
+            <div class="step-body">
+              <div class="step-time">3:00 PM — 5:00 PM</div>
+              <div class="step-title">🏺 Albert Hall Museum — Rajputana History Deep Dive</div>
+              <div class="step-desc">One of India's finest state museums. Rajput weapons, royal textiles, miniature paintings from the Jaipur school, Egyptian mummies, ancient coins, ivory carvings. The building itself — Indo-Saracenic masterpiece — is half the reason to visit. If the fort circuit left you hungry for more Rajput history, this fills the gaps.</div>
+              <div class="tags">
+                <span class="tag c">Included in composite ticket</span>
+                <span class="tag s">Rajput Miniature Paintings · Weapons Gallery</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🛍️</div>
+            <div class="step-body">
+              <div class="step-time">5:00 PM — 7:30 PM</div>
+              <div class="step-title">🛍️ Bapu Bazaar — Shop Like a Rajput</div>
+              <div class="step-desc">Rajasthan's most famous street market. Best buys: block-print cotton fabric (₹150–300/meter), <strong>mojri shoes</strong> (traditional Rajput leather footwear, ₹300–600), lac bangles (₹50–200), sandalwood soaps, blue pottery. Rule: never pay first price. Walk away if they don't budge — they'll call you back. Getting to 60% of first price is normal.</div>
+              <div class="tags">
+                <span class="tag s">Bapu Bazaar</span>
+                <span class="tag c">Negotiate to 55–65% of first price</span>
+                <span class="tag f">🍵 Kulhad chai ₹15 from any stall</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🌙</div>
+            <div class="step-body">
+              <div class="step-time">8:30 PM</div>
+              <div class="step-title">🌙 Dinner: Handi Restaurant (Budget) or Chokhi Dhani (Splurge)</div>
+              <div class="step-desc"><strong>Budget (₹200–300):</strong> Handi Restaurant on MI Road — rooftop dining, authentic Rajasthani food, good service.<br/><strong>Splurge (₹700–900):</strong> Chokhi Dhani — a Rajasthani village experience with folk dances, camel rides, unlimited thali, live music. Touristy but genuinely fun. Worth it for one night if budget permits.</div>
+              <div class="tags">
+                <span class="tag f">Handi ₹200–300 · Chokhi Dhani ₹700–900</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-card reveal" id="d3-18">
+      <div class="day-card-header" onclick="toggleCard(this)">
+        <div class="day-number">03</div>
+        <div class="day-sticker">🐒</div>
+        <div class="day-info">
+          <div class="day-lbl">March 21 — Day Three</div>
+          <div class="day-title">Galtaji · Sisodia Garden · Free Afternoon · Final Dinner</div>
+          <div class="day-sub">Ancient pilgrimage · Monkey temple · Royal love garden · Last night in Rajasthan</div>
+        </div>
+        <div class="day-toggle">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon">🐒</div>
+            <div class="step-body">
+              <div class="step-time">7:00 AM — 9:30 AM</div>
+              <div class="step-title">🐒 Galtaji — The Monkey Temple Hidden in a Gorge</div>
+              <div class="step-desc">10 km from city center, hidden in Aravalli hills — a complex of ancient Hindu temples and natural kunds (stepped tanks) fed by a spring. Thousands of rhesus monkeys live here. Arrive early for the pilgrims and priests performing rituals. The sacred spring that feeds the kunds has flowed continuously for centuries — Rajput kings came here to seek blessings before battle.</div>
+              <div class="warn-box">⚠️ Do NOT carry food — monkeys will steal it. And they're fast. Don't challenge them.</div>
+              <div class="tags">
+                <span class="tag t">Auto ₹150 return</span>
+                <span class="tag c">Free entry</span>
+                <span class="tag s">Arrive by 7 AM for temple atmosphere</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🌸</div>
+            <div class="step-body">
+              <div class="step-time">10:00 AM — 11:30 AM</div>
+              <div class="step-title">🌸 Sisodia Rani Garden — A Royal Love Story</div>
+              <div class="step-desc">Built in 1728 by Maharaja Jai Singh II for his Sisodia Rajput queen — a gesture of alliance and love between two rival Rajput clans. Terraced Mughal-style gardens with fountains, fresco-painted pavilions showing scenes from Radha-Krishna's story, and quiet corners. Often skipped by tourists. Genuinely peaceful.</div>
+              <div class="tags">
+                <span class="tag c">Entry ₹30</span>
+                <span class="tag s">Rajput love garden — photo gold 📸</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🥘</div>
+            <div class="step-body">
+              <div class="step-time">12:00 PM — 2:00 PM</div>
+              <div class="step-title">🥘 Checkout + Masala Chowk Lunch</div>
+              <div class="step-desc">Return hotel, check out (ask for 1 PM late checkout — usually granted). Store bags. Head to <strong>Masala Chowk</strong> near Ram Niwas Garden — 30+ local food stalls in an outdoor food court. Try: laal maas, gatte ki sabzi, mirchi bada, ghevar. Budget ₹150–200 total.</div>
+              <div class="tags">
+                <span class="tag f">🍽️ Masala Chowk · Ram Niwas Garden</span>
+                <span class="tag c">₹150–200 pp</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🎨</div>
+            <div class="step-body">
+              <div class="step-time">2:00 PM — 5:00 PM</div>
+              <div class="step-title">🎨 Free Afternoon — Your Choice</div>
+              <div class="step-desc">You've earned it. Options: visit Sanganer (15 min by auto) to watch block-print artisans work at Anokhi or Sanganer Printers — free to observe, magical process. Or revisit your favorite spot from the last two days. Or rest. Rest is also valid.</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🌙</div>
+            <div class="step-body">
+              <div class="step-time">8:00 PM</div>
+              <div class="step-title">🌙 Final Rajasthan Dinner — Make it Count</div>
+              <div class="step-desc"><strong>Niros Restaurant</strong> on MI Road (since 1949). Full Rajasthani spread: dal baati churma + bajra roti + laal maas (mutton in red chilli gravy, if non-veg). This is the food that fueled Rajput armies on long campaigns. End dinner with malpua (sweet pancake). ₹250–350 each.</div>
+              <div class="tags">
+                <span class="tag f">🍽️ Niros · MI Road · Since 1949</span>
+                <span class="tag c">₹250–350 pp</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 4 RETURN -->
+    <div class="day-card reveal" id="d4-18">
+      <div class="day-card-header" onclick="toggleCard(this)">
+        <div class="day-number">04</div>
+        <div class="day-sticker">🏠</div>
+        <div class="day-info">
+          <div class="day-lbl">March 22 — The Return</div>
+          <div class="day-title">Jaipur → Delhi — Both Friends Part Ways</div>
+          <div class="day-sub">Last morning souvenirs · Train back · Greater Noida metro home · Memories forever</div>
+        </div>
+        <div class="day-toggle">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon">🛍️</div>
+            <div class="step-body">
+              <div class="step-time">7:00 AM — 9:00 AM</div>
+              <div class="step-title">Last Morning — Final Souvenirs & Chai</div>
+              <div class="step-desc">One last kulhad chai from a street stall. Buy any remaining gifts — miniature paintings (₹200–500), block-print scarves (₹200–400), camel leather wallets (₹150–300). Negotiate, as always. Check out by 10 AM.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">🚆</div>
+            <div class="step-body">
+              <div class="step-time">JAIPUR → DELHI TRAINS · MARCH 22</div>
+              <div class="step-title">Pick Your Return Train</div>
+              <table class="tbl">
+                <tr><th>Train</th><th>Departs Jaipur</th><th>Arrives NDLS</th><th>Fare</th></tr>
+                <tr><td><span class="rec">✦ Ashram Express 12915</span></td><td>8:00 AM</td><td>1:15 PM</td><td>SL ~₹175</td></tr>
+                <tr><td>Vande Bharat 20977</td><td>2:45 PM</td><td>6:25 PM</td><td>CC ~₹850</td></tr>
+                <tr><td>Ajmer Shatabdi 12016</td><td>5:50 PM</td><td>10:40 PM</td><td>CC ~₹600</td></tr>
+              </table>
+              <div class="info-box">
+                <strong>You (Vaibhav):</strong> Any train → arrive NDLS → Blue Line metro → Aqua Line → Greater Noida. Home by evening.<br/>
+                <strong>Friend:</strong> Shiv Ganga Express from NDLS towards Varanasi departs ~6 PM. Arrives Varanasi morning. Perfect timing if you both take Ashram Express together at 8 AM.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end days -->
+
+  <!-- BUDGET -->
+  <div class="budget-block reveal">
+    <h3>💰 Budget Breakdown · Per Person · March 18 Timeline</h3>
+    <div class="brow"><span>Varanasi → Delhi Night Train (Friend) · Shiv Ganga 3AC</span><span class="amt">₹1,100</span></div>
+    <div class="brow"><span>Greater Noida → Delhi Metro (You)</span><span class="amt">₹80</span></div>
+    <div class="brow"><span>Delhi → Jaipur · Vande Bharat CC (or Ashram SL)</span><span class="amt">₹180–850</span></div>
+    <div class="brow"><span>Jaipur Hotel · 3 nights · Twin sharing per person</span><span class="amt">₹900–1,200</span></div>
+    <div class="brow"><span>Composite Fort + Museum Ticket · 2-day pass</span><span class="amt">₹300</span></div>
+    <div class="brow"><span>Food · 3 days · ₹400/day avg</span><span class="amt">₹1,200</span></div>
+    <div class="brow"><span>Local Transport · Autos + Rapido</span><span class="amt">₹400</span></div>
+    <div class="brow"><span>Shopping + Miscellaneous</span><span class="amt">₹500</span></div>
+    <div class="brow"><span>Jaipur → Delhi Return · Ashram SL</span><span class="amt">₹175</span></div>
+    <div class="brow"><span>Light & Sound Show · Amber Fort</span><span class="amt">₹295</span></div>
+    <div class="brow"><span>🎯 TOTAL ESTIMATED PER PERSON</span><span class="amt">₹4,330–5,300</span></div>
+  </div>
+
+</div>
+</section>
+
+<!-- ==================== TIMELINE 2 ==================== -->
+<section class="tl-section" id="section-mar27">
+<div class="main-content">
+
+  <div class="section-banner reveal">
+    <div class="section-banner-inner">
+      <span class="banner-emoji">📅</span>
+      <div>
+        <div class="banner-title">Timeline Two — March 27 to 31</div>
+        <div class="banner-sub">Slightly warmer · 30–35°C · Itinerary heat-adjusted — early mornings + afternoon rest + evening activities</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="route-bar reveal">
+    <div class="route-stop"><div class="route-dot blue"></div><div><span class="route-lbl">YOU START HERE</span><span class="route-name">Greater Noida</span></div></div>
+    <div class="route-arrow">⟶</div>
+    <div class="route-stop"><div class="route-dot"></div><div><span class="route-lbl">FRIEND FROM VARANASI</span><span class="route-name">New Delhi</span></div></div>
+    <div class="route-arrow">⟶</div>
+    <div class="route-stop"><div class="route-dot gold"></div><div><span class="route-lbl">TRIP BEGINS 🎉</span><span class="route-name">Jaipur, Rajasthan</span></div></div>
+  </div>
+
+  <div class="pills-row reveal">
+    <div class="pill"><span class="pi">☀️</span> 30–35°C · Heat-adjusted plan</div>
+    <div class="pill"><span class="pi">🌅</span> Early mornings + evening focus</div>
+    <div class="pill"><span class="pi">💰</span> Same ₹4,000–5,000 budget</div>
+    <div class="pill"><span class="pi">🌊</span> Post-Holi · Quieter crowds</div>
+  </div>
+
+  <div class="warn-box reveal" style="border-radius:12px; margin-bottom:24px;">
+    🌡️ <strong>Late March Heat Strategy:</strong> All outdoor fort visits scheduled for 7–11 AM when it's 22–26°C. Mandatory long lunch break 12–3 PM indoors. Resume outdoors from 4:30 PM. Carry 2L water each, wear cotton, sunscreen is essential. This is how locals survive Rajasthan summer.
+  </div>
+
+  <div class="day-nav reveal">
+    <button class="day-nav-btn" onclick="scrollTo27('d0-27')">🚆 Day 0 — Getting There</button>
+    <button class="day-nav-btn" onclick="scrollTo27('d1-27')">🏰 Day 1 — Fort Circuit</button>
+    <button class="day-nav-btn" onclick="scrollTo27('d2-27')">🏛️ Day 2 — City Palace</button>
+    <button class="day-nav-btn" onclick="scrollTo27('d3-27')">🐒 Day 3 — Temples</button>
+    <button class="day-nav-btn" onclick="scrollTo27('d4-27')">🚆 Day 4 — Return</button>
+  </div>
+
+  <div class="days-grid">
+
+    <div class="day-card reveal" id="d0-27">
+      <div class="day-card-header" onclick="toggleCard(this)">
+        <div class="day-number">00</div>
+        <div class="day-sticker">🚆</div>
+        <div class="day-info">
+          <div class="day-lbl">March 26 Night → March 27 Morning</div>
+          <div class="day-title">The Grand Meetup — Delhi Rendezvous</div>
+          <div class="day-sub">Same plan as Timeline 1 · Night train · Delhi morning · Afternoon Jaipur train</div>
+        </div>
+        <div class="day-toggle">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="action-badge"><span class="ab-icon">⚡</span> <strong>Book Now on IRCTC:</strong> March end is busy — book all trains TODAY. 60-day advance window is open for late March dates.</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon">🚇</div>
+            <div class="step-body">
+              <div class="step-time">YOUR JOURNEY · MARCH 27 · 7:00 AM</div>
+              <div class="step-title">Greater Noida → Delhi (Same Metro Route)</div>
+              <div class="step-desc">Aqua Line → Sector 51 → Blue Line → Rajiv Chowk → Yellow Line → New Delhi Station. Leave by 7:00 AM, arrive NDLS by 9:00 AM.</div>
+              <div class="tags"><span class="tag t">🚇 Metro</span><span class="tag c">₹60–80</span></div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🚂</div>
+            <div class="step-body">
+              <div class="step-time">FRIEND · VARANASI → DELHI · MARCH 26 EVENING</div>
+              <div class="step-title">Night Train — Shiv Ganga Express 12559</div>
+              <table class="tbl">
+                <tr><th>Train</th><th>Departs BSB (Mar 26)</th><th>Arrives NDLS (Mar 27)</th><th>Fare</th></tr>
+                <tr><td><span class="rec">✦ Shiv Ganga 12559</span></td><td>~6:30 PM</td><td>~5:30 AM</td><td>3AC ~₹1,100</td></tr>
+                <tr><td>Poorva Express 12381</td><td>~8:00 PM</td><td>~8:30 AM</td><td>SL ₹430</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🚆</div>
+            <div class="step-body">
+              <div class="step-time">DELHI → JAIPUR · MARCH 27 AFTERNOON</div>
+              <div class="step-title">Catch the Afternoon Train — Same Options</div>
+              <table class="tbl">
+                <tr><th>Train</th><th>Departs NDLS</th><th>Arrives Jaipur</th><th>Notes</th></tr>
+                <tr><td><span class="rec">✦ Vande Bharat 26482</span></td><td>3:10 PM</td><td>7:00 PM</td><td>Best: AC, fastest</td></tr>
+                <tr><td>Ashram Express 12916</td><td>2:55 PM</td><td>8:15 PM</td><td>Budget: SL ₹180</td></tr>
+              </table>
+              <div class="info-box">Same strategy as Timeline 1 — use morning for Chandni Chowk, board 3:10 PM Vande Bharat, arrive Jaipur 7 PM. Hotel, dinner, sleep. Fort day starts at 6:30 AM tomorrow.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card reveal" id="d1-27">
+      <div class="day-card-header" onclick="toggleCard(this)">
+        <div class="day-number">01</div>
+        <div class="day-sticker">🏰</div>
+        <div class="day-info">
+          <div class="day-lbl">March 28 — Day One · Heat-Adjusted</div>
+          <div class="day-title">Fort Circuit — Early Morning Edition</div>
+          <div class="day-sub">Amber + Jaigarh done by noon · Long rest · Nahargarh sunset · L&S Show</div>
+        </div>
+        <div class="day-toggle">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon">🌅</div>
+            <div class="step-body">
+              <div class="step-time">6:30 AM — CRITICAL IN LATE MARCH</div>
+              <div class="step-title">Early Rise Is Non-Negotiable 🌅</div>
+              <div class="step-desc">In late March, 7 AM at the fort = 22°C and golden light. By 11 AM = 32°C and harsh sun. This is not optional — early morning is the difference between an incredible fort experience and a sweaty ordeal. Leave hotel by 7:00 AM.</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🏰</div>
+            <div class="step-body">
+              <div class="step-time">7:30 AM — 10:30 AM</div>
+              <div class="step-title">🏰 Amber Fort — Full Exploration</div>
+              <div class="step-desc">Same experience as Timeline 1 — Sheesh Mahal, Ganesh Pol, Diwan-i-Aam, Maota Lake view. In late March, buy water bottles at the entrance gate (₹20). Start with the Mirror Palace first as it's most impressive in morning interior light.</div>
+              <div class="info-box">💡 Buy Composite Ticket (₹300) here. Also book Light & Sound Show tickets for tonight — 7:30 PM show in late March.</div>
+              <div class="tags"><span class="tag c">Composite ₹300</span><span class="tag s">Carry ORS packets for heat hydration</span></div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">⚔️</div>
+            <div class="step-body">
+              <div class="step-time">10:30 AM — 12:00 PM</div>
+              <div class="step-title">⚔️ Jaigarh Fort — Move Fast in the Heat</div>
+              <div class="step-desc">Late March = exposed fort walls getting hot fast. Hit the key spots: Jaivana Cannon, the fort walls for panoramic view, the tunnel entrance to Amber, the water harvesting tank. Be done by noon and head back to cool shade.</div>
+              <div class="tags"><span class="tag s">Finish by 12:00 noon sharp</span><span class="tag c">Composite ticket</span></div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">❄️</div>
+            <div class="step-body">
+              <div class="step-time">12:00 PM — 4:00 PM · THE MANDATORY REST</div>
+              <div class="step-title">❄️ Long Lunch + Afternoon Rest — Rajasthan Style</div>
+              <div class="step-desc">Locals shut down between 12 and 4 PM in late March. You should too. Find an AC restaurant — <strong>Spice Court</strong> or <strong>Peacock Rooftop</strong>. Slow Rajasthani lunch ₹200–300. Then hotel — nap, shower, rehydrate. This is not laziness. This is how you have energy for the sunset and show tonight.</div>
+              <div class="tags"><span class="tag f">Slow lunch indoors</span><span class="tag c">₹200–300 pp</span><span class="tag s">Never skip afternoon rest in March Rajasthan</span></div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🌄</div>
+            <div class="step-body">
+              <div class="step-time">4:30 PM — 7:15 PM</div>
+              <div class="step-title">🌄 Nahargarh — Sunset at 6:45 PM in Late March</div>
+              <div class="step-desc">Sunset is ~6:45 PM in late March vs ~6:15 PM in mid-March. Get to Nahargarh by 5 PM for the rooftop Padao spot. Same view, same magic — Jaipur turning gold and then amber and then dark. The city at this hour looks like a dream painted in terracotta.</div>
+              <div class="tags"><span class="tag c">Entry ₹50 + Padao ₹200</span><span class="tag s">Sunset ~6:45 PM late March</span></div>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-icon">🎭</div>
+            <div class="step-body">
+              <div class="step-time">7:30 PM</div>
+              <div class="step-title">🎭 Light & Sound Show — Amber Fort (Slightly Later in Late March)</div>
+              <div class="step-desc">7:30 PM show in late March. Night air is 26°C — perfect. The cooler temperature and the dramatic lighting make this a completely different experience from the fort in daylight. Pre-booked tickets in the morning.</div>
+              <div class="tags"><span class="tag c">Hindi ₹295</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card reveal" id="d2-27">
+      <div class="day-card-header" onclick="toggleCard(this)">
+        <div class="day-number">02</div>
+        <div class="day-sticker">🏛️</div>
+        <div class="day-info">
+          <div class="day-lbl">March 29 — Day Two · Heat-Adjusted</div>
+          <div class="day-title">City Palace · Museums · Bazaars — Heat-Smart Schedule</div>
+          <div class="day-sub">Morning outdoor sights · Long cool lunch · Indoor museum afternoon · Evening shopping</div>
+        </div>
+        <div class="day-toggle">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="info-box">📋 Same sights as Timeline 1 Day 2 — City Palace, Jantar Mantar, Hawa Mahal, Albert Hall Museum, Bapu Bazaar — but reorganized for heat. All outdoor sights done by 11:30 AM. Indoor museum in afternoon. Shopping in cool evening.</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon">🏛️</div>
+            <div class="step-body">
+              <div class="step-time">8:00 AM — 11:30 AM</div>
+              <div class="step-title">City Palace → Jantar Mantar → Hawa Mahal (Morning Blitz)</div>
+              <div class="step-desc">All three in the cool morning. City Palace partially shaded. Jantar Mantar is short (1 hr). Hawa Mahal exterior photo from street. Done and back in shade by 11:30 AM. This is the disciplined tourist's approach to late March Jaipur.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">🍜</div>
+            <div class="step-body">
+              <div class="step-time">12:00 PM — 3:00 PM</div>
+              <div class="step-title">LMB Restaurant — Long AC Lunch + Rest</div>
+              <div class="step-desc">LMB is air-conditioned. Take your time. Order slowly. Rehydrate with nimbu pani. Plan your evening. This slow afternoon lunch is a Rajasthani tradition you should embrace.</div>
+              <div class="tags"><span class="tag f">LMB Johari Bazaar · AC</span><span class="tag c">₹150–250 pp</span></div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">🏺</div>
+            <div class="step-body">
+              <div class="step-time">3:00 PM — 5:30 PM</div>
+              <div class="step-title">Albert Hall Museum — Perfectly Indoors</div>
+              <div class="step-desc">Best afternoon activity for late March heat. AC, fascinating Rajput history, miniature paintings. Take your time with the weapons gallery — understanding the Rajput military system makes everything else make sense.</div>
+              <div class="tags"><span class="tag c">Composite ticket</span></div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">🛍️</div>
+            <div class="step-body">
+              <div class="step-time">5:30 PM — 7:30 PM</div>
+              <div class="step-title">Bapu Bazaar — Evening Markets Are Peak Jaipur</div>
+              <div class="step-desc">Late March evenings: 28–30°C, buzzing energy, markets at their most alive. This is when Jaipur really happens. Buy your mojris, block prints, bangles. Negotiate freely.</div>
+              <div class="tags"><span class="tag s">Bapu Bazaar</span><span class="tag c">Budget ₹500–1,000 for shopping</span></div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">🌙</div>
+            <div class="step-body">
+              <div class="step-time">8:30 PM</div>
+              <div class="step-title">Dinner — Handi or Chokhi Dhani</div>
+              <div class="step-desc">Same choices as Timeline 1. If you did Handi yesterday, do Chokhi Dhani tonight — or vice versa.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card reveal" id="d3-27">
+      <div class="day-card-header" onclick="toggleCard(this)">
+        <div class="day-number">03</div>
+        <div class="day-sticker">🐒</div>
+        <div class="day-info">
+          <div class="day-lbl">March 30 — Day Three</div>
+          <div class="day-title">Galtaji · Sisodia Garden · Rest · Final Dinner</div>
+          <div class="day-sub">Super early temple visit · Long rest · Night market walk</div>
+        </div>
+        <div class="day-toggle">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon">🐒</div>
+            <div class="step-body">
+              <div class="step-time">6:30 AM — 9:00 AM</div>
+              <div class="step-title">🐒 Galtaji — Even More Alive in Late March</div>
+              <div class="step-desc">March-end pilgrimage season is active — more devotees, more chanting, more rituals. Leave at 6:30 AM, arrive by 7 AM. The monkeys are most playful in early morning. Natural spring kunds have a different light quality in the early hour. Auto returns by 9 AM before the heat builds.</div>
+              <div class="tags"><span class="tag t">Auto ₹150 return</span><span class="tag c">Free entry</span></div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">🌸</div>
+            <div class="step-body">
+              <div class="step-time">9:30 AM — 11:00 AM</div>
+              <div class="step-title">🌸 Sisodia Rani Garden — Morning Visit</div>
+              <div class="step-desc">Visit in morning rather than midday in late March. Cooler, flowers more vibrant, perfect light for photos. The garden is at its best in the morning hours.</div>
+              <div class="tags"><span class="tag c">Entry ₹30</span></div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">💤</div>
+            <div class="step-body">
+              <div class="step-time">12:00 PM — 5:00 PM</div>
+              <div class="step-title">💤 Long Rest + Checkout</div>
+              <div class="step-desc">Check out by noon. Store bags. Full afternoon rest at a café or hotel lobby. You've done Rajasthan. Now let it settle. Masala Chowk for lunch (₹150–200). Repack. Prepare for return tomorrow.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-icon">🌙</div>
+            <div class="step-body">
+              <div class="step-time">8:00 PM</div>
+              <div class="step-title">🌙 Final Dinner + Night Walk Through Johari Bazaar</div>
+              <div class="step-desc">Niros on MI Road for the final Rajasthani dinner. After dinner — the Johari Bazaar and Bapu Bazaar at night have completely different energy. Lit by bulbs, cooler air, people out in force. Walk slowly. This is Jaipur at its most alive.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card reveal" id="d4-27">
+      <div class="day-card-header" onclick="toggleCard(this)">
+        <div class="day-number">04</div>
+        <div class="day-sticker">🏠</div>
+        <div class="day-info">
+          <div class="day-lbl">March 31 — The Return</div>
+          <div class="day-title">Jaipur → Delhi → Everyone Goes Home</div>
+          <div class="day-sub">Morning train · Part ways at NDLS · Metro to Greater Noida · Friend to Varanasi</div>
+        </div>
+        <div class="day-toggle">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="steps">
+          <div class="step">
+            <div class="step-icon">🚆</div>
+            <div class="step-body">
+              <div class="step-time">MARCH 31 — RETURN OPTIONS</div>
+              <div class="step-title">Jaipur → Delhi Trains</div>
+              <table class="tbl">
+                <tr><th>Train</th><th>Departs Jaipur</th><th>Arrives NDLS</th><th>Fare</th></tr>
+                <tr><td><span class="rec">✦ Ashram Express 12915</span></td><td>8:00 AM</td><td>1:15 PM</td><td>SL ~₹175</td></tr>
+                <tr><td>Vande Bharat 20977</td><td>2:45 PM</td><td>6:25 PM</td><td>CC ~₹850</td></tr>
+              </table>
+              <div class="info-box">
+                <strong>Best:</strong> Ashram Express 8:00 AM — you both arrive NDLS by 1:15 PM. You take metro home. Friend catches Shiv Ganga towards Varanasi from NDLS in evening. Perfect timing.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end days -->
+
+  <!-- BUDGET 2 -->
+  <div class="budget-block reveal">
+    <h3>💰 Budget Breakdown · Per Person · March 27 Timeline</h3>
+    <div class="brow"><span>Varanasi → Delhi Night Train · Shiv Ganga 3AC</span><span class="amt">₹1,100</span></div>
+    <div class="brow"><span>Greater Noida → Delhi Metro (You)</span><span class="amt">₹80</span></div>
+    <div class="brow"><span>Delhi → Jaipur · Vande Bharat CC</span><span class="amt">₹850</span></div>
+    <div class="brow"><span>Hotel · 3 nights · Twin sharing per person</span><span class="amt">₹900–1,200</span></div>
+    <div class="brow"><span>Composite Ticket · Fort + Museum pass</span><span class="amt">₹300</span></div>
+    <div class="brow"><span>Food · 3 days avg</span><span class="amt">₹1,200</span></div>
+    <div class="brow"><span>Local Transport · Autos + apps</span><span class="amt">₹400</span></div>
+    <div class="brow"><span>Shopping + Misc</span><span class="amt">₹500</span></div>
+    <div class="brow"><span>Return Train · Ashram SL</span><span class="amt">₹175</span></div>
+    <div class="brow"><span>Light & Sound Show</span><span class="amt">₹295</span></div>
+    <div class="brow"><span>🎯 TOTAL ESTIMATED PER PERSON</span><span class="amt">₹4,500–5,300</span></div>
+  </div>
+
+</div>
+</section>
+
+<!-- ==================== SHARED: TIPS + CHECKLIST ==================== -->
+<div id="shared-section" style="display:none">
+<div class="main-content">
+
+  <div class="section-banner reveal">
+    <div class="section-banner-inner">
+      <span class="banner-emoji">📖</span>
+      <div>
+        <div class="banner-title">Know Before You Go — Traveler's Briefing</div>
+        <div class="banner-sub">Rajput history, practical tips, booking checklist, and what to pack</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tips-grid reveal">
+    <div class="tip-card">
+      <span class="ti">⚔️</span>
+      <h4>Who Were the Rajputs?</h4>
+      <p>Warrior-aristocratic clans of northern India. Mewar, Marwar, Jaipur (Kachwaha) — kingdoms that resisted Mughal conquest for decades, then negotiated alliances. Amber Fort embodies that complexity: Rajput kings who commanded Mughal armies while building Hindu temples inside their own fort.</p>
+    </div>
+    <div class="tip-card">
+      <span class="ti">🏰</span>
+      <h4>The Fort Trinity Explained</h4>
+      <p>Amber (royal residence), Jaigarh (armory + defense), Nahargarh (watchtower + retreat) — three forts functioning as one system. Amber was breached → escape through tunnel to Jaigarh. From Nahargarh, enemy armies visible from miles. Medieval defence architecture at its most brilliant.</p>
+    </div>
+    <div class="tip-card">
+      <span class="ti">👑</span>
+      <h4>The Kachwaha Clan</h4>
+      <p>Jaipur's royal family. They claim descent from Kush, son of Ram. Most politically sophisticated Rajput clan — they allied with Mughals while maintaining Rajput identity. Raja Man Singh I commanded Akbar's armies. Jai Singh II founded Jaipur and built observatories across India.</p>
+    </div>
+    <div class="tip-card">
+      <span class="ti">🎨</span>
+      <h4>Jaipur Miniature Paintings</h4>
+      <p>A distinct Rajput art form — bold colors, elaborate floral borders, narrative hunting and battle scenes, court scenes. The Jaipur school blended Rajput and Mughal aesthetics. You'll see them throughout Albert Hall Museum. Ask guides to identify them specifically.</p>
+    </div>
+    <div class="tip-card">
+      <span class="ti">📱</span>
+      <h4>Essential Apps</h4>
+      <p><strong>IRCTC Rail Connect</strong> — train booking. <strong>Rapido/Ola</strong> — auto and cab in Jaipur. <strong>Google Maps</strong> — download Jaipur offline map before leaving Delhi. <strong>Zostel/MakeMyTrip</strong> — hostel booking. <strong>PhonePe/GPay</strong> — UPI works most everywhere in Jaipur now.</p>
+    </div>
+    <div class="tip-card">
+      <span class="ti">🎒</span>
+      <h4>Pack Right</h4>
+      <p>Light cotton clothes only. Comfortable walking shoes (forts = 10,000+ steps). Sunscreen + cap (essential for outdoor forts). 1L reusable water bottle. Powerbank. Small daypack for daily carry. No need for large luggage — Jaipur has everything you might need.</p>
+    </div>
+    <div class="tip-card">
+      <span class="ti">🤝</span>
+      <h4>Negotiation 101</h4>
+      <p>Auto-rickshaws: First price is 2x. Offer 50%, settle at 65%. Shopping: First price is 2–3x. Walk away slowly — they'll call you back. Never show excitement before asking price. This applies to everything except fixed-menu restaurants. It's a game, play it cheerfully.</p>
+    </div>
+    <div class="tip-card">
+      <span class="ti">🍽️</span>
+      <h4>What to Eat (Don't Miss)</h4>
+      <p><strong>Dal Baati Churma</strong> — the soul of Rajasthani food. <strong>Pyaaz ki Kachori</strong> — Rawat's specialty. <strong>Laal Maas</strong> — fiery mutton curry (non-veg). <strong>Ghevar</strong> — honeycomb sweet. <strong>Kulhad Chai</strong> — clay cup tea, ₹15 everywhere. <strong>Mirchi Bada</strong> — chilli fritter, Masala Chowk.</p>
+    </div>
+  </div>
+
+  <!-- BOOKING CHECKLIST -->
+  <div class="section-banner reveal" style="margin-top:40px">
+    <div class="section-banner-inner">
+      <span class="banner-emoji">✅</span>
+      <div>
+        <div class="banner-title">Must-Do Booking Checklist — Do This Today</div>
+        <div class="banner-sub">Everything you need to book before the trip, in order of priority</div>
+      </div>
+    </div>
+  </div>
+
+  <ul class="checklist reveal">
+    <li><span class="ck">🚂</span><div><strong>Book Varanasi → Delhi Night Train (Friend)</strong> — Shiv Ganga Express 12559, night before trip day. 3AC for comfort. Book on IRCTC.co.in immediately.</div></li>
+    <li><span class="ck">🚆</span><div><strong>Book Delhi → Jaipur Train (Both)</strong> — Vande Bharat 26482 at 3:10 PM (recommended) or Ashram Express 12916. Book on IRCTC.</div></li>
+    <li><span class="ck">🏨</span><div><strong>Book Jaipur Hotel (3 nights)</strong> — Hotel Pearl Palace Heritage or Moustache Jaipur. Check Zostel.com or Booking.com. Book twin/double room.</div></li>
+    <li><span class="ck">🚆</span><div><strong>Book Jaipur → Delhi Return Train</strong> — Ashram Express 12915 (8 AM) recommended for friends to part ways smoothly at NDLS.</div></li>
+    <li><span class="ck">📱</span><div><strong>Install IRCTC Rail Connect App + Link Aadhaar</strong> — Aadhaar is required for Tatkal bookings. Set up IRCTC account if you don't have one.</div></li>
+    <li><span class="ck">🎭</span><div><strong>Book Amber Light & Sound Show</strong> — Book online at rajasthantourism.gov.in or at fort entrance on Day 1 morning. Hindi show ₹295.</div></li>
+    <li><span class="ck">🗺️</span><div><strong>Download Google Maps Offline — Jaipur</strong> — Open Maps → Jaipur → Download. Will save you in areas with poor connectivity.</div></li>
+    <li><span class="ck">💊</span><div><strong>Pack ORS Packets + Basic Medicines</strong> — Especially for March 27 timeline. Heat dehydration is real. ORS packets (10 sachets, ₹30) are essential.</div></li>
+  </ul>
+
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-stickers">🏰 ⚔️ 🐫 🌅 🦚 🎆</div>
+  <p>Built with care for <strong>Vaibhav</strong> — your royal Rajasthan roadmap 🏯</p>
+  <p style="margin-top:8px; font-size:0.72rem;">All train fares are approximate 2025 estimates. Verify and book on IRCTC. Hotel prices vary seasonally. Composite ticket prices subject to change at fort gates.</p>
+</footer>
+
+<script>
+// ============ PARTICLES ============
+const emojis = ['🌸','✨','🏵️','🌺','⭐','💫','🌟','🔆','🌙'];
+const container = document.getElementById('particles');
+for(let i=0;i<18;i++){
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+  p.style.left = Math.random()*100+'%';
+  p.style.fontSize = (0.8+Math.random()*1.2)+'rem';
+  p.style.animationDuration = (18+Math.random()*25)+'s';
+  p.style.animationDelay = (-Math.random()*25)+'s';
+  container.appendChild(p);
+}
+
+// ============ TIMELINE SELECT ============
+function selectTL(id) {
+  document.querySelectorAll('.tl-section').forEach(s=>s.classList.remove('visible'));
+  document.querySelectorAll('.timeline-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('section-'+id).classList.add('visible');
+  document.getElementById('btn-'+id).classList.add('active');
+  document.getElementById('shared-section').style.display='block';
+  setTimeout(()=>{
+    document.getElementById('section-'+id).scrollIntoView({behavior:'smooth',block:'start'});
+  },120);
+  triggerReveal();
+}
+
+// ============ CARD TOGGLE ============
+function toggleCard(hdr){
+  const card=hdr.parentElement;
+  card.classList.toggle('open');
+}
+
+// ============ NAV SCROLL ============
+function scrollTo18(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'}); }
+function scrollTo27(id){ document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'}); }
+
+// ============ SCROLL REVEAL ============
+function triggerReveal(){
+  const els=document.querySelectorAll('.reveal:not(.shown)');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('shown'); obs.unobserve(e.target); }
+    });
+  },{threshold:0.08});
+  els.forEach(el=>obs.observe(el));
+}
+triggerReveal();
+document.addEventListener('click',()=>setTimeout(triggerReveal,200));
+
+// Auto-open first card per section
+document.querySelectorAll('.day-card').forEach((c,i)=>{
+  if(i===0||i===5) c.classList.add('open');
+});
+</script>
+</body>
+</html>
