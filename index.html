@@ -8,1879 +8,1633 @@
 <style>
 :root {
   --saffron: #E8621A;
-  --saffron-glow: rgba(232,98,26,0.3);
   --gold: #C8971A;
   --gold-light: #F5D06A;
-  --gold-glow: rgba(200,151,26,0.2);
   --deep: #0E0500;
   --card: #1A0900;
   --card2: #221100;
   --card3: #2A1500;
   --sand: #F5E6CC;
-  --sand-dim: rgba(245,230,204,0.7);
-  --sand-faint: rgba(245,230,204,0.12);
   --text: #F0DFC0;
-  --text-dim: rgba(240,223,192,0.6);
+  --text-dim: rgba(240,223,192,0.65);
   --text-faint: rgba(240,223,192,0.35);
   --border: rgba(200,151,26,0.18);
   --border-bright: rgba(200,151,26,0.4);
 }
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--deep);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;width:100%;}
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+/* TOP ACCENT */
+.top-accent{position:fixed;top:0;left:0;right:0;height:3px;z-index:999;background:linear-gradient(90deg,var(--saffron),var(--gold),var(--gold-light),var(--gold),var(--saffron));background-size:200%;animation:shimmer 3s linear infinite;}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
 
-body {
-  background: var(--deep);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  overflow-x: hidden;
-  min-height: 100vh;
-  width: 100%;
+/* PARTICLES */
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.particle{position:absolute;animation:drift linear infinite;opacity:0;user-select:none;}
+@keyframes drift{0%{transform:translateY(110vh) rotate(0deg);opacity:0;}5%{opacity:0.3;}90%{opacity:0.15;}100%{transform:translateY(-10vh) rotate(360deg);opacity:0;}}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:80px 20px 100px;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 20% 60%,rgba(232,98,26,0.13) 0%,transparent 100%),radial-gradient(ellipse 60% 50% at 80% 30%,rgba(200,151,26,0.11) 0%,transparent 100%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,151,26,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,151,26,0.04) 1px,transparent 1px);background-size:60px 60px;}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(90px);animation:orbPulse 6s ease-in-out infinite alternate;}
+.hero-orb-1{width:500px;height:500px;top:-120px;left:-120px;background:rgba(232,98,26,0.07);}
+.hero-orb-2{width:400px;height:400px;bottom:-100px;right:-100px;background:rgba(200,151,26,0.08);animation-delay:-3s;}
+@keyframes orbPulse{from{opacity:0.5;transform:scale(1);}to{opacity:1;transform:scale(1.15);}}
+
+.hero-float{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.hf{position:absolute;opacity:0.12;animation:floatY ease-in-out infinite;}
+.hf:nth-child(1){top:10%;left:4%;font-size:2.5rem;animation-duration:7s;}
+.hf:nth-child(2){top:18%;right:6%;font-size:2rem;animation-duration:9s;animation-delay:-2s;}
+.hf:nth-child(3){top:55%;left:2%;font-size:2.8rem;animation-duration:8s;animation-delay:-4s;}
+.hf:nth-child(4){top:70%;right:4%;font-size:2.2rem;animation-duration:6s;animation-delay:-1s;}
+.hf:nth-child(5){top:38%;right:2%;font-size:1.8rem;animation-duration:10s;animation-delay:-5s;}
+@keyframes floatY{0%,100%{transform:translateY(0) rotate(-4deg);}50%{transform:translateY(-20px) rotate(4deg);}}
+
+.hero-content{position:relative;z-index:2;text-align:center;max-width:860px;width:100%;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border-bright);background:rgba(200,151,26,0.08);border-radius:100px;padding:8px 20px;font-family:'Bebas Neue',sans-serif;letter-spacing:0.25em;color:var(--gold-light);font-size:0.72rem;margin-bottom:24px;opacity:0;animation:fadeUp 0.8s ease 0.2s forwards;backdrop-filter:blur(10px);}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,8vw,7rem);font-weight:900;color:var(--sand);line-height:1.05;margin-bottom:12px;opacity:0;animation:fadeUp 0.9s ease 0.4s forwards;}
+.hero h1 em{font-style:italic;color:var(--saffron);}
+.hero-tag{font-family:'Bebas Neue',sans-serif;font-size:clamp(0.85rem,2.5vw,1.4rem);letter-spacing:0.2em;color:var(--gold);margin-bottom:20px;opacity:0;animation:fadeUp 0.8s ease 0.55s forwards;}
+.hero-sub{font-size:clamp(0.85rem,2vw,1rem);color:var(--text-dim);line-height:1.75;max-width:520px;margin:0 auto 40px;opacity:0;animation:fadeUp 0.8s ease 0.7s forwards;}
+
+/* STATS */
+.hero-stats{display:flex;gap:0;justify-content:center;flex-wrap:wrap;margin-bottom:44px;opacity:0;animation:fadeUp 0.8s ease 0.85s forwards;background:var(--card2);border:1px solid var(--border);border-radius:16px;overflow:hidden;max-width:520px;margin-left:auto;margin-right:auto;margin-bottom:44px;}
+.h-stat{flex:1;min-width:80px;padding:18px 12px;text-align:center;border-right:1px solid var(--border);position:relative;}
+.h-stat:last-child{border-right:none;}
+.h-stat .n{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--gold-light);line-height:1;display:block;}
+.h-stat .l{font-size:0.62rem;color:var(--text-faint);letter-spacing:0.12em;text-transform:uppercase;margin-top:3px;display:block;}
+
+/* DATE PICKER */
+.date-picker{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp 0.8s ease 1s forwards;width:100%;padding:0 8px;}
+.date-btn{position:relative;overflow:hidden;background:var(--card2);border:1.5px solid var(--border-bright);color:var(--sand);font-family:'DM Sans',sans-serif;padding:20px 28px;border-radius:16px;cursor:pointer;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);flex:1;max-width:240px;min-width:140px;text-align:center;}
+.date-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--saffron),var(--gold));opacity:0;transition:opacity 0.3s;}
+.date-btn:hover,.date-btn.active{border-color:var(--saffron);transform:translateY(-5px);box-shadow:0 16px 40px rgba(232,98,26,0.3);}
+.date-btn:hover::before,.date-btn.active::before{opacity:1;}
+.date-btn .db-icon{font-size:1.6rem;display:block;position:relative;z-index:1;margin-bottom:8px;}
+.date-btn .db-date{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,4vw,2.2rem);letter-spacing:0.05em;display:block;position:relative;z-index:1;line-height:1;}
+.date-btn .db-range{font-size:0.68rem;opacity:0.8;letter-spacing:0.1em;text-transform:uppercase;position:relative;z-index:1;margin-top:4px;display:block;}
+
+.scroll-hint{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--text-faint);font-size:0.62rem;letter-spacing:0.15em;animation:fadeUp 1s ease 1.4s both;white-space:nowrap;}
+.scroll-hint .arr{animation:bounce 1.5s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
+
+/* ===== MAIN ===== */
+.main{max-width:900px;margin:0 auto;padding:0 16px 80px;position:relative;z-index:1;width:100%;}
+
+/* ===== SECTION HEADER ===== */
+.sec-head{background:linear-gradient(135deg,var(--card2),var(--card3));border:1px solid var(--border);border-radius:20px;padding:28px 24px;margin:48px 0 0;position:relative;overflow:hidden;}
+.sec-head::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--saffron),var(--gold),transparent);}
+.sec-head-inner{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.sec-emoji{font-size:2.6rem;flex-shrink:0;}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,3.5vw,1.6rem);font-weight:700;color:var(--sand);margin-bottom:4px;}
+.sec-sub{font-size:0.8rem;color:var(--text-dim);}
+
+/* ROUTE RIBBON */
+.route-ribbon{display:flex;align-items:center;gap:0;margin:20px 0;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;flex-wrap:wrap;}
+.rr-stop{flex:1;min-width:90px;padding:14px 16px;display:flex;align-items:center;gap:10px;position:relative;}
+.rr-stop::after{content:'❯';position:absolute;right:-2px;top:50%;transform:translateY(-50%);color:var(--gold);opacity:0.5;font-size:1rem;z-index:2;}
+.rr-stop:last-child::after{display:none;}
+.rr-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.rr-dot.s{background:#4A7FCC;}
+.rr-dot.m{background:var(--saffron);}
+.rr-dot.e{background:var(--gold);}
+.rr-lbl{font-family:'Bebas Neue',sans-serif;font-size:0.58rem;letter-spacing:0.18em;opacity:0.6;color:var(--gold);display:block;}
+.rr-name{font-size:0.82rem;font-weight:700;color:var(--sand);}
+
+/* PILLS */
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 32px;}
+.pill{background:var(--card2);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:0.73rem;font-weight:600;color:var(--text-dim);display:flex;align-items:center;gap:6px;}
+
+/* ===== ROADMAP ===== */
+.roadmap{position:relative;padding:24px 0 8px;}
+
+/* Vertical line */
+.roadmap::before{content:'';position:absolute;left:36px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--saffron) 0%,var(--gold) 50%,var(--saffron) 100%);opacity:0.2;border-radius:2px;}
+
+/* DAY BLOCK */
+.day-block{margin-bottom:12px;position:relative;}
+
+/* DAY HEADER */
+.day-header{display:flex;align-items:center;gap:14px;cursor:pointer;padding:18px 20px;background:linear-gradient(135deg,var(--card2),var(--card3));border:1px solid var(--border);border-radius:16px;transition:all 0.3s;position:relative;overflow:hidden;}
+.day-header::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0.3;}
+.day-header:hover{border-color:var(--border-bright);box-shadow:0 4px 24px rgba(200,151,26,0.08);}
+.day-block.open .day-header{border-color:var(--saffron);border-radius:16px 16px 0 0;box-shadow:0 0 0 1px rgba(232,98,26,0.2);}
+
+/* Day circle on the line */
+.day-circle{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--saffron),var(--gold));display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;position:relative;z-index:2;box-shadow:0 0 0 4px var(--deep),0 0 0 6px rgba(232,98,26,0.3);}
+.day-circle .dc-num{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--deep);line-height:1;}
+.day-circle .dc-lbl{font-size:0.42rem;color:rgba(14,5,0,0.7);letter-spacing:0.1em;text-transform:uppercase;line-height:1;}
+.day-circle.grey{background:linear-gradient(135deg,#3a2010,#5a3520);}
+.day-circle.grey .dc-num{color:var(--gold);}
+.day-circle.grey .dc-lbl{color:var(--text-faint);}
+
+.day-emoji{font-size:1.8rem;flex-shrink:0;}
+.day-info{flex:1;min-width:0;}
+.day-date-lbl{font-family:'Bebas Neue',sans-serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--saffron);opacity:0.85;margin-bottom:2px;}
+.day-title{font-family:'Playfair Display',serif;font-size:clamp(0.9rem,2.5vw,1.15rem);font-weight:700;color:var(--sand);line-height:1.3;word-break:break-word;}
+.day-subtitle{font-size:0.7rem;color:var(--text-faint);margin-top:2px;word-break:break-word;}
+.day-chev{color:var(--gold);opacity:0.6;font-size:0.9rem;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);flex-shrink:0;}
+.day-block.open .day-chev{transform:rotate(180deg);opacity:1;}
+
+/* DAY BODY */
+.day-body{display:none;background:var(--card);border:1px solid var(--saffron);border-top:none;border-radius:0 0 16px 16px;overflow:hidden;}
+.day-block.open .day-body{display:block;animation:slideDown 0.3s ease;}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+/* ===== TASK FLOW (Arrow roadmap inside) ===== */
+.task-flow{padding:20px 20px 16px;}
+
+.task-node{display:flex;align-items:flex-start;gap:14px;position:relative;margin-bottom:4px;}
+
+/* Connector arrow between nodes */
+.task-connector{display:flex;align-items:center;justify-content:flex-start;padding:0 0 0 28px;margin-bottom:4px;position:relative;}
+.task-connector-line{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.tc-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:0.3;}
+.tc-arrow{color:var(--saffron);font-size:1rem;opacity:0.5;line-height:1;}
+
+/* Node icon */
+.node-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;position:relative;z-index:1;border:1px solid var(--border-bright);}
+.ni-blue{background:rgba(74,127,204,0.15);border-color:rgba(74,127,204,0.3);}
+.ni-saffron{background:rgba(232,98,26,0.12);border-color:rgba(232,98,26,0.25);}
+.ni-gold{background:rgba(200,151,26,0.12);border-color:rgba(200,151,26,0.25);}
+.ni-green{background:rgba(80,180,80,0.1);border-color:rgba(80,180,80,0.2);}
+.ni-purple{background:rgba(150,80,200,0.1);border-color:rgba(150,80,200,0.2);}
+.ni-red{background:rgba(200,60,60,0.1);border-color:rgba(200,60,60,0.2);}
+
+/* Node content card */
+.node-card{flex:1;min-width:0;background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;transition:border-color 0.3s;}
+.node-card:hover{border-color:var(--border-bright);}
+
+.node-time{font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:0.18em;color:var(--saffron);margin-bottom:4px;opacity:0.9;}
+.node-title{font-weight:700;font-size:clamp(0.88rem,2.5vw,0.98rem);color:var(--sand);margin-bottom:6px;line-height:1.35;}
+
+/* Task bullets */
+.task-bullets{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px;}
+.task-bullets li{display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:var(--text-dim);line-height:1.5;}
+.task-bullets li .tb-arrow{color:var(--saffron);flex-shrink:0;font-size:0.75rem;margin-top:2px;font-weight:700;}
+.task-bullets li .tb-arrow.gold{color:var(--gold);}
+.task-bullets li .tb-arrow.blue{color:#7EB4F5;}
+.task-bullets li .tb-arrow.green{color:#80D080;}
+.task-bullets li strong{color:var(--sand);}
+.task-bullets li .chip{display:inline-flex;align-items:center;gap:3px;background:rgba(200,151,26,0.1);border:1px solid rgba(200,151,26,0.2);border-radius:100px;padding:1px 8px;font-size:0.65rem;color:var(--gold-light);margin-left:4px;white-space:nowrap;font-weight:600;}
+.task-bullets li .chip.r{background:rgba(232,98,26,0.1);border-color:rgba(232,98,26,0.2);color:#F5A070;}
+.task-bullets li .chip.b{background:rgba(74,127,204,0.12);border-color:rgba(74,127,204,0.2);color:#7EB4F5;}
+.task-bullets li .chip.g{background:rgba(80,180,80,0.08);border-color:rgba(80,180,80,0.15);color:#80D080;}
+
+/* Node footer tags */
+.node-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.ntag{font-size:0.64rem;font-weight:600;padding:3px 9px;border-radius:100px;}
+.ntag.cost{background:rgba(80,180,80,0.08);color:#80D080;border:1px solid rgba(80,180,80,0.15);}
+.ntag.transport{background:rgba(74,127,204,0.1);color:#7EB4F5;border:1px solid rgba(74,127,204,0.2);}
+.ntag.tip{background:rgba(200,151,26,0.1);color:#E5C060;border:1px solid rgba(200,151,26,0.2);}
+.ntag.warn{background:rgba(232,98,26,0.1);color:#F5A070;border:1px solid rgba(232,98,26,0.2);}
+
+/* ALERT strip */
+.alert-strip{display:flex;align-items:flex-start;gap:10px;background:rgba(232,98,26,0.08);border:1px solid rgba(232,98,26,0.25);border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:0.8rem;color:rgba(245,160,112,0.95);line-height:1.55;}
+.alert-strip .as-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+.alert-strip div{word-break:break-word;min-width:0;}
+
+/* Info strip */
+.info-strip{display:flex;align-items:flex-start;gap:10px;background:rgba(200,151,26,0.06);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:11px 14px;margin:10px 0;font-size:0.78rem;color:var(--text-dim);line-height:1.6;}
+.info-strip strong{color:var(--sand);}
+
+/* ===== TABLE wrapper ===== */
+.tbl-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0;border-radius:10px;}
+.tbl{width:100%;min-width:420px;border-collapse:collapse;font-size:0.76rem;}
+.tbl th{background:var(--card3);color:var(--gold-light);font-weight:600;padding:9px 12px;text-align:left;font-size:0.68rem;letter-spacing:0.05em;white-space:nowrap;}
+.tbl td{padding:9px 12px;border-bottom:1px solid rgba(200,151,26,0.08);vertical-align:top;line-height:1.5;color:var(--text-dim);}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:nth-child(even) td{background:rgba(255,255,255,0.015);}
+.rec{color:var(--gold-light);font-weight:700;}
+
+/* ===== PLACES VISUAL GRID ===== */
+.places-flow{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin:12px 0;}
+.place-tile{background:var(--card3);border:1px solid var(--border);border-radius:12px;padding:14px;transition:border-color 0.3s,transform 0.3s;display:flex;flex-direction:column;gap:6px;}
+.place-tile:hover{border-color:var(--gold);transform:translateY(-2px);}
+.pt-icon{font-size:1.6rem;}
+.pt-name{font-weight:700;font-size:0.82rem;color:var(--sand);}
+.pt-detail{font-size:0.72rem;color:var(--text-dim);line-height:1.5;}
+.pt-badge{font-size:0.62rem;color:var(--saffron);font-weight:600;margin-top:2px;}
+
+/* ===== BUDGET CARD ===== */
+.budget-card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border-bright);border-radius:20px;padding:28px 22px;margin:32px 0;position:relative;overflow:hidden;}
+.budget-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--saffron),var(--gold),var(--saffron));}
+.budget-title{font-family:'Playfair Display',serif;font-size:clamp(0.95rem,3vw,1.3rem);color:var(--gold-light);margin-bottom:20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.budget-rows{display:flex;flex-direction:column;gap:0;}
+.b-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(200,151,26,0.08);gap:12px;}
+.b-row:last-child{border-bottom:none;border-top:1px solid var(--border-bright);padding-top:14px;margin-top:6px;}
+.b-row .b-label{font-size:0.8rem;color:var(--text-dim);flex:1;min-width:0;line-height:1.45;display:flex;align-items:center;gap:8px;}
+.b-row .b-label .b-icon{font-size:1rem;flex-shrink:0;}
+.b-row .b-amt{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--gold);letter-spacing:0.04em;white-space:nowrap;flex-shrink:0;}
+.b-row:last-child .b-label{font-weight:700;color:var(--sand);font-size:0.9rem;}
+.b-row:last-child .b-amt{font-size:1.5rem;color:var(--saffron);}
+
+/* ===== TIPS GRID ===== */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:20px;}
+.tip-card{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:18px;transition:border-color 0.3s,transform 0.3s;}
+.tip-card:hover{border-color:var(--gold);transform:translateY(-2px);}
+.tip-icon{font-size:1.6rem;margin-bottom:10px;display:block;}
+.tip-title{font-weight:700;font-size:0.86rem;color:var(--sand);margin-bottom:6px;}
+.tip-bullets{list-style:none;display:flex;flex-direction:column;gap:4px;}
+.tip-bullets li{display:flex;align-items:flex-start;gap:7px;font-size:0.76rem;color:var(--text-dim);line-height:1.5;}
+.tip-bullets li::before{content:'›';color:var(--saffron);flex-shrink:0;font-size:0.9rem;font-weight:700;margin-top:0px;}
+
+/* ===== CHECKLIST ===== */
+.checklist-grid{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+.cl-item{display:flex;align-items:flex-start;gap:12px;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;transition:border-color 0.3s;}
+.cl-item:hover{border-color:var(--border-bright);}
+.cl-icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+.cl-text{flex:1;min-width:0;}
+.cl-text strong{color:var(--sand);font-size:0.84rem;display:block;margin-bottom:2px;}
+.cl-text span{font-size:0.75rem;color:var(--text-dim);line-height:1.5;}
+.cl-priority{font-size:0.58rem;font-weight:700;letter-spacing:0.1em;padding:3px 8px;border-radius:100px;flex-shrink:0;align-self:flex-start;margin-top:2px;}
+.cl-priority.now{background:rgba(232,98,26,0.15);color:#F5A070;border:1px solid rgba(232,98,26,0.25);}
+.cl-priority.pre{background:rgba(200,151,26,0.12);color:#E5C060;border:1px solid rgba(200,151,26,0.2);}
+
+/* HIDDEN */
+.tl-section{display:none;}
+.tl-section.visible{display:block;animation:fadeUp 0.5s ease;}
+
+/* FOOTER */
+.site-footer{background:var(--card);border-top:1px solid var(--border);text-align:center;padding:40px 20px;color:var(--text-faint);font-size:0.76rem;letter-spacing:0.05em;}
+.site-footer strong{color:var(--gold);}
+.footer-row{font-size:1.3rem;margin-bottom:12px;letter-spacing:6px;}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease,transform 0.5s ease;}
+.reveal.shown{opacity:1;transform:translateY(0);}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+  .hero{padding:70px 12px 90px;}
+  .hero-badge{font-size:0.62rem;padding:6px 14px;letter-spacing:0.15em;}
+  .hero h1{font-size:clamp(2rem,9vw,2.8rem);}
+  .h-stat{padding:14px 8px;}
+  .date-btn{padding:16px 16px;max-width:none;}
+  .main{padding:0 12px 60px;}
+  .sec-head{padding:20px 16px;}
+  .route-ribbon{flex-direction:column;}
+  .rr-stop::after{display:none;}
+  .rr-stop{border-bottom:1px solid var(--border);padding:10px 14px;}
+  .rr-stop:last-child{border-bottom:none;}
+  .day-header{padding:14px 14px;gap:10px;}
+  .day-circle{width:44px;height:44px;}
+  .day-circle .dc-num{font-size:0.95rem;}
+  .day-emoji{font-size:1.5rem;}
+  .task-flow{padding:16px 14px 12px;}
+  .task-node{gap:10px;}
+  .node-icon{width:38px;height:38px;font-size:1.1rem;border-radius:10px;}
+  .node-card{padding:12px 13px;}
+  .places-flow{grid-template-columns:1fr 1fr;}
+  .budget-card{padding:20px 16px;}
+  .tips-grid{grid-template-columns:1fr;}
+  .roadmap::before{left:30px;}
+  .task-connector{padding-left:22px;}
 }
-
-/* ===================== FLOATING PARTICLES ===================== */
-.particles {
-  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
-}
-.particle {
-  position: absolute;
-  font-size: 1.4rem;
-  animation: drift linear infinite;
-  opacity: 0;
-  user-select: none;
-}
-@keyframes drift {
-  0%   { transform: translateY(110vh) rotate(0deg); opacity: 0; }
-  5%   { opacity: 0.35; }
-  90%  { opacity: 0.2; }
-  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
-}
-
-/* ===================== TOP ACCENT ===================== */
-.top-accent {
-  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 999;
-  background: linear-gradient(90deg, var(--saffron), var(--gold), var(--gold-light), var(--gold), var(--saffron));
-  background-size: 200% 100%;
-  animation: shimmer 3s linear infinite;
-}
-@keyframes shimmer { 0%{background-position:0% 0%} 100%{background-position:200% 0%} }
-
-/* ===================== HERO ===================== */
-.hero {
-  min-height: 100vh;
-  background: var(--deep);
-  position: relative;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  overflow: hidden;
-  padding: 80px 16px 100px;
-  width: 100%;
-}
-.hero-bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 60% 50% at 20% 60%, rgba(232,98,26,0.12) 0%, transparent 100%),
-    radial-gradient(ellipse 50% 40% at 80% 30%, rgba(200,151,26,0.1) 0%, transparent 100%),
-    radial-gradient(ellipse 40% 60% at 50% 90%, rgba(232,98,26,0.06) 0%, transparent 100%);
-}
-.hero-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(200,151,26,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200,151,26,0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-.hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  animation: orbPulse 6s ease-in-out infinite alternate;
-}
-.hero-orb-1 { width: 400px; height: 400px; top: -100px; left: -100px; background: rgba(232,98,26,0.08); }
-.hero-orb-2 { width: 300px; height: 300px; bottom: -80px; right: -80px; background: rgba(200,151,26,0.09); animation-delay: -3s; }
-@keyframes orbPulse { from{opacity:0.5; transform:scale(1);} to{opacity:1; transform:scale(1.2);} }
-
-.hero-stickers {
-  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
-}
-.hs { position: absolute; font-size: 2rem; animation: floatSticker ease-in-out infinite; opacity: 0.18; }
-.hs:nth-child(1)  { top: 12%; left: 5%;  font-size:2.2rem; animation-duration:7s; animation-delay:0s; }
-.hs:nth-child(2)  { top: 20%; right:8%; font-size:1.8rem; animation-duration:9s; animation-delay:-2s; }
-.hs:nth-child(3)  { top: 60%; left:3%;  font-size:2.4rem; animation-duration:8s; animation-delay:-4s; }
-.hs:nth-child(4)  { top: 75%; right:5%; font-size:2rem;   animation-duration:6s; animation-delay:-1s; }
-.hs:nth-child(5)  { top: 40%; left:90%; font-size:1.6rem; animation-duration:10s; animation-delay:-5s; }
-.hs:nth-child(6)  { top: 85%; left:20%; font-size:1.4rem; animation-duration:7s; animation-delay:-3s; }
-@keyframes floatSticker {
-  0%,100% { transform: translateY(0) rotate(-5deg); }
-  50% { transform: translateY(-18px) rotate(5deg); }
-}
-
-.hero-content { position:relative; z-index:2; text-align:center; max-width:820px; width:100%; padding: 0 4px; }
-.hero-badge {
-  display: inline-flex; align-items:center; gap:8px;
-  border: 1px solid var(--border-bright);
-  background: rgba(200,151,26,0.08);
-  border-radius: 100px;
-  padding: 8px 16px;
-  font-family: 'Bebas Neue', sans-serif;
-  letter-spacing: 0.2em;
-  color: var(--gold-light);
-  font-size: 0.72rem;
-  margin-bottom: 24px;
-  opacity: 0;
-  animation: fadeUp 0.8s ease 0.2s forwards;
-  backdrop-filter: blur(10px);
-  max-width: 100%;
-  text-align: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.hero h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.4rem, 8vw, 7rem);
-  font-weight: 900;
-  color: var(--sand);
-  line-height: 1.08;
-  margin-bottom: 12px;
-  opacity: 0;
-  animation: fadeUp 0.9s ease 0.4s forwards;
-  word-break: break-word;
-}
-.hero h1 em { font-style:italic; color: var(--saffron); }
-.hero-tagline {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(0.85rem, 3vw, 1.5rem);
-  letter-spacing: 0.2em;
-  color: var(--gold);
-  margin-bottom: 20px;
-  opacity: 0;
-  animation: fadeUp 0.8s ease 0.55s forwards;
-}
-.hero-sub {
-  font-size: clamp(0.85rem, 2.5vw, 1rem);
-  color: var(--text-dim);
-  line-height: 1.75;
-  max-width: 540px;
-  margin: 0 auto 36px;
-  opacity: 0;
-  animation: fadeUp 0.8s ease 0.7s forwards;
-  padding: 0 8px;
-}
-.hero-stats {
-  display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
-  margin-bottom: 36px;
-  opacity: 0; animation: fadeUp 0.8s ease 0.85s forwards;
-}
-.hero-stat { text-align:center; }
-.hero-stat .num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(1.6rem, 5vw, 2.2rem);
-  color: var(--gold-light);
-  letter-spacing:0.05em; line-height:1;
-}
-.hero-stat .lbl { font-size:0.68rem; color: var(--text-faint); letter-spacing:0.12em; text-transform:uppercase; margin-top:2px; }
-.hero-stat-sep { width:1px; background: var(--border); align-self:stretch; }
-
-/* ===================== TIMELINE BTNS ===================== */
-.timeline-selector {
-  display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
-  opacity:0; animation: fadeUp 0.8s ease 1s forwards;
-  width: 100%;
-  padding: 0 4px;
-}
-.timeline-btn {
-  position: relative; overflow: hidden;
-  background: var(--card2);
-  border: 1.5px solid var(--border-bright);
-  color: var(--sand);
-  font-family: 'DM Sans', sans-serif;
-  padding: 16px 24px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
-  min-width: 140px;
-  flex: 1;
-  max-width: 220px;
-}
-.timeline-btn::before {
-  content:''; position:absolute; inset:0;
-  background: linear-gradient(135deg, var(--saffron), var(--gold));
-  opacity:0; transition: opacity 0.3s;
-}
-.timeline-btn:hover, .timeline-btn.active {
-  border-color: var(--saffron);
-  transform: translateY(-4px) scale(1.03);
-  box-shadow: 0 12px 32px rgba(232,98,26,0.35);
-}
-.timeline-btn:hover::before, .timeline-btn.active::before { opacity:1; }
-.timeline-btn .btn-date {
-  display:block; position:relative; z-index:1;
-  font-family:'Bebas Neue', sans-serif;
-  font-size:clamp(1.5rem, 5vw, 2rem);
-  letter-spacing:0.05em; line-height:1; margin-bottom:4px;
-}
-.timeline-btn .btn-label {
-  position:relative; z-index:1;
-  font-size:0.68rem; opacity:0.75; letter-spacing:0.08em; text-transform:uppercase;
-  white-space: normal;
-  line-height: 1.3;
-}
-.timeline-btn .btn-sticker {
-  position:relative; z-index:1; font-size:1.2rem; margin-bottom:6px; display:block;
-}
-
-/* ===================== SCROLL HINT ===================== */
-.scroll-hint {
-  position:absolute; bottom:24px; left:50%; transform:translateX(-50%);
-  display:flex; flex-direction:column; align-items:center; gap:8px;
-  color: var(--text-faint); font-size:0.65rem; letter-spacing:0.15em;
-  animation: fadeUp 1s ease 1.4s both;
-  white-space: nowrap;
-}
-.scroll-hint .arrow { animation: bounce 1.5s ease-in-out infinite; font-size:1rem; }
-@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
-
-/* ===================== MAIN WRAP ===================== */
-.main-content {
-  max-width: 1060px;
-  margin: 0 auto;
-  padding: 0 16px 80px;
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  overflow-x: hidden;
-}
-
-/* ===================== SECTION BANNERS ===================== */
-.section-banner {
-  background: linear-gradient(135deg, var(--card2) 0%, var(--card3) 100%);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px 20px;
-  margin: 40px 0 24px;
-  position: relative; overflow: hidden;
-}
-.section-banner::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:2px;
-  background: linear-gradient(90deg, transparent, var(--saffron), var(--gold), var(--saffron), transparent);
-}
-.section-banner-inner { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
-.banner-emoji { font-size:2.4rem; flex-shrink:0; }
-.banner-title { font-family:'Playfair Display', serif; font-size:clamp(1.1rem, 4vw, 1.6rem); font-weight:700; color:var(--sand); margin-bottom:4px; }
-.banner-sub { font-size:0.82rem; color:var(--text-dim); line-height: 1.5; }
-
-/* ===================== ROUTE BAR ===================== */
-.route-bar {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px 20px;
-  margin-bottom: 20px;
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-}
-.route-stop { display:flex; align-items:center; gap:8px; }
-.route-dot { width:10px; height:10px; border-radius:50%; background:var(--saffron); flex-shrink:0; }
-.route-dot.gold { background:var(--gold); }
-.route-dot.blue { background:#4A7FCC; }
-.route-lbl { font-family:'Bebas Neue',sans-serif; font-size:0.6rem; letter-spacing:0.18em; color:var(--gold); opacity:0.6; display:block; }
-.route-name { font-size:0.85rem; color:var(--text); font-weight:600; }
-.route-arrow { color:var(--gold); opacity:0.4; font-size:1rem; }
-
-/* ===================== PILLS ===================== */
-.pills-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px; }
-.pill {
-  background: var(--card2);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  padding: 6px 14px;
-  font-size: 0.75rem; font-weight:600;
-  color: var(--text-dim);
-  display:flex; align-items:center; gap:6px;
-}
-.pill .pi { font-size:0.9rem; }
-
-/* ===================== DAY NAV ===================== */
-.day-nav { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
-.day-nav-btn {
-  background: var(--card2); border: 1px solid var(--border);
-  border-radius: 8px; padding: 8px 12px;
-  font-size: 0.75rem; font-weight:600; cursor:pointer;
-  color: var(--text-dim); transition: all 0.2s;
-  font-family:'DM Sans',sans-serif;
-  white-space: nowrap;
-}
-.day-nav-btn:hover { border-color:var(--saffron); color:var(--saffron); background:rgba(232,98,26,0.08); }
-
-/* ===================== DAY CARDS ===================== */
-.days-grid { display:flex; flex-direction:column; gap:16px; }
-
-.day-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  width: 100%;
-}
-.day-card:hover { border-color: var(--border-bright); box-shadow: 0 0 40px rgba(200,151,26,0.07); }
-
-.day-card-header {
-  background: linear-gradient(135deg, var(--card2) 0%, var(--card3) 100%);
-  padding: 18px 20px;
-  display: flex; align-items: center; gap: 14px;
-  cursor: pointer;
-  position: relative; overflow: hidden;
-  transition: background 0.3s;
-  flex-wrap: nowrap;
-}
-.day-card-header:hover { background: linear-gradient(135deg, var(--card3), #331900); }
-.day-card-header::after {
-  content:''; position:absolute; top:0; left:0; right:0; height:1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  opacity:0.3;
-}
-.day-number {
-  font-family:'Bebas Neue', sans-serif;
-  font-size: clamp(2.5rem, 8vw, 4rem);
-  color:var(--gold);
-  line-height:1; opacity:0.25; flex-shrink:0;
-  min-width: 44px;
-}
-.day-sticker { font-size:1.8rem; flex-shrink:0; }
-.day-info { flex:1; min-width:0; }
-.day-lbl { font-family:'Bebas Neue',sans-serif; font-size:0.6rem; letter-spacing:0.2em; color:var(--saffron); opacity:0.8; margin-bottom:3px; }
-.day-title { font-family:'Playfair Display',serif; font-size:clamp(0.95rem, 3vw, 1.25rem); font-weight:700; color:var(--sand); margin-bottom:4px; line-height: 1.3; word-break: break-word; }
-.day-sub { font-size:0.73rem; color:var(--text-faint); line-height: 1.4; word-break: break-word; }
-.day-toggle { color:var(--gold); font-size:1rem; transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); flex-shrink:0; opacity:0.7; margin-left: 4px; }
-.day-card.open .day-toggle { transform:rotate(180deg); opacity:1; }
-
-.day-body { display:none; padding: 20px 16px; border-top:1px solid var(--border); overflow-x: hidden; }
-.day-card.open .day-body { display:block; animation: slideDown 0.35s ease; }
-@keyframes slideDown { from{opacity:0; transform:translateY(-8px)} to{opacity:1; transform:translateY(0)} }
-
-/* ===================== STEPS ===================== */
-.steps { position:relative; }
-.steps::before {
-  content:''; position:absolute; left:20px; top:8px; bottom:8px; width:2px;
-  background: linear-gradient(to bottom, var(--saffron), var(--gold), var(--saffron));
-  opacity:0.15; border-radius:2px;
-}
-.step { display:flex; gap:14px; margin-bottom:28px; position:relative; }
-.step-icon {
-  width:42px; height:42px; border-radius:50%;
-  border: 1.5px solid var(--border-bright);
-  background: var(--card2);
-  display:flex; align-items:center; justify-content:center;
-  font-size:1.1rem; flex-shrink:0; position:relative; z-index:1;
-  transition: border-color 0.3s, transform 0.3s;
-}
-.step:hover .step-icon { border-color:var(--saffron); transform:scale(1.1); }
-.step-body { flex:1; padding-top:6px; min-width: 0; }
-.step-time {
-  font-family:'Bebas Neue',sans-serif; font-size:0.68rem;
-  letter-spacing:0.18em; color:var(--saffron); margin-bottom:4px; opacity:0.9;
-  word-break: break-word;
-}
-.step-title { font-weight:700; font-size:clamp(0.9rem, 3vw, 1rem); color:var(--sand); margin-bottom:7px; line-height: 1.4; }
-.step-desc { font-size:0.84rem; color:var(--text-dim); line-height:1.7; margin-bottom:10px; word-break: break-word; }
-
-/* ===================== TAGS ===================== */
-.tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
-.tag {
-  font-size:0.66rem; font-weight:600;
-  padding: 4px 10px; border-radius:100px; letter-spacing:0.03em;
-  word-break: break-word;
-  max-width: 100%;
-}
-.tag.t  { background:rgba(74,127,204,0.15); color:#7EB4F5; border:1px solid rgba(74,127,204,0.2); }
-.tag.f  { background:rgba(232,98,26,0.12); color:#F5A070; border:1px solid rgba(232,98,26,0.2); }
-.tag.s  { background:rgba(200,151,26,0.12); color:#E5C060; border:1px solid rgba(200,151,26,0.2); }
-.tag.c  { background:rgba(100,200,100,0.08); color:#80D080; border:1px solid rgba(100,200,100,0.15); }
-.tag.w  { background:rgba(200,100,200,0.08); color:#D090D0; border:1px solid rgba(200,100,200,0.15); }
-.tag.b  { background:rgba(200,50,50,0.1); color:#F08080; border:1px solid rgba(200,50,50,0.15); }
-
-/* ===================== INFO BOXES ===================== */
-.info-box {
-  background: rgba(200,151,26,0.07);
-  border-left: 3px solid var(--gold);
-  border-radius: 0 10px 10px 0;
-  padding: 12px 16px; margin: 12px 0;
-  font-size: 0.83rem; color: var(--text-dim); line-height:1.65;
-  word-break: break-word;
-}
-.info-box strong { color: var(--sand); }
-.warn-box {
-  background: rgba(232,98,26,0.08);
-  border-left: 3px solid var(--saffron);
-  border-radius: 0 10px 10px 0;
-  padding: 12px 16px; margin: 12px 0;
-  font-size: 0.83rem; color: rgba(245,160,112,0.9); line-height:1.65;
-  word-break: break-word;
-}
-.warn-box strong { color: var(--sand); }
-
-/* ===================== TABLE WRAPPER (SCROLL ON MOBILE) ===================== */
-.tbl-wrap {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  margin: 14px 0;
-  border-radius: 10px;
-}
-.tbl {
-  width: 100%;
-  min-width: 440px;
-  border-collapse: collapse;
-  font-size: 0.8rem;
-  border-radius: 10px;
-  overflow: hidden;
-}
-.tbl th {
-  background: var(--card3);
-  color: var(--gold-light); font-weight:600; padding:10px 12px;
-  text-align:left; font-size:0.72rem; letter-spacing:0.05em;
-  white-space: nowrap;
-}
-.tbl td {
-  padding:10px 12px; border-bottom:1px solid rgba(200,151,26,0.08);
-  vertical-align:top; line-height:1.5; color:var(--text-dim);
-}
-.tbl tr:last-child td { border-bottom:none; }
-.tbl tr:nth-child(even) td { background:rgba(255,255,255,0.02); }
-.rec { color:var(--gold-light); font-weight:700; }
-
-/* ===================== PLACES GRID ===================== */
-.places-grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
-  gap:12px; margin:16px 0;
-}
-.place-card {
-  background: var(--card2);
-  border: 1px solid var(--border);
-  border-radius: 12px; padding:16px;
-  transition: border-color 0.3s, transform 0.3s;
-}
-.place-card:hover { border-color:var(--gold); transform:translateY(-3px); }
-.place-card .pe { font-size:1.8rem; margin-bottom:8px; display:block; }
-.place-card h4 { font-weight:700; font-size:0.88rem; color:var(--sand); margin-bottom:5px; }
-.place-card p { font-size:0.78rem; color:var(--text-dim); line-height:1.6; }
-.place-card .entry { font-size:0.7rem; color:var(--saffron); font-weight:600; margin-top:8px; }
-
-/* ===================== BUDGET SECTION ===================== */
-.budget-block {
-  background: linear-gradient(135deg, var(--card) 0%, var(--card2) 100%);
-  border: 1px solid var(--border-bright);
-  border-radius: 16px; padding: 28px 20px;
-  margin: 36px 0; position:relative; overflow:hidden;
-}
-.budget-block::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:2px;
-  background: linear-gradient(90deg, var(--saffron), var(--gold), var(--saffron));
-}
-.budget-block h3 {
-  font-family:'Playfair Display',serif;
-  font-size: clamp(1rem, 4vw, 1.4rem);
-  color:var(--gold-light);
-  margin-bottom:20px; display:flex; align-items:center; gap:10px;
-  flex-wrap: wrap;
-}
-.brow {
-  display:flex; justify-content:space-between; align-items:flex-start;
-  padding: 12px 0; border-bottom:1px solid rgba(200,151,26,0.1);
-  font-size:0.85rem; color:var(--text-dim); gap: 12px;
-}
-.brow:last-child {
-  border-bottom:none; font-weight:700; color:var(--sand);
-  font-size:clamp(0.85rem, 3vw, 0.95rem); margin-top:8px;
-  padding-top:16px; border-top:1px solid var(--border-bright);
-}
-.brow .amt {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(1rem, 3.5vw, 1.2rem);
-  color:var(--gold); letter-spacing:0.04em;
-  white-space: nowrap; flex-shrink: 0;
-}
-.brow:last-child .amt { color:var(--saffron); font-size:clamp(1.2rem, 5vw, 1.6rem); }
-.brow span:first-child { flex: 1; min-width: 0; line-height: 1.5; }
-
-/* ===================== TIPS GRID ===================== */
-.tips-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:14px; margin-top:24px; }
-.tip-card {
-  background: var(--card2);
-  border:1px solid var(--border);
-  border-radius:12px; padding:20px;
-  transition: border-color 0.3s, transform 0.3s;
-}
-.tip-card:hover { border-color:var(--gold); transform:translateY(-3px); }
-.tip-card .ti { font-size:1.6rem; margin-bottom:10px; display:block; }
-.tip-card h4 { font-weight:700; font-size:0.88rem; color:var(--sand); margin-bottom:8px; }
-.tip-card p { font-size:0.8rem; color:var(--text-dim); line-height:1.65; }
-
-/* ===================== CHECKLIST ===================== */
-.checklist { list-style:none; margin:16px 0; }
-.checklist li {
-  display:flex; align-items:flex-start; gap:12px;
-  padding: 12px 0; border-bottom:1px solid var(--border);
-  font-size:0.85rem; color:var(--text-dim); line-height:1.5;
-}
-.checklist li:last-child { border-bottom:none; }
-.checklist li .ck { font-size:1rem; flex-shrink:0; margin-top:2px; }
-.checklist li strong { color:var(--sand); }
-.checklist li div { min-width: 0; word-break: break-word; }
-
-/* ===================== HIDDEN SECTIONS ===================== */
-.tl-section { display:none; }
-.tl-section.visible { display:block; animation: fadeUp 0.5s ease; }
-
-/* ===================== ALERT BADGE ===================== */
-.action-badge {
-  display:flex; align-items:flex-start; gap:10px;
-  background: rgba(232,98,26,0.1);
-  border:1px solid rgba(232,98,26,0.3);
-  border-radius:12px; padding:14px 16px;
-  font-size:0.83rem; color:rgba(245,160,112,0.95); line-height:1.6;
-  margin-bottom:20px; width:100%;
-  word-break: break-word;
-}
-.action-badge .ab-icon { font-size:1.3rem; flex-shrink:0; margin-top:2px; }
-
-/* ===================== ORNAMENT DIVIDER ===================== */
-.ornament-divider {
-  display:flex; align-items:center; gap:14px;
-  color:var(--gold); opacity:0.3; margin:8px 0;
-  font-family:'Bebas Neue',sans-serif; font-size:0.68rem; letter-spacing:0.25em;
-}
-.ornament-divider::before, .ornament-divider::after {
-  content:''; flex:1; height:1px; background:var(--gold);
-}
-
-/* ===================== FOOTER ===================== */
-.site-footer {
-  background: var(--card);
-  border-top:1px solid var(--border);
-  text-align:center; padding:40px 20px;
-  color:var(--text-faint); font-size:0.78rem; letter-spacing:0.05em;
-}
-.site-footer strong { color:var(--gold); }
-.footer-stickers { font-size:1.4rem; margin-bottom:12px; letter-spacing:6px; }
-
-/* ===================== ANIMATIONS ===================== */
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(20px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-
-/* ===================== SCROLL REVEAL ===================== */
-.reveal { opacity:0; transform:translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.reveal.shown { opacity:1; transform:translateY(0); }
-
-/* ===================== RESPONSIVE — TABLET ===================== */
-@media(max-width: 768px) {
-  .hero { padding: 72px 14px 90px; }
-
-  .hero-stats { gap: 14px; }
-  .hero-stat-sep { display: none; }
-
-  .timeline-selector { gap: 10px; }
-  .timeline-btn { min-width: 130px; padding: 14px 16px; }
-
-  .section-banner { padding: 20px 16px; margin: 32px 0 20px; }
-  .banner-emoji { font-size: 2rem; }
-
-  .route-bar { padding: 14px 16px; gap: 6px; }
-  .route-arrow { font-size: 0.85rem; }
-  .route-name { font-size: 0.8rem; }
-
-  .main-content { padding: 0 12px 60px; }
-
-  .day-card-header { padding: 16px 14px; gap: 10px; }
-  .day-sticker { font-size: 1.5rem; }
-  .day-body { padding: 18px 14px; }
-
-  .steps::before { left: 18px; }
-  .step { gap: 12px; }
-  .step-icon { width: 38px; height: 38px; font-size: 1rem; }
-
-  .places-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
-  .tips-grid { grid-template-columns: 1fr 1fr; }
-
-  .budget-block { padding: 22px 16px; }
-
-  .day-nav { gap: 6px; }
-  .day-nav-btn { padding: 7px 10px; font-size: 0.72rem; }
-}
-
-/* ===================== RESPONSIVE — MOBILE ===================== */
-@media(max-width: 480px) {
-  .hero { padding: 68px 12px 88px; min-height: 100svh; }
-
-  .hero-badge {
-    font-size: 0.62rem;
-    padding: 6px 12px;
-    letter-spacing: 0.12em;
-    white-space: normal;
-    text-align: center;
-  }
-
-  .hero h1 { font-size: clamp(2rem, 10vw, 3rem); }
-  .hero-tagline { font-size: 0.82rem; letter-spacing: 0.12em; }
-  .hero-sub { font-size: 0.83rem; margin-bottom: 28px; }
-
-  .hero-stats { gap: 10px 16px; }
-  .hero-stat-sep { display: none; }
-  .hero-stat .num { font-size: 1.6rem; }
-  .hero-stat .lbl { font-size: 0.6rem; }
-
-  .timeline-selector { flex-direction: row; gap: 8px; }
-  .timeline-btn {
-    flex: 1;
-    min-width: 0;
-    padding: 12px 10px;
-    max-width: none;
-  }
-  .timeline-btn .btn-date { font-size: 1.4rem; }
-  .timeline-btn .btn-label { font-size: 0.6rem; }
-  .timeline-btn .btn-sticker { font-size: 1rem; margin-bottom: 4px; }
-
-  .scroll-hint { font-size: 0.6rem; bottom: 16px; }
-
-  .main-content { padding: 0 10px 50px; }
-
-  .section-banner { padding: 16px 14px; border-radius: 12px; margin: 24px 0 18px; }
-  .banner-emoji { font-size: 1.8rem; }
-  .banner-title { font-size: 1rem; }
-  .banner-sub { font-size: 0.75rem; }
-
-  .route-bar {
-    padding: 12px 14px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  .route-arrow { transform: rotate(90deg); margin-left: 4px; }
-
-  .pills-row { gap: 6px; }
-  .pill { font-size: 0.7rem; padding: 5px 11px; }
-
-  .day-nav { gap: 5px; }
-  .day-nav-btn { font-size: 0.68rem; padding: 6px 9px; white-space: nowrap; }
-
-  .days-grid { gap: 12px; }
-
-  .day-card { border-radius: 12px; }
-  .day-card-header { padding: 14px 12px; gap: 10px; }
-  .day-number { font-size: 2.2rem; min-width: 36px; }
-  .day-sticker { font-size: 1.4rem; }
-  .day-lbl { font-size: 0.55rem; letter-spacing: 0.12em; }
-  .day-title { font-size: 0.88rem; margin-bottom: 2px; }
-  .day-sub { font-size: 0.68rem; }
-  .day-toggle { font-size: 0.85rem; }
-
-  .day-body { padding: 14px 12px; }
-
-  .steps::before { left: 16px; width: 1.5px; }
-  .step { gap: 10px; margin-bottom: 22px; }
-  .step-icon { width: 34px; height: 34px; font-size: 0.95rem; }
-  .step-time { font-size: 0.62rem; letter-spacing: 0.1em; }
-  .step-title { font-size: 0.88rem; }
-  .step-desc { font-size: 0.8rem; line-height: 1.65; }
-
-  .tags { gap: 5px; }
-  .tag { font-size: 0.62rem; padding: 3px 8px; }
-
-  .info-box, .warn-box { padding: 10px 12px; font-size: 0.8rem; }
-
-  .tbl-wrap { margin: 10px 0; }
-  .tbl { font-size: 0.72rem; min-width: 380px; }
-  .tbl th { padding: 8px 10px; font-size: 0.66rem; }
-  .tbl td { padding: 8px 10px; font-size: 0.72rem; }
-
-  .places-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .place-card { padding: 13px; border-radius: 10px; }
-  .place-card .pe { font-size: 1.5rem; }
-  .place-card h4 { font-size: 0.8rem; }
-  .place-card p { font-size: 0.73rem; }
-
-  .budget-block { padding: 18px 14px; border-radius: 12px; }
-  .budget-block h3 { font-size: 0.95rem; gap: 8px; margin-bottom: 14px; }
-  .brow { font-size: 0.78rem; padding: 10px 0; gap: 8px; }
-  .brow .amt { font-size: 1rem; }
-  .brow:last-child { font-size: 0.85rem; }
-  .brow:last-child .amt { font-size: 1.2rem; }
-
-  .tips-grid { grid-template-columns: 1fr; gap: 10px; }
-  .tip-card { padding: 16px 14px; border-radius: 10px; }
-  .tip-card .ti { font-size: 1.4rem; margin-bottom: 8px; }
-  .tip-card h4 { font-size: 0.84rem; }
-  .tip-card p { font-size: 0.77rem; }
-
-  .checklist li { font-size: 0.8rem; padding: 10px 0; gap: 10px; }
-  .checklist li .ck { font-size: 0.95rem; }
-
-  .action-badge { font-size: 0.78rem; padding: 12px 14px; gap: 8px; border-radius: 10px; }
-  .action-badge .ab-icon { font-size: 1.2rem; }
-
-  .site-footer { padding: 32px 16px; }
-  .footer-stickers { font-size: 1.2rem; letter-spacing: 5px; }
-  .site-footer p { font-size: 0.75rem; }
-
-  .warn-box[style] { border-radius: 10px !important; }
-}
-
-/* ===================== VERY SMALL SCREENS ===================== */
-@media(max-width: 360px) {
-  .hero h1 { font-size: 1.9rem; }
-  .timeline-btn .btn-date { font-size: 1.2rem; }
-  .timeline-btn .btn-label { font-size: 0.55rem; }
-  .day-title { font-size: 0.82rem; }
-  .places-grid { grid-template-columns: 1fr; }
-  .day-nav-btn { font-size: 0.64rem; padding: 6px 8px; }
+@media(max-width:380px){
+  .hero h1{font-size:1.9rem;}
+  .h-stat .n{font-size:1.4rem;}
+  .places-flow{grid-template-columns:1fr;}
+  .date-btn .db-date{font-size:1.4rem;}
 }
 </style>
 </head>
 <body>
 
-<!-- PARTICLES -->
 <div class="particles" id="particles"></div>
 <div class="top-accent"></div>
 
-<!-- ==================== HERO ==================== -->
+<!-- ======== HERO ======== -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
   <div class="hero-orb hero-orb-1"></div>
   <div class="hero-orb hero-orb-2"></div>
-
-  <div class="hero-stickers">
-    <span class="hs">🏰</span>
-    <span class="hs">⚔️</span>
-    <span class="hs">🐫</span>
-    <span class="hs">🌅</span>
-    <span class="hs">🎆</span>
-    <span class="hs">🦚</span>
+  <div class="hero-float">
+    <span class="hf">🏰</span><span class="hf">⚔️</span><span class="hf">🐫</span><span class="hf">🌅</span><span class="hf">🦚</span>
   </div>
 
   <div class="hero-content">
     <div class="hero-badge">✦ &nbsp; PERSONAL ROYAL TRAVEL GUIDE &nbsp; ✦</div>
     <h1>Into the Land of<br><em>Rajput Glory</em></h1>
-    <p class="hero-tagline">🏯 Forts · Battles · Beauty · History 🦚</p>
-    <p class="hero-sub">A 4-day handcrafted journey through Rajasthan's living forts and royal palaces — for two friends meeting in Delhi. Pick your date and get your complete royal roadmap.</p>
+    <p class="hero-tag">🏯 Forts · Battles · Beauty · History 🦚</p>
+    <p class="hero-sub">Your 4-day royal roadmap through Rajasthan. Pick your date — every step is mapped out below.</p>
 
     <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="num">4</div>
-        <div class="lbl">Epic Days</div>
-      </div>
-      <div class="hero-stat-sep"></div>
-      <div class="hero-stat">
-        <div class="num">2</div>
-        <div class="lbl">Travelers</div>
-      </div>
-      <div class="hero-stat-sep"></div>
-      <div class="hero-stat">
-        <div class="num">₹5K</div>
-        <div class="lbl">Per Person</div>
-      </div>
-      <div class="hero-stat-sep"></div>
-      <div class="hero-stat">
-        <div class="num">6+</div>
-        <div class="lbl">Forts & Palaces</div>
-      </div>
+      <div class="h-stat"><span class="n">4</span><span class="l">Days</span></div>
+      <div class="h-stat"><span class="n">2</span><span class="l">Travelers</span></div>
+      <div class="h-stat"><span class="n">₹5K</span><span class="l">Per Person</span></div>
+      <div class="h-stat"><span class="n">6+</span><span class="l">Forts</span></div>
     </div>
 
-    <div class="timeline-selector">
-      <button class="timeline-btn" onclick="selectTL('mar18')" id="btn-mar18">
-        <span class="btn-sticker">🗓️</span>
-        <span class="btn-date">MAR 18</span>
-        <span class="btn-label">Timeline One · 18–22 March</span>
+    <div class="date-picker">
+      <button class="date-btn" onclick="selectTL('mar18')" id="btn-mar18">
+        <span class="db-icon">🗓️</span>
+        <span class="db-date">MAR 18</span>
+        <span class="db-range">18 – 22 March</span>
       </button>
-      <button class="timeline-btn" onclick="selectTL('mar27')" id="btn-mar27">
-        <span class="btn-sticker">🗓️</span>
-        <span class="btn-date">MAR 27</span>
-        <span class="btn-label">Timeline Two · 27–31 March</span>
+      <button class="date-btn" onclick="selectTL('mar27')" id="btn-mar27">
+        <span class="db-icon">🗓️</span>
+        <span class="db-date">MAR 27</span>
+        <span class="db-range">27 – 31 March</span>
       </button>
     </div>
   </div>
 
   <div class="scroll-hint">
-    <span>SELECT A DATE ABOVE THEN SCROLL</span>
-    <span class="arrow">▼</span>
+    <span>PICK A DATE · THEN SCROLL</span>
+    <span class="arr">▼</span>
   </div>
 </section>
 
-<!-- ==================== TIMELINE 1 ==================== -->
+<!-- ======== TIMELINE 1 ======== -->
 <section class="tl-section" id="section-mar18">
-<div class="main-content">
+<div class="main">
 
-  <div class="section-banner reveal">
-    <div class="section-banner-inner">
-      <span class="banner-emoji">📅</span>
+  <div class="sec-head reveal">
+    <div class="sec-head-inner">
+      <span class="sec-emoji">📅</span>
       <div>
-        <div class="banner-title">Timeline One — March 18 to 22</div>
-        <div class="banner-sub">Pleasant weather · 26–30°C daytime · Perfect fort-walking conditions</div>
+        <div class="sec-title">March 18 → 22 · Timeline One</div>
+        <div class="sec-sub">26–30°C · Perfect fort-walking weather · 4 epic days</div>
       </div>
     </div>
   </div>
 
-  <div class="route-bar reveal">
-    <div class="route-stop"><div class="route-dot blue"></div><div><span class="route-lbl">YOU START HERE</span><span class="route-name">Greater Noida</span></div></div>
-    <div class="route-arrow">⟶</div>
-    <div class="route-stop"><div class="route-dot"></div><div><span class="route-lbl">FRIEND FROM VARANASI</span><span class="route-name">New Delhi</span></div></div>
-    <div class="route-arrow">⟶</div>
-    <div class="route-stop"><div class="route-dot gold"></div><div><span class="route-lbl">TRIP BEGINS 🎉</span><span class="route-name">Jaipur, Rajasthan</span></div></div>
+  <div class="route-ribbon reveal">
+    <div class="rr-stop"><div class="rr-dot s"></div><div><span class="rr-lbl">You start here</span><span class="rr-name">Greater Noida</span></div></div>
+    <div class="rr-stop"><div class="rr-dot m"></div><div><span class="rr-lbl">Friend from Varanasi</span><span class="rr-name">New Delhi</span></div></div>
+    <div class="rr-stop"><div class="rr-dot e"></div><div><span class="rr-lbl">Trip begins 🎉</span><span class="rr-name">Jaipur, Rajasthan</span></div></div>
   </div>
 
-  <div class="pills-row reveal">
-    <div class="pill"><span class="pi">👥</span> 2 Travelers</div>
-    <div class="pill"><span class="pi">💰</span> ₹4,000–5,000 pp</div>
-    <div class="pill"><span class="pi">🌡️</span> 26–30°C</div>
-    <div class="pill"><span class="pi">🏰</span> Rajput History</div>
+  <div class="pills reveal">
+    <div class="pill">👥 2 Travelers</div>
+    <div class="pill">💰 ₹4,000–5,000 pp</div>
+    <div class="pill">🌡️ 26–30°C</div>
+    <div class="pill">🏰 Rajput History Focus</div>
   </div>
 
-  <div class="day-nav reveal">
-    <button class="day-nav-btn" onclick="scrollToId('d0-18')">🚆 Day 0</button>
-    <button class="day-nav-btn" onclick="scrollToId('d1-18')">🏰 Day 1</button>
-    <button class="day-nav-btn" onclick="scrollToId('d2-18')">🏛️ Day 2</button>
-    <button class="day-nav-btn" onclick="scrollToId('d3-18')">🐒 Day 3</button>
-    <button class="day-nav-btn" onclick="scrollToId('d4-18')">🚆 Day 4</button>
-  </div>
+  <!-- ROADMAP -->
+  <div class="roadmap">
 
-  <div class="days-grid">
-
-    <!-- DAY 0 -->
-    <div class="day-card reveal" id="d0-18">
-      <div class="day-card-header" onclick="toggleCard(this)">
-        <div class="day-number">00</div>
-        <div class="day-sticker">🚆</div>
+    <!-- ── DAY 0 ── -->
+    <div class="day-block reveal" id="d0-18">
+      <div class="day-header" onclick="toggleDay(this)">
+        <div class="day-circle grey"><span class="dc-num">00</span><span class="dc-lbl">Night</span></div>
+        <div class="day-emoji">🚆</div>
         <div class="day-info">
-          <div class="day-lbl">March 17 Night → March 18 Morning</div>
+          <div class="day-date-lbl">Mar 17 Night → Mar 18 Morning</div>
           <div class="day-title">The Grand Meetup — Delhi Rendezvous</div>
-          <div class="day-sub">Noida metro · Varanasi night train · Old Delhi breakfast · Jaipur by evening</div>
+          <div class="day-subtitle">Night trains · Delhi breakfast · Afternoon to Jaipur</div>
         </div>
-        <div class="day-toggle">▼</div>
+        <div class="day-chev">▼</div>
       </div>
       <div class="day-body">
-        <div class="action-badge"><span class="ab-icon">⚡</span> <div><strong>Book First:</strong> Go to IRCTC.co.in RIGHT NOW and book all 3 trains below. 60-day advance booking is open. March trains fill fast — waiting list = stress.</div></div>
+        <div class="task-flow">
 
-        <div class="steps">
-          <div class="step">
-            <div class="step-icon">🚇</div>
-            <div class="step-body">
-              <div class="step-time">YOUR JOURNEY · MARCH 18 · 7:00 AM START</div>
-              <div class="step-title">Greater Noida → New Delhi (Metro)</div>
-              <div class="step-desc">Board Noida Metro Aqua Line from your nearest station (Pari Chowk / GNIDA Office). Ride to <strong>Sector 51</strong>, then transfer to Delhi Metro <strong>Blue Line</strong> towards Dwarka side. Get off at <strong>Rajiv Chowk</strong>, then change to Yellow Line and ride to <strong>New Delhi Station</strong>. Total 1.5 hrs, no traffic, no stress.</div>
-              <div class="tags">
-                <span class="tag t">🚇 Metro Aqua + Blue Line</span>
-                <span class="tag c">₹60–80 total</span>
-                <span class="tag s">Leave by 7:00 AM</span>
+          <div class="alert-strip">
+            <span class="as-icon">⚡</span>
+            <div><strong>Book on IRCTC now</strong> — 60-day advance window is open. March trains fill in days, not weeks.</div>
+          </div>
+
+          <!-- Node 1 -->
+          <div class="task-node">
+            <div class="node-icon ni-blue">🚇</div>
+            <div class="node-card">
+              <div class="node-time">YOUR JOURNEY · MAR 18 · 7:00 AM</div>
+              <div class="node-title">Greater Noida → New Delhi Station</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Board <strong>Aqua Line</strong> from Pari Chowk / GNIDA Office</li>
+                <li><span class="tb-arrow">›</span> Change at <strong>Sector 51</strong> → Blue Line → Rajiv Chowk</li>
+                <li><span class="tb-arrow">›</span> Change to <strong>Yellow Line</strong> → New Delhi Station</li>
+                <li><span class="tb-arrow gold">›</span> Total time: ~90 min <span class="chip">₹60–80</span></li>
+              </ul>
+              <div class="node-tags">
+                <span class="ntag transport">🚇 Aqua + Blue + Yellow</span>
+                <span class="ntag cost">₹60–80</span>
+                <span class="ntag tip">Leave 7:00 AM sharp</span>
               </div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🚂</div>
-            <div class="step-body">
-              <div class="step-time">FRIEND'S JOURNEY · VARANASI → DELHI · BOOK NIGHT TRAIN (MAR 17)</div>
-              <div class="step-title">Recommended: Shiv Ganga Express 12559 — The Classic Overnight</div>
-              <div class="step-desc">Friend boards in Varanasi on the evening of March 17 and wakes up in Delhi. Most reliable daily train on this route — sleeps 10–11 hours, arrives fresh, costs very little.</div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <!-- Node 2 -->
+          <div class="task-node">
+            <div class="node-icon ni-saffron">🚂</div>
+            <div class="node-card">
+              <div class="node-time">FRIEND'S JOURNEY · VARANASI → DELHI · MAR 17 EVENING</div>
+              <div class="node-title">Night Train — Book Shiv Ganga Express 12559</div>
               <div class="tbl-wrap">
                 <table class="tbl">
-                  <tr><th>Train</th><th>Departs BSB</th><th>Arrives NDLS</th><th>Fare (approx)</th></tr>
-                  <tr><td><span class="rec">✦ Shiv Ganga Exp 12559</span></td><td>~6:30 PM (Mar 17)</td><td>~5:30 AM (Mar 18)</td><td>SL ₹420 / 3AC ₹1,100</td></tr>
-                  <tr><td>Poorva Express 12381</td><td>~8:00 PM (Mar 17)</td><td>~8:30 AM (Mar 18)</td><td>SL ₹430</td></tr>
-                  <tr><td>Vande Bharat 22435</td><td>3:00 PM (Mar 18)</td><td>11:00 PM (Mar 18)</td><td>CC ₹1,435</td></tr>
+                  <tr><th>Train</th><th>Dep BSB</th><th>Arr NDLS</th><th>Fare</th></tr>
+                  <tr><td><span class="rec">✦ Shiv Ganga 12559</span></td><td>~6:30 PM</td><td>~5:30 AM</td><td>SL ₹420 / 3AC ₹1,100</td></tr>
+                  <tr><td>Poorva Exp 12381</td><td>~8:00 PM</td><td>~8:30 AM</td><td>SL ₹430</td></tr>
                 </table>
               </div>
-              <div class="info-box">💡 <strong>Best Choice:</strong> Shiv Ganga 3AC (₹1,100) — worth the upgrade for overnight. Friend arrives NDLS ~5:30 AM, freshens up at a café near station, meets you by 9 AM.</div>
-              <div class="tags">
-                <span class="tag t">🚂 Train from BSB/Varanasi Jn</span>
-                <span class="tag c">SL ₹420 · 3AC ₹1,100</span>
-                <span class="tag b">📱 Book on IRCTC now</span>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> <strong>Best pick:</strong> 3AC ₹1,100 — sleep well, arrive fresh at 5:30 AM</li>
+                <li><span class="tb-arrow">›</span> Freshen up at station café, meet you by <strong>9:00 AM</strong></li>
+              </ul>
+              <div class="node-tags">
+                <span class="ntag cost">SL ₹420 · 3AC ₹1,100</span>
+                <span class="ntag warn">📱 Book IRCTC now</span>
               </div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">☕</div>
-            <div class="step-body">
-              <div class="step-time">9:00 AM — NEW DELHI STATION</div>
-              <div class="step-title">🎉 The Meetup + Breakfast</div>
-              <div class="step-desc">Meet at the main exit of New Delhi Railway Station (Paharganj side, Gate 2). Head to <strong>Haldiram's on Paharganj</strong> — paratha, chole bhature, or poha with chai. Budget ₹80–120 each. Store heavy luggage at station cloak room (₹30/bag) if needed.</div>
-              <div class="tags">
-                <span class="tag f">🍽️ Haldiram's Paharganj</span>
-                <span class="tag c">₹80–120 pp</span>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <!-- Node 3 -->
+          <div class="task-node">
+            <div class="node-icon ni-gold">☕</div>
+            <div class="node-card">
+              <div class="node-time">9:00 AM · NEW DELHI STATION · GATE 2 (PAHARGANJ SIDE)</div>
+              <div class="node-title">🎉 Meetup + Breakfast</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Meet at main exit <strong>Gate 2</strong></li>
+                <li><span class="tb-arrow">›</span> Walk to <strong>Haldiram's Paharganj</strong> — chole bhature / paratha + chai</li>
+                <li><span class="tb-arrow">›</span> Cloak room at station if needed <span class="chip">₹30/bag</span></li>
+                <li><span class="tb-arrow gold">›</span> Then → Chandni Chowk <strong>optional morning wander</strong> (back by 1:30 PM)</li>
+              </ul>
+              <div class="node-tags">
+                <span class="ntag cost">Breakfast ₹80–120 pp</span>
+                <span class="ntag tip">Chandni Chowk: Paranthe Wali Gali ₹80</span>
               </div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🕌</div>
-            <div class="step-body">
-              <div class="step-time">10:00 AM — 1:30 PM · OPTIONAL OLD DELHI TOUR</div>
-              <div class="step-title">Chandni Chowk + Paranthe Wali Gali + Jama Masjid View</div>
-              <div class="step-desc">Walk (or cycle rickshaw) to Chandni Chowk — eat the legendary stuffed parathas at <strong>Paranthe Wali Gali</strong>. Then walk to Jama Masjid for the view. Metro back to NDLS by 1:30 PM.</div>
-              <div class="tags">
-                <span class="tag s">🕌 Chandni Chowk · Free</span>
-                <span class="tag f">🥙 Paranthe Wali Gali ₹80–100</span>
-              </div>
-            </div>
-          </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
 
-          <div class="step">
-            <div class="step-icon">🚆</div>
-            <div class="step-body">
-              <div class="step-time">DELHI → JAIPUR · MARCH 18 AFTERNOON</div>
-              <div class="step-title">Board Your Jaipur Train — Reach by Evening</div>
+          <!-- Node 4 -->
+          <div class="task-node">
+            <div class="node-icon ni-blue">🚆</div>
+            <div class="node-card">
+              <div class="node-time">AFTERNOON · DELHI → JAIPUR</div>
+              <div class="node-title">Board the Jaipur Train</div>
               <div class="tbl-wrap">
                 <table class="tbl">
-                  <tr><th>Train</th><th>Departs NDLS</th><th>Arrives JP</th><th>Duration</th><th>Fare</th></tr>
-                  <tr><td><span class="rec">✦ Vande Bharat 26482</span></td><td>3:10 PM</td><td>7:00 PM</td><td>3h 50m</td><td>CC ~₹850</td></tr>
-                  <tr><td>Ashram Express 12916</td><td>2:55 PM</td><td>8:15 PM</td><td>5h 20m</td><td>SL ~₹180</td></tr>
-                  <tr><td>JP Double Decker 12986</td><td>5:25 PM</td><td>10:00 PM</td><td>4h 35m</td><td>CC ~₹400</td></tr>
+                  <tr><th>Train</th><th>Dep NDLS</th><th>Arr JP</th><th>Fare</th></tr>
+                  <tr><td><span class="rec">✦ Vande Bharat 26482</span></td><td>3:10 PM</td><td>7:00 PM</td><td>CC ~₹850</td></tr>
+                  <tr><td>Ashram Exp 12916</td><td>2:55 PM</td><td>8:15 PM</td><td>SL ~₹180</td></tr>
                 </table>
               </div>
-              <div class="info-box">🎯 <strong>Pick Vande Bharat 3:10 PM</strong> — fastest, AC, clean, arrives Jaipur 7 PM. Budget pick: Ashram Express SL (₹180) — slower but ₹670 cheaper.</div>
-              <div class="tags">
-                <span class="tag t">🚆 From New Delhi (NDLS)</span>
-                <span class="tag c">SL ₹180 · CC ₹850</span>
-                <span class="tag b">📱 Book IRCTC</span>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> <strong>Best:</strong> Vande Bharat — 3h 50m, AC, arrives 7 PM — perfect for check-in</li>
+                <li><span class="tb-arrow">›</span> <strong>Budget:</strong> Ashram SL — ₹180, arrives 8:15 PM, still fine</li>
+              </ul>
+              <div class="node-tags">
+                <span class="ntag cost">SL ₹180 · CC ₹850</span>
+                <span class="ntag warn">📱 Book IRCTC</span>
               </div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🏨</div>
-            <div class="step-body">
-              <div class="step-time">7:00–8:00 PM — JAIPUR ARRIVAL</div>
-              <div class="step-title">Hotel Check-In + First Dinner in the Pink City 🌆</div>
-              <div class="step-desc">Rapido/Ola auto from Jaipur station to your hotel (₹80–100). Recommended: <strong>Hotel Pearl Palace</strong> (~₹700/night twin) or <strong>Moustache Jaipur Hostel</strong> (private room ~₹800). Dinner at <strong>LMB — Laxmi Misthan Bhandar</strong>, Johari Bazaar — try Dal Baati Churma (₹150–200). Sleep early — tomorrow is 7 AM rise.</div>
-              <div class="tags">
-                <span class="tag s">🏨 Pearl Palace / Moustache</span>
-                <span class="tag c">₹700–800/night twin</span>
-                <span class="tag f">🍛 LMB Johari Bazaar</span>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <!-- Node 5 -->
+          <div class="task-node">
+            <div class="node-icon ni-purple">🏨</div>
+            <div class="node-card">
+              <div class="node-time">7:00–8:00 PM · JAIPUR</div>
+              <div class="node-title">Check-In + First Dinner 🌆</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> <strong>Rapido/Ola auto</strong> from Jaipur station to hotel <span class="chip">₹80–100</span></li>
+                <li><span class="tb-arrow green">✓</span> <strong>Hotel Pearl Palace</strong> — heritage feel, twin ~₹700/night</li>
+                <li><span class="tb-arrow">›</span> Or <strong>Moustache Hostel</strong> — great vibe, private room ~₹800</li>
+                <li><span class="tb-arrow gold">›</span> Dinner at <strong>LMB Johari Bazaar</strong> — Dal Baati Churma ₹150–200</li>
+                <li><span class="tb-arrow">›</span> <strong>Sleep early</strong> — 7 AM wake tomorrow, biggest day ahead</li>
+              </ul>
+              <div class="node-tags">
+                <span class="ntag cost">Hotel ₹700–800/night twin</span>
+                <span class="ntag tip">Book: Zostel / MakeMyTrip</span>
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
 
-    <!-- DAY 1 -->
-    <div class="day-card reveal" id="d1-18">
-      <div class="day-card-header" onclick="toggleCard(this)">
-        <div class="day-number">01</div>
-        <div class="day-sticker">🏰</div>
+    <!-- ── DAY 1 ── -->
+    <div class="day-block reveal" id="d1-18">
+      <div class="day-header" onclick="toggleDay(this)">
+        <div class="day-circle"><span class="dc-num">01</span><span class="dc-lbl">Mar 19</span></div>
+        <div class="day-emoji">🏰</div>
         <div class="day-info">
-          <div class="day-lbl">March 19 — Day One in Rajasthan</div>
-          <div class="day-title">The Fort Trinity — Amber, Jaigarh & Nahargarh</div>
-          <div class="day-sub">UNESCO Heritage · Rajput Military History · Best Sunset in Jaipur</div>
+          <div class="day-date-lbl">March 19 — Day One</div>
+          <div class="day-title">The Fort Trinity — Amber · Jaigarh · Nahargarh</div>
+          <div class="day-subtitle">UNESCO Heritage · Best sunrise · Best sunset · Light & Sound Show</div>
         </div>
-        <div class="day-toggle">▼</div>
+        <div class="day-chev">▼</div>
       </div>
       <div class="day-body">
-        <div class="info-box">🎫 <strong>Composite Ticket (₹300 for Indians):</strong> Buy at Amber Fort gate. Valid 2 days — covers Amber, Nahargarh, Albert Hall Museum, Jantar Mantar, Hawa Mahal, and more. Saves ₹300+.</div>
-        <div class="steps">
+        <div class="task-flow">
 
-          <div class="step">
-            <div class="step-icon">🌅</div>
-            <div class="step-body">
-              <div class="step-time">6:30 AM</div>
-              <div class="step-title">Early Rise ☀️ — The Forts Belong to You Before 9 AM</div>
-              <div class="step-desc">Quick breakfast at hotel or street chai stall. Leave by 7:15 AM. Morning light at Amber Fort is unreal — golden, soft, and the crowds haven't arrived yet.</div>
+          <div class="info-strip">🎫 <strong>First thing at Amber Gate:</strong> Buy Composite Ticket (₹300) — covers Amber, Jaigarh, Nahargarh, Albert Hall, Jantar Mantar, Hawa Mahal. 2-day pass. Saves ₹300+ over individual tickets.</div>
+
+          <div class="task-node">
+            <div class="node-icon ni-gold">🌅</div>
+            <div class="node-card">
+              <div class="node-time">6:30 AM</div>
+              <div class="node-title">Wake Up + Leave by 7:15 AM</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Quick hotel breakfast / street chai <span class="chip">₹30–50</span></li>
+                <li><span class="tb-arrow gold">›</span> Auto to Amber Fort <span class="chip r">₹100–150</span></li>
+                <li><span class="tb-arrow green">✓</span> Morning light before 9 AM = golden empty fort — no crowds</li>
+              </ul>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🏰</div>
-            <div class="step-body">
-              <div class="step-time">7:30 AM — 11:30 AM · 4 HOURS</div>
-              <div class="step-title">🏰 Amber Fort — The Crown of Rajput India</div>
-              <div class="step-desc">Built in 1592 by Raja Man Singh I — the Kachwaha Rajput general of Emperor Akbar. This UNESCO site is where warrior diplomacy, astronomy and architecture meet in stone.</div>
-              <div class="places-grid">
-                <div class="place-card">
-                  <span class="pe">✨</span>
-                  <h4>Sheesh Mahal</h4>
-                  <p>Palace of Mirrors. Thousands of hand-cut convex glass inlays — one candle makes it look like a galaxy.</p>
-                </div>
-                <div class="place-card">
-                  <span class="pe">🚪</span>
-                  <h4>Ganesh Pol Gateway</h4>
-                  <p>Three-storied ceremonial gate for the Maharaja's return from battle. Painted frescoes on every surface.</p>
-                </div>
-                <div class="place-card">
-                  <span class="pe">👑</span>
-                  <h4>Diwan-i-Aam & Khas</h4>
-                  <p>Public and private audience halls. Here Rajput kings met Mughal emperors.</p>
-                </div>
-                <div class="place-card">
-                  <span class="pe">🌊</span>
-                  <h4>Maota Lake View</h4>
-                  <p>The fort reflecting in the lake below — best morning photo of your trip. Arrive early for clear reflections.</p>
-                  <div class="entry">✦ Included in composite ticket</div>
-                </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-saffron">🏰</div>
+            <div class="node-card">
+              <div class="node-time">7:30 AM — 11:30 AM · AMBER FORT (4 HRS)</div>
+              <div class="node-title">Amber Fort — Crown of Rajput India</div>
+              <div class="places-flow">
+                <div class="place-tile"><div class="pt-icon">✨</div><div class="pt-name">Sheesh Mahal</div><div class="pt-detail">1,000+ mirror inlays — one candle lights it like a galaxy</div></div>
+                <div class="place-tile"><div class="pt-icon">🚪</div><div class="pt-name">Ganesh Pol</div><div class="pt-detail">Battle-return ceremonial gate — frescoes on every surface</div></div>
+                <div class="place-tile"><div class="pt-icon">👑</div><div class="pt-name">Diwan-i-Khas</div><div class="pt-detail">Private audience hall — Rajput kings met Mughal emperors here</div></div>
+                <div class="place-tile"><div class="pt-icon">🌊</div><div class="pt-name">Maota Lake</div><div class="pt-detail">Fort reflecting in water — best photo of the trip (morning only)</div><div class="pt-badge">📸 Get here early</div></div>
               </div>
-              <div class="info-box">🎭 <strong>Light & Sound Show Tonight at 7 PM:</strong> The entire fort lit dramatically while the Kachwaha Rajput story is narrated. 50 dramatic minutes. Buy tickets at fort entrance in the morning. Hindi: ₹295.</div>
-              <div class="tags">
-                <span class="tag t">Auto from hotel ₹100–150</span>
-                <span class="tag c">₹300 composite ticket</span>
-                <span class="tag s">Arrive before 8 AM</span>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Also <strong>book Light & Sound Show</strong> tickets at gate for tonight — Hindi ₹295</li>
+              </ul>
+              <div class="node-tags">
+                <span class="ntag cost">₹300 composite ticket</span>
+                <span class="ntag tip">🎭 Book L&S Show here for 7 PM</span>
               </div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">⚔️</div>
-            <div class="step-body">
-              <div class="step-time">11:30 AM — 1:00 PM</div>
-              <div class="step-title">⚔️ Jaigarh Fort — The War Machine on the Hill</div>
-              <div class="step-desc">Connected to Amber by a secret underground tunnel. Pure military — thick sandstone walls, watchtowers, and the <strong>Jaivana Cannon</strong>: world's largest cannon on wheels, fired exactly once in its 300-year history. The cannonball landed 35 km away and created a small lake.</div>
-              <div class="info-box">Jaigarh's water harvesting system collected monsoon rain in a massive underground tank — supplying the entire fort complex. Pure Rajput engineering genius.</div>
-              <div class="tags">
-                <span class="tag t">10-min walk from Amber (uphill)</span>
-                <span class="tag c">Composite ticket</span>
-                <span class="tag s">⚙️ Jaivana Cannon — don't miss</span>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-red">⚔️</div>
+            <div class="node-card">
+              <div class="node-time">11:30 AM — 1:00 PM · JAIGARH FORT</div>
+              <div class="node-title">Jaigarh — The War Machine</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> 10-min walk uphill from Amber (connected by secret tunnel)</li>
+                <li><span class="tb-arrow green">✓</span> <strong>Jaivana Cannon</strong> — world's largest wheeled cannon, fired once in 300 yrs</li>
+                <li><span class="tb-arrow">›</span> Panoramic views from fort walls</li>
+                <li><span class="tb-arrow">›</span> Underground water tank — Rajput engineering, no pumps needed</li>
+              </ul>
+              <div class="node-tags">
+                <span class="ntag cost">Composite ticket</span>
+                <span class="ntag warn">⚙️ Don't skip the Jaivana Cannon</span>
               </div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🍜</div>
-            <div class="step-body">
-              <div class="step-time">1:00 PM — 2:30 PM</div>
-              <div class="step-title">🍜 Lunch by Jal Mahal — The Water Palace</div>
-              <div class="step-desc">Head back towards Jaipur. Stop near Jal Mahal — the palace floating in Man Sagar Lake. You can't enter but the roadside view is iconic. Eat at any local dhaba on Amer Road — Rajasthani thali ₹150–200.</div>
-              <div class="tags">
-                <span class="tag f">🏯 Jal Mahal view (free, roadside)</span>
-                <span class="tag c">₹150–200 thali</span>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-green">🍜</div>
+            <div class="node-card">
+              <div class="node-time">1:00 PM — 2:30 PM</div>
+              <div class="node-title">Lunch + Jal Mahal Stop</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Head back towards city — stop roadside at <strong>Jal Mahal</strong> (free view)</li>
+                <li><span class="tb-arrow">›</span> Floating palace in Man Sagar Lake — iconic roadside photo 📸</li>
+                <li><span class="tb-arrow gold">›</span> Rajasthani thali at any dhaba on Amer Road <span class="chip">₹150–200</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-saffron">🌄</div>
+            <div class="node-card">
+              <div class="node-time">4:00 PM — 7:00 PM · NAHARGARH FORT</div>
+              <div class="node-title">Nahargarh — Sunset Throne of Jaipur</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Auto up the Aravalli ridge <span class="chip">₹150</span></li>
+                <li><span class="tb-arrow gold">›</span> Rooftop <strong>Padao Restaurant</strong> — grab a spot by 4:30 PM (fills by 5:30 PM)</li>
+                <li><span class="tb-arrow green">✓</span> All of Jaipur turns gold at sunset ~<strong>6:15 PM</strong> — this is the moment</li>
+                <li><span class="tb-arrow">›</span> Nine identical queen suites inside — built equal so no queen felt lesser</li>
+              </ul>
+              <div class="node-tags">
+                <span class="ntag cost">Entry ₹50 + Padao ₹200</span>
+                <span class="ntag tip">🌅 Best sunset in Jaipur</span>
               </div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🌄</div>
-            <div class="step-body">
-              <div class="step-time">4:00 PM — 7:00 PM</div>
-              <div class="step-title">🌄 Nahargarh Fort — Sunset Throne of Jaipur</div>
-              <div class="step-desc">Built 1734 by Maharaja Sawai Jai Singh II. Contains nine identical suites — one for each of his queens — built equal so no queen could feel lesser. From the top: all of Jaipur spreads below you like a map.</div>
-              <div class="warn-box">⏰ Enter by 4:30 PM. The rooftop restaurant <strong>Padao</strong> (₹200 entry includes a cold drink) fills up by 5:30 PM. Claim your spot. Watch the city turn gold at sunset ~6:15 PM.</div>
-              <div class="tags">
-                <span class="tag t">Auto from city ₹150</span>
-                <span class="tag c">Entry ₹50 + Padao ₹200</span>
-                <span class="tag s">🌅 Best sunset in Jaipur</span>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-purple">🎭</div>
+            <div class="node-card">
+              <div class="node-time">7:00 PM (IF ENERGY ALLOWS)</div>
+              <div class="node-title">Light & Sound Show — Amber Fort</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Fort lit in amber & gold — Kachwaha Rajput story narrated</li>
+                <li><span class="tb-arrow gold">›</span> 50 minutes · Goosebumps guaranteed</li>
+              </ul>
+              <div class="node-tags">
+                <span class="ntag cost">Hindi ₹295 · English ₹395</span>
               </div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🎭</div>
-            <div class="step-body">
-              <div class="step-time">7:00 PM (If energy permits)</div>
-              <div class="step-title">🎭 Light & Sound Show — Amber Fort at Night</div>
-              <div class="step-desc">The fort lit in layered amber and gold while the narrator speaks the saga of the Kachwaha Rajputs — their wars, marriages into Mughal courts, their art. 50 minutes. Goosebumps guaranteed.</div>
-              <div class="tags">
-                <span class="tag c">Hindi ₹295 · English ₹395</span>
-                <span class="tag b">Pre-book at fort in morning</span>
-              </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-gold">🌙</div>
+            <div class="node-card">
+              <div class="node-time">9:00 PM · DINNER</div>
+              <div class="node-title">Rawat Misthan Bhandar — Station Road</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> Jaipur's most beloved local shop — pyaaz ki kachori ₹20 each</li>
+                <li><span class="tb-arrow">›</span> Quick · cheap · perfect for tired travelers <span class="chip">₹100–150 pp</span></li>
+              </ul>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🌙</div>
-            <div class="step-body">
-              <div class="step-time">9:00 PM</div>
-              <div class="step-title">🌙 Dinner: Rawat Misthan Bhandar</div>
-              <div class="step-desc">Jaipur's most beloved local shop on Station Road. Famous for pyaaz ki kachori (₹20 each). Quick, cheap, perfect for tired travelers. ₹100–150 each.</div>
-              <div class="tags">
-                <span class="tag f">Rawat Misthan Bhandar · Station Road</span>
-                <span class="tag c">₹100–150 pp</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
 
-    <!-- DAY 2 -->
-    <div class="day-card reveal" id="d2-18">
-      <div class="day-card-header" onclick="toggleCard(this)">
-        <div class="day-number">02</div>
-        <div class="day-sticker">🏛️</div>
+    <!-- ── DAY 2 ── -->
+    <div class="day-block reveal" id="d2-18">
+      <div class="day-header" onclick="toggleDay(this)">
+        <div class="day-circle"><span class="dc-num">02</span><span class="dc-lbl">Mar 20</span></div>
+        <div class="day-emoji">🏛️</div>
         <div class="day-info">
-          <div class="day-lbl">March 20 — Day Two</div>
+          <div class="day-date-lbl">March 20 — Day Two</div>
           <div class="day-title">City Palace · Jantar Mantar · Hawa Mahal · Bazaars</div>
-          <div class="day-sub">Rajput science · Royal museums · Old city walk · Shopping</div>
+          <div class="day-subtitle">Royal science · Living palace · Old city walk · Shop like a Rajput</div>
         </div>
-        <div class="day-toggle">▼</div>
+        <div class="day-chev">▼</div>
       </div>
       <div class="day-body">
-        <div class="steps">
-          <div class="step">
-            <div class="step-icon">🏛️</div>
-            <div class="step-body">
-              <div class="step-time">8:00 AM — 11:00 AM</div>
-              <div class="step-title">🏛️ City Palace — Where Royals Still Live</div>
-              <div class="step-desc">Founded by Maharaja Sawai Jai Singh II in 1727. <strong>Part of it is still the private residence of the royal family</strong>. Two massive silver urns in the Diwan-i-Khas (world's largest silver objects) — used to carry Ganges water to England for the Maharaja.</div>
-              <div class="tags">
-                <span class="tag c">₹75 (composite ticket)</span>
-                <span class="tag s">Hire local guide ₹300 — worth it</span>
+        <div class="task-flow">
+
+          <div class="task-node">
+            <div class="node-icon ni-gold">🏛️</div>
+            <div class="node-card">
+              <div class="node-time">8:00 AM — 11:00 AM</div>
+              <div class="node-title">City Palace — Royal Family Still Lives Here</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Founded 1727 — royals still occupy a private wing today</li>
+                <li><span class="tb-arrow green">✓</span> <strong>Two silver urns</strong> — world's largest silver objects, used to carry Ganges water to England</li>
+                <li><span class="tb-arrow">›</span> Mubarak Mahal — 18th-century royal garments on display</li>
+                <li><span class="tb-arrow gold">›</span> Hire a guide <span class="chip">₹300</span> — stories make everything 10× better</li>
+              </ul>
+              <div class="node-tags">
+                <span class="ntag cost">Composite ticket</span>
+                <span class="ntag tip">Guide ₹300 — worth every rupee</span>
               </div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🔭</div>
-            <div class="step-body">
-              <div class="step-time">11:00 AM — 12:00 PM</div>
-              <div class="step-title">🔭 Jantar Mantar — The Rajput Scientist's Observatory</div>
-              <div class="step-desc">Jai Singh II built 5 observatories across India — this is the largest. The <strong>Samrat Yantra</strong> is the world's largest sundial, accurate to 2 seconds. A Rajput king calculated planetary positions before telescopes existed.</div>
-              <div class="tags">
-                <span class="tag c">Included in composite ticket</span>
-                <span class="tag s">🏛️ UNESCO World Heritage Site</span>
-              </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-blue">🔭</div>
+            <div class="node-card">
+              <div class="node-time">11:00 AM — 12:00 PM</div>
+              <div class="node-title">Jantar Mantar — Rajput Scientist's Observatory</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> <strong>Samrat Yantra</strong> — world's largest sundial, accurate to 2 seconds</li>
+                <li><span class="tb-arrow">›</span> Built by Jai Singh II who calculated planetary orbits without telescopes</li>
+                <li><span class="tb-arrow">›</span> UNESCO World Heritage Site — spend a full hour, not 20 mins</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">Composite ticket</span></div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">📸</div>
-            <div class="step-body">
-              <div class="step-time">12:00 PM — 12:30 PM</div>
-              <div class="step-title">📸 Hawa Mahal — Five Stories of Purdah Architecture</div>
-              <div class="step-desc">953 tiny jharokha windows — built so royal women could observe street life without being seen. The exterior shot from the tea shop directly across the road is the photo you'll use forever.</div>
-              <div class="tags">
-                <span class="tag c">Included in composite ticket</span>
-                <span class="tag s">Best photo: from street (free)</span>
-              </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-saffron">📸</div>
+            <div class="node-card">
+              <div class="node-time">12:00 PM — 12:30 PM</div>
+              <div class="node-title">Hawa Mahal — 953 Windows</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Built so royal women could watch street life unseen</li>
+                <li><span class="tb-arrow green">✓</span> <strong>Best photo:</strong> from the tea stall directly across the road (free)</li>
+                <li><span class="tb-arrow">›</span> Go inside for the view — but outside shot is the one you'll actually use</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">Composite ticket</span><span class="ntag tip">📸 Street shot is the hero photo</span></div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🍽️</div>
-            <div class="step-body">
-              <div class="step-time">1:00 PM — 2:30 PM</div>
-              <div class="step-title">🍽️ Lunch at LMB + Johari Bazaar Walk</div>
-              <div class="step-desc"><strong>LMB (Laxmi Misthan Bhandar)</strong> on Johari Bazaar — open since 1954. Try the Rajasthani thali (₹200) or dal baati churma. After lunch, walk through Johari Bazaar — Jaipur's gem and jewelry market.</div>
-              <div class="tags">
-                <span class="tag f">🍛 LMB Johari Bazaar · Since 1954</span>
-                <span class="tag c">₹150–250 pp</span>
-              </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-green">🍽️</div>
+            <div class="node-card">
+              <div class="node-time">1:00 PM — 2:30 PM</div>
+              <div class="node-title">LMB + Johari Bazaar Walk</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> <strong>LMB (Laxmi Misthan Bhandar)</strong> — since 1954, Johari Bazaar <span class="chip">₹150–250</span></li>
+                <li><span class="tb-arrow">›</span> Try: Rajasthani thali or dal baati churma</li>
+                <li><span class="tb-arrow gold">›</span> After — walk Johari Bazaar: silver, gemstones, Rajput trader energy (no need to buy)</li>
+              </ul>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🏺</div>
-            <div class="step-body">
-              <div class="step-time">3:00 PM — 5:00 PM</div>
-              <div class="step-title">🏺 Albert Hall Museum — Rajputana History Deep Dive</div>
-              <div class="step-desc">One of India's finest state museums. Rajput weapons, royal textiles, miniature paintings from the Jaipur school, Egyptian mummies, ancient coins, ivory carvings. The Indo-Saracenic building itself is half the reason to visit.</div>
-              <div class="tags">
-                <span class="tag c">Included in composite ticket</span>
-                <span class="tag s">Rajput Paintings · Weapons Gallery</span>
-              </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-purple">🏺</div>
+            <div class="node-card">
+              <div class="node-time">3:00 PM — 5:00 PM</div>
+              <div class="node-title">Albert Hall Museum — Rajputana Deep Dive</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Rajput weapons · miniature paintings · royal textiles</li>
+                <li><span class="tb-arrow">›</span> Egyptian mummies · ivory carvings · ancient coins</li>
+                <li><span class="tb-arrow green">✓</span> Indo-Saracenic building itself is worth the visit</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">Composite ticket</span></div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🛍️</div>
-            <div class="step-body">
-              <div class="step-time">5:00 PM — 7:30 PM</div>
-              <div class="step-title">🛍️ Bapu Bazaar — Shop Like a Rajput</div>
-              <div class="step-desc">Best buys: block-print cotton fabric (₹150–300/meter), <strong>mojri shoes</strong> (₹300–600), lac bangles (₹50–200), sandalwood soaps, blue pottery. Rule: never pay first price. Walk away if they don't budge — they'll call you back. Getting to 60% of first price is normal.</div>
-              <div class="tags">
-                <span class="tag s">Bapu Bazaar</span>
-                <span class="tag c">Negotiate to 55–65% of first price</span>
-                <span class="tag f">🍵 Kulhad chai ₹15</span>
-              </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-saffron">🛍️</div>
+            <div class="node-card">
+              <div class="node-time">5:00 PM — 7:30 PM</div>
+              <div class="node-title">Bapu Bazaar — Shop Like a Rajput</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow gold">›</span> <strong>Best buys:</strong> Mojri shoes (₹300–600) · Block-print fabric (₹150–300/m) · Lac bangles (₹50–200)</li>
+                <li><span class="tb-arrow">›</span> Blue pottery · Sandalwood soaps · Miniature paintings</li>
+                <li><span class="tb-arrow green">✓</span> <strong>Negotiate rule:</strong> Walk away from first price → they'll call you back → settle at 55–65%</li>
+                <li><span class="tb-arrow">›</span> Kulhad chai from any stall while you browse <span class="chip">₹15</span></li>
+              </ul>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🌙</div>
-            <div class="step-body">
-              <div class="step-time">8:30 PM</div>
-              <div class="step-title">🌙 Dinner: Handi Restaurant or Chokhi Dhani</div>
-              <div class="step-desc"><strong>Budget (₹200–300):</strong> Handi Restaurant on MI Road — rooftop dining, authentic Rajasthani food.<br/><strong>Splurge (₹700–900):</strong> Chokhi Dhani — Rajasthani village experience with folk dances, camel rides, unlimited thali, live music.</div>
-              <div class="tags">
-                <span class="tag f">Handi ₹200–300 · Chokhi Dhani ₹700–900</span>
-              </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-gold">🌙</div>
+            <div class="node-card">
+              <div class="node-time">8:30 PM · DINNER</div>
+              <div class="node-title">Pick Your Night</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> <strong>Budget →</strong> Handi Restaurant, MI Road — rooftop, authentic <span class="chip">₹200–300</span></li>
+                <li><span class="tb-arrow gold">›</span> <strong>Splurge →</strong> Chokhi Dhani — village experience, folk dance, camel ride, unlimited thali <span class="chip">₹700–900</span></li>
+              </ul>
             </div>
           </div>
+
         </div>
       </div>
     </div>
 
-    <!-- DAY 3 -->
-    <div class="day-card reveal" id="d3-18">
-      <div class="day-card-header" onclick="toggleCard(this)">
-        <div class="day-number">03</div>
-        <div class="day-sticker">🐒</div>
+    <!-- ── DAY 3 ── -->
+    <div class="day-block reveal" id="d3-18">
+      <div class="day-header" onclick="toggleDay(this)">
+        <div class="day-circle"><span class="dc-num">03</span><span class="dc-lbl">Mar 21</span></div>
+        <div class="day-emoji">🐒</div>
         <div class="day-info">
-          <div class="day-lbl">March 21 — Day Three</div>
-          <div class="day-title">Galtaji · Sisodia Garden · Free Afternoon · Final Dinner</div>
-          <div class="day-sub">Ancient pilgrimage · Monkey temple · Royal love garden · Last night</div>
+          <div class="day-date-lbl">March 21 — Day Three</div>
+          <div class="day-title">Galtaji · Sisodia Garden · Free Time · Final Dinner</div>
+          <div class="day-subtitle">Monkey temple · Royal love garden · Last night in Rajasthan</div>
         </div>
-        <div class="day-toggle">▼</div>
+        <div class="day-chev">▼</div>
       </div>
       <div class="day-body">
-        <div class="steps">
-          <div class="step">
-            <div class="step-icon">🐒</div>
-            <div class="step-body">
-              <div class="step-time">7:00 AM — 9:30 AM</div>
-              <div class="step-title">🐒 Galtaji — The Monkey Temple Hidden in a Gorge</div>
-              <div class="step-desc">10 km from city center, hidden in Aravalli hills — a complex of ancient Hindu temples and natural kunds (stepped tanks) fed by a spring. Thousands of rhesus monkeys live here. Rajput kings came here to seek blessings before battle.</div>
-              <div class="warn-box">⚠️ Do NOT carry food — monkeys will steal it. And they're fast.</div>
-              <div class="tags">
-                <span class="tag t">Auto ₹150 return</span>
-                <span class="tag c">Free entry</span>
-                <span class="tag s">Arrive by 7 AM</span>
+        <div class="task-flow">
+
+          <div class="task-node">
+            <div class="node-icon ni-green">🐒</div>
+            <div class="node-card">
+              <div class="node-time">7:00 AM — 9:30 AM</div>
+              <div class="node-title">Galtaji — Monkey Temple in a Gorge</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> 10 km from city — Aravalli hills, ancient temple complex, sacred kunds</li>
+                <li><span class="tb-arrow">›</span> Thousands of rhesus monkeys · pilgrims · priests doing morning rituals</li>
+                <li><span class="tb-arrow green">✓</span> Natural spring has flowed for centuries — kings came here before battle</li>
+                <li><span class="tb-arrow warn">⚠️</span> <strong>No food</strong> — monkeys will snatch it instantly</li>
+              </ul>
+              <div class="node-tags">
+                <span class="ntag cost">Free entry</span>
+                <span class="ntag transport">Auto ₹150 return</span>
+                <span class="ntag tip">Arrive by 7 AM for temple atmosphere</span>
               </div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🌸</div>
-            <div class="step-body">
-              <div class="step-time">10:00 AM — 11:30 AM</div>
-              <div class="step-title">🌸 Sisodia Rani Garden — A Royal Love Story</div>
-              <div class="step-desc">Built in 1728 by Maharaja Jai Singh II for his Sisodia Rajput queen. Terraced Mughal-style gardens with fountains, fresco-painted pavilions, and scenes from Radha-Krishna's story. Often skipped by tourists. Genuinely peaceful.</div>
-              <div class="tags">
-                <span class="tag c">Entry ₹30</span>
-                <span class="tag s">Photo gold 📸</span>
-              </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-purple">🌸</div>
+            <div class="node-card">
+              <div class="node-time">10:00 AM — 11:30 AM</div>
+              <div class="node-title">Sisodia Rani Garden — A Royal Love Story</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Built 1728 by Jai Singh II for his Sisodia queen — alliance sealed in a garden</li>
+                <li><span class="tb-arrow">›</span> Terraced fountains · fresco pavilions · Radha-Krishna scenes</li>
+                <li><span class="tb-arrow gold">›</span> Tourists skip this — you won't. It's peaceful and beautiful 📸</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">Entry ₹30</span></div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🥘</div>
-            <div class="step-body">
-              <div class="step-time">12:00 PM — 2:00 PM</div>
-              <div class="step-title">🥘 Checkout + Masala Chowk Lunch</div>
-              <div class="step-desc">Check out (ask for 1 PM late checkout — usually granted). Store bags. Head to <strong>Masala Chowk</strong> near Ram Niwas Garden — 30+ local food stalls. Try: laal maas, gatte ki sabzi, mirchi bada, ghevar. ₹150–200 total.</div>
-              <div class="tags">
-                <span class="tag f">🍽️ Masala Chowk · Ram Niwas Garden</span>
-                <span class="tag c">₹150–200 pp</span>
-              </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-saffron">🥘</div>
+            <div class="node-card">
+              <div class="node-time">12:00 PM — 2:00 PM</div>
+              <div class="node-title">Checkout + Masala Chowk Lunch</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Ask hotel for 1 PM late checkout — usually free</li>
+                <li><span class="tb-arrow green">✓</span> <strong>Masala Chowk</strong>, Ram Niwas Garden — 30+ stalls outdoors <span class="chip">₹150–200</span></li>
+                <li><span class="tb-arrow">›</span> Try: laal maas · mirchi bada · ghevar · gatte ki sabzi</li>
+              </ul>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🎨</div>
-            <div class="step-body">
-              <div class="step-time">2:00 PM — 5:00 PM</div>
-              <div class="step-title">🎨 Free Afternoon — Your Choice</div>
-              <div class="step-desc">Options: visit Sanganer (15 min by auto) to watch block-print artisans work at Anokhi or Sanganer Printers — free to observe, magical process. Or revisit your favorite spot. Or rest. Rest is also valid.</div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-blue">🎨</div>
+            <div class="node-card">
+              <div class="node-time">2:00 PM — 5:00 PM · FREE</div>
+              <div class="node-title">Your Afternoon — 3 Options</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow gold">›</span> <strong>Option A:</strong> Sanganer village — watch block-print artisans work (free, 15 min by auto)</li>
+                <li><span class="tb-arrow gold">›</span> <strong>Option B:</strong> Revisit your favorite spot from the past two days</li>
+                <li><span class="tb-arrow gold">›</span> <strong>Option C:</strong> Rest. Hotel lobby AC. You've earned it.</li>
+              </ul>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🌙</div>
-            <div class="step-body">
-              <div class="step-time">8:00 PM</div>
-              <div class="step-title">🌙 Final Rajasthan Dinner — Make it Count</div>
-              <div class="step-desc"><strong>Niros Restaurant</strong> on MI Road (since 1949). Dal baati churma + bajra roti + laal maas. This is the food that fueled Rajput armies. End with malpua (sweet pancake). ₹250–350 each.</div>
-              <div class="tags">
-                <span class="tag f">🍽️ Niros · MI Road · Since 1949</span>
-                <span class="tag c">₹250–350 pp</span>
-              </div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-gold">🌙</div>
+            <div class="node-card">
+              <div class="node-time">8:00 PM · FINAL DINNER</div>
+              <div class="node-title">Niros Restaurant — MI Road (Since 1949)</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> Full Rajasthani spread: <strong>dal baati churma + bajra roti + laal maas</strong></li>
+                <li><span class="tb-arrow">›</span> End with <strong>malpua</strong> — sweet pancake dessert</li>
+                <li><span class="tb-arrow gold">›</span> This is the food that fueled Rajput armies on campaign <span class="chip">₹250–350 pp</span></li>
+              </ul>
             </div>
           </div>
+
         </div>
       </div>
     </div>
 
-    <!-- DAY 4 -->
-    <div class="day-card reveal" id="d4-18">
-      <div class="day-card-header" onclick="toggleCard(this)">
-        <div class="day-number">04</div>
-        <div class="day-sticker">🏠</div>
+    <!-- ── DAY 4 ── -->
+    <div class="day-block reveal" id="d4-18">
+      <div class="day-header" onclick="toggleDay(this)">
+        <div class="day-circle grey"><span class="dc-num">04</span><span class="dc-lbl">Mar 22</span></div>
+        <div class="day-emoji">🏠</div>
         <div class="day-info">
-          <div class="day-lbl">March 22 — The Return</div>
+          <div class="day-date-lbl">March 22 — The Return</div>
           <div class="day-title">Jaipur → Delhi — Both Friends Part Ways</div>
-          <div class="day-sub">Last morning souvenirs · Train back · Metro home · Memories forever</div>
+          <div class="day-subtitle">Last chai · Souvenirs · Train home · Memories forever</div>
         </div>
-        <div class="day-toggle">▼</div>
+        <div class="day-chev">▼</div>
       </div>
       <div class="day-body">
-        <div class="steps">
-          <div class="step">
-            <div class="step-icon">🛍️</div>
-            <div class="step-body">
-              <div class="step-time">7:00 AM — 9:00 AM</div>
-              <div class="step-title">Last Morning — Final Souvenirs & Chai</div>
-              <div class="step-desc">One last kulhad chai from a street stall. Buy remaining gifts — miniature paintings (₹200–500), block-print scarves (₹200–400), camel leather wallets (₹150–300). Check out by 10 AM.</div>
+        <div class="task-flow">
+
+          <div class="task-node">
+            <div class="node-icon ni-gold">🛍️</div>
+            <div class="node-card">
+              <div class="node-time">7:00 AM — 9:00 AM</div>
+              <div class="node-title">Last Morning — Chai + Final Gifts</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Street kulhad chai <span class="chip">₹15</span></li>
+                <li><span class="tb-arrow">›</span> Miniature paintings ₹200–500 · Block-print scarves ₹200–400 · Camel leather wallets ₹150–300</li>
+                <li><span class="tb-arrow gold">›</span> Checkout by <strong>10:00 AM</strong></li>
+              </ul>
             </div>
           </div>
-          <div class="step">
-            <div class="step-icon">🚆</div>
-            <div class="step-body">
-              <div class="step-time">JAIPUR → DELHI TRAINS · MARCH 22</div>
-              <div class="step-title">Pick Your Return Train</div>
+
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-blue">🚆</div>
+            <div class="node-card">
+              <div class="node-time">JAIPUR → DELHI · MAR 22</div>
+              <div class="node-title">Return Train Options</div>
               <div class="tbl-wrap">
                 <table class="tbl">
-                  <tr><th>Train</th><th>Departs JP</th><th>Arrives NDLS</th><th>Fare</th></tr>
-                  <tr><td><span class="rec">✦ Ashram Express 12915</span></td><td>8:00 AM</td><td>1:15 PM</td><td>SL ~₹175</td></tr>
+                  <tr><th>Train</th><th>Dep JP</th><th>Arr NDLS</th><th>Fare</th></tr>
+                  <tr><td><span class="rec">✦ Ashram Exp 12915</span></td><td>8:00 AM</td><td>1:15 PM</td><td>SL ~₹175</td></tr>
                   <tr><td>Vande Bharat 20977</td><td>2:45 PM</td><td>6:25 PM</td><td>CC ~₹850</td></tr>
-                  <tr><td>Ajmer Shatabdi 12016</td><td>5:50 PM</td><td>10:40 PM</td><td>CC ~₹600</td></tr>
                 </table>
               </div>
-              <div class="info-box">
-                <strong>You:</strong> Any train → arrive NDLS → Blue Line metro → Aqua Line → Greater Noida. Home by evening.<br/>
-                <strong>Friend:</strong> Shiv Ganga Express from NDLS towards Varanasi departs ~6 PM. Perfect timing if you both take Ashram Express at 8 AM together.
-              </div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> <strong>Best:</strong> Ashram 8 AM together → arrive NDLS 1:15 PM</li>
+                <li><span class="tb-arrow">›</span> <strong>You</strong> → Blue Line → Aqua Line → Greater Noida. Home by evening.</li>
+                <li><span class="tb-arrow">›</span> <strong>Friend</strong> → Shiv Ganga from NDLS ~6 PM → Varanasi morning</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">SL ₹175</span><span class="ntag warn">📱 Book IRCTC now</span></div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
 
-  </div><!-- end days -->
+  </div><!-- end roadmap -->
 
   <!-- BUDGET -->
-  <div class="budget-block reveal">
-    <h3>💰 Budget Breakdown · Per Person · March 18</h3>
-    <div class="brow"><span>Varanasi → Delhi Night Train (Friend) · 3AC</span><span class="amt">₹1,100</span></div>
-    <div class="brow"><span>Greater Noida → Delhi Metro (You)</span><span class="amt">₹80</span></div>
-    <div class="brow"><span>Delhi → Jaipur · Vande Bharat CC (or Ashram SL)</span><span class="amt">₹180–850</span></div>
-    <div class="brow"><span>Jaipur Hotel · 3 nights · Twin sharing per person</span><span class="amt">₹900–1,200</span></div>
-    <div class="brow"><span>Composite Fort + Museum Ticket · 2-day pass</span><span class="amt">₹300</span></div>
-    <div class="brow"><span>Food · 3 days · ₹400/day avg</span><span class="amt">₹1,200</span></div>
-    <div class="brow"><span>Local Transport · Autos + Rapido</span><span class="amt">₹400</span></div>
-    <div class="brow"><span>Shopping + Miscellaneous</span><span class="amt">₹500</span></div>
-    <div class="brow"><span>Jaipur → Delhi Return · Ashram SL</span><span class="amt">₹175</span></div>
-    <div class="brow"><span>Light & Sound Show · Amber Fort</span><span class="amt">₹295</span></div>
-    <div class="brow"><span>🎯 TOTAL ESTIMATED PER PERSON</span><span class="amt">₹4,330–5,300</span></div>
+  <div class="budget-card reveal">
+    <div class="budget-title">💰 Budget Breakdown — Per Person · Mar 18 Trip</div>
+    <div class="budget-rows">
+      <div class="b-row"><div class="b-label"><span class="b-icon">🚂</span>Varanasi → Delhi · Shiv Ganga 3AC (Friend)</div><span class="b-amt">₹1,100</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🚇</span>Noida → Delhi Metro (You)</div><span class="b-amt">₹80</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🚆</span>Delhi → Jaipur · Vande Bharat CC (or SL ₹180)</div><span class="b-amt">₹180–850</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🏨</span>Hotel · 3 nights · Twin sharing pp</div><span class="b-amt">₹900–1,200</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🎫</span>Composite Fort + Museum Ticket (2-day)</div><span class="b-amt">₹300</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🍽️</span>Food · 3 days · ~₹400/day</div><span class="b-amt">₹1,200</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🛺</span>Local transport · Autos + apps</div><span class="b-amt">₹400</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🛍️</span>Shopping + misc</div><span class="b-amt">₹500</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🚆</span>Jaipur → Delhi Return · Ashram SL</div><span class="b-amt">₹175</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🎭</span>Light & Sound Show</div><span class="b-amt">₹295</span></div>
+      <div class="b-row"><div class="b-label">🎯 TOTAL ESTIMATE PER PERSON</div><span class="b-amt">₹4,330–5,300</span></div>
+    </div>
   </div>
 
 </div>
 </section>
 
-<!-- ==================== TIMELINE 2 ==================== -->
+<!-- ======== TIMELINE 2 ======== -->
 <section class="tl-section" id="section-mar27">
-<div class="main-content">
+<div class="main">
 
-  <div class="section-banner reveal">
-    <div class="section-banner-inner">
-      <span class="banner-emoji">📅</span>
+  <div class="sec-head reveal">
+    <div class="sec-head-inner">
+      <span class="sec-emoji">📅</span>
       <div>
-        <div class="banner-title">Timeline Two — March 27 to 31</div>
-        <div class="banner-sub">Slightly warmer · 30–35°C · Heat-adjusted — early mornings + afternoon rest + evening activities</div>
+        <div class="sec-title">March 27 → 31 · Timeline Two</div>
+        <div class="sec-sub">30–35°C · Heat-adjusted · Early mornings + afternoon rest + evening everything</div>
       </div>
     </div>
   </div>
 
-  <div class="route-bar reveal">
-    <div class="route-stop"><div class="route-dot blue"></div><div><span class="route-lbl">YOU START HERE</span><span class="route-name">Greater Noida</span></div></div>
-    <div class="route-arrow">⟶</div>
-    <div class="route-stop"><div class="route-dot"></div><div><span class="route-lbl">FRIEND FROM VARANASI</span><span class="route-name">New Delhi</span></div></div>
-    <div class="route-arrow">⟶</div>
-    <div class="route-stop"><div class="route-dot gold"></div><div><span class="route-lbl">TRIP BEGINS 🎉</span><span class="route-name">Jaipur, Rajasthan</span></div></div>
+  <div class="route-ribbon reveal">
+    <div class="rr-stop"><div class="rr-dot s"></div><div><span class="rr-lbl">You start here</span><span class="rr-name">Greater Noida</span></div></div>
+    <div class="rr-stop"><div class="rr-dot m"></div><div><span class="rr-lbl">Friend from Varanasi</span><span class="rr-name">New Delhi</span></div></div>
+    <div class="rr-stop"><div class="rr-dot e"></div><div><span class="rr-lbl">Trip begins 🎉</span><span class="rr-name">Jaipur, Rajasthan</span></div></div>
   </div>
 
-  <div class="pills-row reveal">
-    <div class="pill"><span class="pi">☀️</span> 30–35°C · Heat-adjusted</div>
-    <div class="pill"><span class="pi">🌅</span> Early + Evening focus</div>
-    <div class="pill"><span class="pi">💰</span> ₹4,000–5,000 pp</div>
-    <div class="pill"><span class="pi">🌊</span> Post-Holi · Quieter</div>
+  <div class="pills reveal">
+    <div class="pill">☀️ 30–35°C · Heat plan</div>
+    <div class="pill">🌅 Early + Evening focus</div>
+    <div class="pill">💰 ₹4,000–5,000 pp</div>
+    <div class="pill">🌊 Post-Holi · Quieter</div>
   </div>
 
-  <div class="warn-box reveal" style="border-radius:12px; margin-bottom:24px;">
-    🌡️ <strong>Late March Heat Strategy:</strong> All outdoor fort visits scheduled for 7–11 AM when it's 22–26°C. Mandatory long lunch break 12–3 PM indoors. Resume outdoors from 4:30 PM. Carry 2L water each, wear cotton, sunscreen is essential.
+  <div class="alert-strip reveal" style="margin-bottom:24px;">
+    <span class="as-icon">🌡️</span>
+    <div><strong>Late March Heat Rule:</strong> All outdoor forts done by 11 AM · Mandatory indoor rest 12–4 PM · Resume at 4:30 PM. Carry 2L water + ORS packets. Cotton clothes. Sunscreen always.</div>
   </div>
 
-  <div class="day-nav reveal">
-    <button class="day-nav-btn" onclick="scrollToId('d0-27')">🚆 Day 0</button>
-    <button class="day-nav-btn" onclick="scrollToId('d1-27')">🏰 Day 1</button>
-    <button class="day-nav-btn" onclick="scrollToId('d2-27')">🏛️ Day 2</button>
-    <button class="day-nav-btn" onclick="scrollToId('d3-27')">🐒 Day 3</button>
-    <button class="day-nav-btn" onclick="scrollToId('d4-27')">🚆 Day 4</button>
-  </div>
+  <div class="roadmap">
 
-  <div class="days-grid">
-
-    <div class="day-card reveal" id="d0-27">
-      <div class="day-card-header" onclick="toggleCard(this)">
-        <div class="day-number">00</div>
-        <div class="day-sticker">🚆</div>
+    <div class="day-block reveal" id="d0-27">
+      <div class="day-header" onclick="toggleDay(this)">
+        <div class="day-circle grey"><span class="dc-num">00</span><span class="dc-lbl">Night</span></div>
+        <div class="day-emoji">🚆</div>
         <div class="day-info">
-          <div class="day-lbl">March 26 Night → March 27 Morning</div>
-          <div class="day-title">The Grand Meetup — Delhi Rendezvous</div>
-          <div class="day-sub">Night train · Delhi morning · Afternoon Jaipur train</div>
+          <div class="day-date-lbl">Mar 26 Night → Mar 27 Morning</div>
+          <div class="day-title">The Grand Meetup — Same Delhi Plan</div>
+          <div class="day-subtitle">Night train · Delhi morning · Afternoon Jaipur</div>
         </div>
-        <div class="day-toggle">▼</div>
+        <div class="day-chev">▼</div>
       </div>
       <div class="day-body">
-        <div class="action-badge"><span class="ab-icon">⚡</span> <div><strong>Book Now on IRCTC:</strong> March end is busy — book all trains TODAY. 60-day advance window is open for late March dates.</div></div>
-        <div class="steps">
-          <div class="step">
-            <div class="step-icon">🚇</div>
-            <div class="step-body">
-              <div class="step-time">YOUR JOURNEY · MARCH 27 · 7:00 AM</div>
-              <div class="step-title">Greater Noida → Delhi (Same Metro Route)</div>
-              <div class="step-desc">Aqua Line → Sector 51 → Blue Line → Rajiv Chowk → Yellow Line → New Delhi Station. Leave by 7:00 AM, arrive NDLS by 9:00 AM.</div>
-              <div class="tags"><span class="tag t">🚇 Metro</span><span class="tag c">₹60–80</span></div>
+        <div class="task-flow">
+
+          <div class="alert-strip">
+            <span class="as-icon">⚡</span>
+            <div><strong>Book on IRCTC now</strong> — late March dates are busy. 60-day window open.</div>
+          </div>
+
+          <div class="task-node">
+            <div class="node-icon ni-blue">🚇</div>
+            <div class="node-card">
+              <div class="node-time">MAR 27 · 7:00 AM — YOUR JOURNEY</div>
+              <div class="node-title">Greater Noida → New Delhi (Same Metro Route)</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Aqua Line → Sector 51 → Blue Line → Rajiv Chowk → Yellow → NDLS</li>
+                <li><span class="tb-arrow gold">›</span> ~90 min journey <span class="chip">₹60–80</span> · Leave by 7:00 AM</li>
+              </ul>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🚂</div>
-            <div class="step-body">
-              <div class="step-time">FRIEND · VARANASI → DELHI · MARCH 26 EVENING</div>
-              <div class="step-title">Night Train — Shiv Ganga Express 12559</div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-saffron">🚂</div>
+            <div class="node-card">
+              <div class="node-time">FRIEND · MAR 26 EVENING · VARANASI → DELHI</div>
+              <div class="node-title">Shiv Ganga Express 12559</div>
               <div class="tbl-wrap">
                 <table class="tbl">
-                  <tr><th>Train</th><th>Departs BSB (Mar 26)</th><th>Arrives NDLS (Mar 27)</th><th>Fare</th></tr>
+                  <tr><th>Train</th><th>Dep BSB (Mar 26)</th><th>Arr NDLS (Mar 27)</th><th>Fare</th></tr>
                   <tr><td><span class="rec">✦ Shiv Ganga 12559</span></td><td>~6:30 PM</td><td>~5:30 AM</td><td>3AC ~₹1,100</td></tr>
-                  <tr><td>Poorva Express 12381</td><td>~8:00 PM</td><td>~8:30 AM</td><td>SL ₹430</td></tr>
+                  <tr><td>Poorva Exp 12381</td><td>~8:00 PM</td><td>~8:30 AM</td><td>SL ₹430</td></tr>
                 </table>
               </div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🚆</div>
-            <div class="step-body">
-              <div class="step-time">DELHI → JAIPUR · MARCH 27 AFTERNOON</div>
-              <div class="step-title">Catch the Afternoon Train</div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-blue">🚆</div>
+            <div class="node-card">
+              <div class="node-time">MAR 27 AFTERNOON · DELHI → JAIPUR</div>
+              <div class="node-title">Same Train Options</div>
               <div class="tbl-wrap">
                 <table class="tbl">
-                  <tr><th>Train</th><th>Departs NDLS</th><th>Arrives JP</th><th>Notes</th></tr>
-                  <tr><td><span class="rec">✦ Vande Bharat 26482</span></td><td>3:10 PM</td><td>7:00 PM</td><td>Best: AC, fastest</td></tr>
-                  <tr><td>Ashram Express 12916</td><td>2:55 PM</td><td>8:15 PM</td><td>Budget: SL ₹180</td></tr>
+                  <tr><th>Train</th><th>Dep NDLS</th><th>Arr JP</th><th>Fare</th></tr>
+                  <tr><td><span class="rec">✦ Vande Bharat 26482</span></td><td>3:10 PM</td><td>7:00 PM</td><td>CC ~₹850</td></tr>
+                  <tr><td>Ashram Exp 12916</td><td>2:55 PM</td><td>8:15 PM</td><td>SL ~₹180</td></tr>
                 </table>
               </div>
-              <div class="info-box">Use morning for Chandni Chowk, board 3:10 PM Vande Bharat, arrive Jaipur 7 PM. Hotel, dinner, sleep. Fort day starts at 6:30 AM tomorrow.</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Morning in Delhi → Chandni Chowk → board 3:10 PM Vande Bharat</li>
+                <li><span class="tb-arrow green">✓</span> Arrive 7 PM → Hotel → Dinner → Sleep · Fort day starts 6:30 AM tomorrow</li>
+              </ul>
             </div>
           </div>
+
         </div>
       </div>
     </div>
 
-    <div class="day-card reveal" id="d1-27">
-      <div class="day-card-header" onclick="toggleCard(this)">
-        <div class="day-number">01</div>
-        <div class="day-sticker">🏰</div>
+    <div class="day-block reveal" id="d1-27">
+      <div class="day-header" onclick="toggleDay(this)">
+        <div class="day-circle"><span class="dc-num">01</span><span class="dc-lbl">Mar 28</span></div>
+        <div class="day-emoji">🏰</div>
         <div class="day-info">
-          <div class="day-lbl">March 28 — Day One · Heat-Adjusted</div>
+          <div class="day-date-lbl">March 28 — Day One · Heat-Adjusted</div>
           <div class="day-title">Fort Circuit — Early Morning Edition</div>
-          <div class="day-sub">Amber + Jaigarh by noon · Long rest · Nahargarh sunset · L&S Show</div>
+          <div class="day-subtitle">Amber + Jaigarh by noon · 4hr rest · Nahargarh sunset · L&S Show</div>
         </div>
-        <div class="day-toggle">▼</div>
+        <div class="day-chev">▼</div>
       </div>
       <div class="day-body">
-        <div class="steps">
-          <div class="step">
-            <div class="step-icon">🌅</div>
-            <div class="step-body">
-              <div class="step-time">6:30 AM — CRITICAL IN LATE MARCH</div>
-              <div class="step-title">Early Rise Is Non-Negotiable 🌅</div>
-              <div class="step-desc">In late March, 7 AM at the fort = 22°C and golden light. By 11 AM = 32°C and harsh sun. Leave hotel by 7:00 AM sharp.</div>
+        <div class="task-flow">
+
+          <div class="task-node">
+            <div class="node-icon ni-gold">🌅</div>
+            <div class="node-card">
+              <div class="node-time">6:30 AM — NON-NEGOTIABLE IN LATE MARCH</div>
+              <div class="node-title">Early Rise = Whole Different Experience</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> 7 AM at fort = <strong>22°C + golden light</strong> · 11 AM = 32°C + harsh sun</li>
+                <li><span class="tb-arrow">›</span> Leave hotel by <strong>7:00 AM sharp</strong></li>
+                <li><span class="tb-arrow">›</span> Pocket water bottles from hotel <span class="chip">₹20 at fort gate</span></li>
+              </ul>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🏰</div>
-            <div class="step-body">
-              <div class="step-time">7:30 AM — 10:30 AM</div>
-              <div class="step-title">🏰 Amber Fort — Full Exploration</div>
-              <div class="step-desc">Same experience as Timeline 1 — Sheesh Mahal, Ganesh Pol, Diwan-i-Aam, Maota Lake view. In late March, buy water bottles at the entrance gate (₹20). Start with the Mirror Palace first as it's most impressive in morning interior light.</div>
-              <div class="info-box">💡 Buy Composite Ticket (₹300) here. Also book Light & Sound Show tickets for tonight — 7:30 PM show in late March.</div>
-              <div class="tags"><span class="tag c">Composite ₹300</span><span class="tag s">Carry ORS packets</span></div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-saffron">🏰</div>
+            <div class="node-card">
+              <div class="node-time">7:30 AM — 10:30 AM · AMBER FORT</div>
+              <div class="node-title">Amber Fort — Start with Sheesh Mahal (Best in Morning Light)</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> Buy <strong>Composite Ticket ₹300</strong> at gate</li>
+                <li><span class="tb-arrow">›</span> Also book <strong>Light & Sound Show 7:30 PM</strong> tonight</li>
+                <li><span class="tb-arrow">›</span> Sheesh Mahal first → Ganesh Pol → Diwan-i-Aam → Maota Lake view</li>
+                <li><span class="tb-arrow gold">›</span> Carry ORS packets for hydration</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">₹300 composite</span><span class="ntag warn">Done by 10:30 AM</span></div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">⚔️</div>
-            <div class="step-body">
-              <div class="step-time">10:30 AM — 12:00 PM</div>
-              <div class="step-title">⚔️ Jaigarh Fort — Move Fast in the Heat</div>
-              <div class="step-desc">Late March = exposed fort walls getting hot fast. Hit the key spots: Jaivana Cannon, panoramic view from walls, the tunnel entrance to Amber, water harvesting tank. Be done by noon.</div>
-              <div class="tags"><span class="tag s">Finish by 12:00 noon sharp</span><span class="tag c">Composite ticket</span></div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-red">⚔️</div>
+            <div class="node-card">
+              <div class="node-time">10:30 AM — 12:00 PM · JAIGARH FORT</div>
+              <div class="node-title">Jaigarh — Move Fast, Heat Building</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> Jaivana Cannon · wall panorama · tunnel entrance · water tank</li>
+                <li><span class="tb-arrow warn">⚠️</span> <strong>Done by 12:00 noon sharp</strong> — walls get scorching fast</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">Composite ticket</span><span class="ntag warn">Out by noon</span></div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">❄️</div>
-            <div class="step-body">
-              <div class="step-time">12:00 PM — 4:00 PM · THE MANDATORY REST</div>
-              <div class="step-title">❄️ Long Lunch + Afternoon Rest — Rajasthan Style</div>
-              <div class="step-desc">Locals shut down between 12 and 4 PM in late March. You should too. Find an AC restaurant — <strong>Spice Court</strong> or <strong>Peacock Rooftop</strong>. Slow Rajasthani lunch ₹200–300. Then hotel — nap, shower, rehydrate.</div>
-              <div class="tags"><span class="tag f">Slow lunch indoors</span><span class="tag c">₹200–300 pp</span></div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-blue">❄️</div>
+            <div class="node-card">
+              <div class="node-time">12:00 PM — 4:00 PM · MANDATORY REST</div>
+              <div class="node-title">The 4-Hour Power Recharge — Rajasthan Style</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> Locals shut down 12–4 PM. You do the same.</li>
+                <li><span class="tb-arrow">›</span> AC restaurant — <strong>Spice Court</strong> or <strong>Peacock Rooftop</strong> <span class="chip">₹200–300</span></li>
+                <li><span class="tb-arrow">›</span> Back to hotel → nap → shower → rehydrate</li>
+                <li><span class="tb-arrow gold">›</span> This is how you have energy for tonight's sunset + show</li>
+              </ul>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🌄</div>
-            <div class="step-body">
-              <div class="step-time">4:30 PM — 7:15 PM</div>
-              <div class="step-title">🌄 Nahargarh — Sunset at 6:45 PM in Late March</div>
-              <div class="step-desc">Sunset is ~6:45 PM in late March. Get to Nahargarh by 5 PM for the rooftop Padao spot. Jaipur turning gold and then amber and then dark — the city looks like a dream painted in terracotta.</div>
-              <div class="tags"><span class="tag c">Entry ₹50 + Padao ₹200</span><span class="tag s">Sunset ~6:45 PM</span></div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-saffron">🌄</div>
+            <div class="node-card">
+              <div class="node-time">4:30 PM — 7:15 PM · NAHARGARH FORT</div>
+              <div class="node-title">Nahargarh — Sunset at 6:45 PM in Late March</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Auto up the ridge <span class="chip r">₹150</span> · Arrive by 5 PM</li>
+                <li><span class="tb-arrow green">✓</span> <strong>Padao rooftop</strong> — secure your spot before 5:30 PM</li>
+                <li><span class="tb-arrow gold">›</span> Sunset ~<strong>6:45 PM</strong> · Jaipur turns gold then terracotta then dark</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">Entry ₹50 + Padao ₹200</span><span class="ntag tip">🌅 Sunset 6:45 PM</span></div>
             </div>
           </div>
 
-          <div class="step">
-            <div class="step-icon">🎭</div>
-            <div class="step-body">
-              <div class="step-time">7:30 PM</div>
-              <div class="step-title">🎭 Light & Sound Show — Amber Fort</div>
-              <div class="step-desc">7:30 PM show in late March. Night air is 26°C — perfect. The cooler temperature and dramatic lighting make this a completely different experience from the fort in daylight.</div>
-              <div class="tags"><span class="tag c">Hindi ₹295</span></div>
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-purple">🎭</div>
+            <div class="node-card">
+              <div class="node-time">7:30 PM · AMBER FORT</div>
+              <div class="node-title">Light & Sound Show — Late March = 26°C Night Air</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> Night air is perfect temperature — better than mid-March actually</li>
+                <li><span class="tb-arrow">›</span> Pre-booked tickets from morning</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">Hindi ₹295</span></div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
 
-    <div class="day-card reveal" id="d2-27">
-      <div class="day-card-header" onclick="toggleCard(this)">
-        <div class="day-number">02</div>
-        <div class="day-sticker">🏛️</div>
+    <div class="day-block reveal" id="d2-27">
+      <div class="day-header" onclick="toggleDay(this)">
+        <div class="day-circle"><span class="dc-num">02</span><span class="dc-lbl">Mar 29</span></div>
+        <div class="day-emoji">🏛️</div>
         <div class="day-info">
-          <div class="day-lbl">March 29 — Day Two · Heat-Adjusted</div>
-          <div class="day-title">City Palace · Museums · Bazaars — Heat-Smart</div>
-          <div class="day-sub">Morning outdoor sights · Long cool lunch · Indoor museum · Evening shopping</div>
+          <div class="day-date-lbl">March 29 — Day Two · Heat-Smart</div>
+          <div class="day-title">City Palace · Jantar Mantar · Museum · Bazaars</div>
+          <div class="day-subtitle">Morning outdoor blitz · Long AC lunch · Indoor museum · Evening shopping</div>
         </div>
-        <div class="day-toggle">▼</div>
+        <div class="day-chev">▼</div>
       </div>
       <div class="day-body">
-        <div class="info-box">📋 Same sights as Timeline 1 Day 2 — reorganized for heat. All outdoor sights done by 11:30 AM. Indoor museum in afternoon. Shopping in cool evening.</div>
-        <div class="steps">
-          <div class="step">
-            <div class="step-icon">🏛️</div>
-            <div class="step-body">
-              <div class="step-time">8:00 AM — 11:30 AM</div>
-              <div class="step-title">City Palace → Jantar Mantar → Hawa Mahal (Morning Blitz)</div>
-              <div class="step-desc">All three in the cool morning. City Palace partially shaded. Jantar Mantar is short (1 hr). Hawa Mahal exterior photo from street. Done and back in shade by 11:30 AM.</div>
+        <div class="task-flow">
+
+          <div class="task-node">
+            <div class="node-icon ni-gold">☀️</div>
+            <div class="node-card">
+              <div class="node-time">8:00 AM — 11:30 AM · MORNING BLITZ</div>
+              <div class="node-title">City Palace → Jantar Mantar → Hawa Mahal</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> All three in cool morning — same as Timeline 1, same details apply</li>
+                <li><span class="tb-arrow green">✓</span> City Palace silver urns · Jantar Mantar sundial · Hawa Mahal street shot</li>
+                <li><span class="tb-arrow warn">⚠️</span> <strong>Back in shade by 11:30 AM</strong> — discipline here</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">Composite ticket</span><span class="ntag warn">Out of sun by 11:30 AM</span></div>
             </div>
           </div>
-          <div class="step">
-            <div class="step-icon">🍜</div>
-            <div class="step-body">
-              <div class="step-time">12:00 PM — 3:00 PM</div>
-              <div class="step-title">LMB Restaurant — Long AC Lunch + Rest</div>
-              <div class="step-desc">LMB is air-conditioned. Take your time. Order slowly. Rehydrate with nimbu pani. Plan your evening. This slow afternoon lunch is a Rajasthani tradition you should embrace.</div>
-              <div class="tags"><span class="tag f">LMB Johari Bazaar · AC</span><span class="tag c">₹150–250 pp</span></div>
+
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-green">🍜</div>
+            <div class="node-card">
+              <div class="node-time">12:00 PM — 3:00 PM · AC LUNCH + REST</div>
+              <div class="node-title">LMB Restaurant — Slow Afternoon (AC)</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> <strong>LMB Johari Bazaar</strong> — air-conditioned, take your time <span class="chip">₹150–250</span></li>
+                <li><span class="tb-arrow">›</span> Order nimbu pani · rehydrate · plan evening</li>
+                <li><span class="tb-arrow gold">›</span> Slow lunch is a Rajasthani tradition. Embrace it.</li>
+              </ul>
             </div>
           </div>
-          <div class="step">
-            <div class="step-icon">🏺</div>
-            <div class="step-body">
-              <div class="step-time">3:00 PM — 5:30 PM</div>
-              <div class="step-title">Albert Hall Museum — Perfectly Indoors</div>
-              <div class="step-desc">Best afternoon activity for late March heat. AC, fascinating Rajput history, miniature paintings. Take your time with the weapons gallery.</div>
-              <div class="tags"><span class="tag c">Composite ticket</span></div>
+
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-purple">🏺</div>
+            <div class="node-card">
+              <div class="node-time">3:00 PM — 5:30 PM · INDOORS</div>
+              <div class="node-title">Albert Hall Museum — Perfect for Peak Afternoon</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> AC throughout · Rajput weapons gallery · miniature paintings</li>
+                <li><span class="tb-arrow">›</span> Spend time in weapons section — context for everything you've seen</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">Composite ticket</span></div>
             </div>
           </div>
-          <div class="step">
-            <div class="step-icon">🛍️</div>
-            <div class="step-body">
-              <div class="step-time">5:30 PM — 7:30 PM</div>
-              <div class="step-title">Bapu Bazaar — Evening Markets Are Peak Jaipur</div>
-              <div class="step-desc">Late March evenings: 28–30°C, buzzing energy, markets at their most alive. This is when Jaipur really happens. Buy your mojris, block prints, bangles. Negotiate freely.</div>
-              <div class="tags"><span class="tag s">Bapu Bazaar</span><span class="tag c">Budget ₹500–1,000</span></div>
+
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-saffron">🛍️</div>
+            <div class="node-card">
+              <div class="node-time">5:30 PM — 7:30 PM</div>
+              <div class="node-title">Bapu Bazaar — Evening = Peak Market Energy</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> Late March evenings 28–30°C — <strong>best time for markets</strong></li>
+                <li><span class="tb-arrow">›</span> Mojris · block prints · bangles · pottery</li>
+                <li><span class="tb-arrow gold">›</span> Walk away from first price · settle at 55–65%</li>
+              </ul>
+              <div class="node-tags"><span class="ntag tip">Budget ₹500–1,000 shopping</span></div>
             </div>
           </div>
-          <div class="step">
-            <div class="step-icon">🌙</div>
-            <div class="step-body">
-              <div class="step-time">8:30 PM</div>
-              <div class="step-title">Dinner — Handi or Chokhi Dhani</div>
-              <div class="step-desc">Same choices as Timeline 1. If you did Handi yesterday, do Chokhi Dhani tonight — or vice versa.</div>
+
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-gold">🌙</div>
+            <div class="node-card">
+              <div class="node-time">8:30 PM · DINNER</div>
+              <div class="node-title">Handi (Budget) or Chokhi Dhani (Splurge)</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> If you haven't done Chokhi Dhani yet — this is the night</li>
+                <li><span class="tb-arrow gold">›</span> Chokhi Dhani: village set, folk dance, camel, unlimited thali <span class="chip">₹700–900</span></li>
+              </ul>
             </div>
           </div>
+
         </div>
       </div>
     </div>
 
-    <div class="day-card reveal" id="d3-27">
-      <div class="day-card-header" onclick="toggleCard(this)">
-        <div class="day-number">03</div>
-        <div class="day-sticker">🐒</div>
+    <div class="day-block reveal" id="d3-27">
+      <div class="day-header" onclick="toggleDay(this)">
+        <div class="day-circle"><span class="dc-num">03</span><span class="dc-lbl">Mar 30</span></div>
+        <div class="day-emoji">🐒</div>
         <div class="day-info">
-          <div class="day-lbl">March 30 — Day Three</div>
-          <div class="day-title">Galtaji · Sisodia Garden · Rest · Final Dinner</div>
-          <div class="day-sub">Super early temple visit · Long rest · Night market walk</div>
+          <div class="day-date-lbl">March 30 — Day Three</div>
+          <div class="day-title">Galtaji · Sisodia Garden · Long Rest · Final Dinner</div>
+          <div class="day-subtitle">Super early temple · Full afternoon rest · Night market walk</div>
         </div>
-        <div class="day-toggle">▼</div>
+        <div class="day-chev">▼</div>
       </div>
       <div class="day-body">
-        <div class="steps">
-          <div class="step">
-            <div class="step-icon">🐒</div>
-            <div class="step-body">
-              <div class="step-time">6:30 AM — 9:00 AM</div>
-              <div class="step-title">🐒 Galtaji — Even More Alive in Late March</div>
-              <div class="step-desc">March-end pilgrimage season is active — more devotees, more chanting, more rituals. Leave at 6:30 AM, arrive by 7 AM. Auto returns by 9 AM before the heat builds.</div>
-              <div class="tags"><span class="tag t">Auto ₹150 return</span><span class="tag c">Free entry</span></div>
+        <div class="task-flow">
+
+          <div class="task-node">
+            <div class="node-icon ni-green">🐒</div>
+            <div class="node-card">
+              <div class="node-time">6:30 AM — 9:00 AM</div>
+              <div class="node-title">Galtaji — More Alive in Late March</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> March-end pilgrimage season — more devotees, more chanting, more rituals</li>
+                <li><span class="tb-arrow">›</span> Leave 6:30 AM · auto to temple · back by 9 AM before heat</li>
+                <li><span class="tb-arrow warn">⚠️</span> No food on you — monkeys are fast</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">Free entry</span><span class="ntag transport">Auto ₹150 return</span></div>
             </div>
           </div>
-          <div class="step">
-            <div class="step-icon">🌸</div>
-            <div class="step-body">
-              <div class="step-time">9:30 AM — 11:00 AM</div>
-              <div class="step-title">🌸 Sisodia Rani Garden — Morning Visit</div>
-              <div class="step-desc">Visit in morning in late March. Cooler, flowers more vibrant, perfect light for photos.</div>
-              <div class="tags"><span class="tag c">Entry ₹30</span></div>
+
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-purple">🌸</div>
+            <div class="node-card">
+              <div class="node-time">9:30 AM — 11:00 AM</div>
+              <div class="node-title">Sisodia Rani Garden — Morning Visit</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> Morning in late March = cooler + flowers more vibrant + perfect light</li>
+                <li><span class="tb-arrow">›</span> Terraced fountains · fresco pavilions · peaceful and photogenic</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">Entry ₹30</span></div>
             </div>
           </div>
-          <div class="step">
-            <div class="step-icon">💤</div>
-            <div class="step-body">
-              <div class="step-time">12:00 PM — 5:00 PM</div>
-              <div class="step-title">💤 Long Rest + Checkout</div>
-              <div class="step-desc">Check out by noon. Store bags. Full afternoon rest at a café or hotel lobby. Masala Chowk for lunch (₹150–200). Repack. Prepare for return tomorrow.</div>
+
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-blue">💤</div>
+            <div class="node-card">
+              <div class="node-time">12:00 PM — 5:00 PM · FULL REST</div>
+              <div class="node-title">Long Checkout Rest + Masala Chowk</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow">›</span> Hotel checkout by noon · store bags</li>
+                <li><span class="tb-arrow green">✓</span> <strong>Masala Chowk</strong> for lunch — 30+ stalls <span class="chip">₹150–200</span></li>
+                <li><span class="tb-arrow">›</span> Full afternoon rest at café or hotel lobby — you've done Rajasthan. Let it settle.</li>
+              </ul>
             </div>
           </div>
-          <div class="step">
-            <div class="step-icon">🌙</div>
-            <div class="step-body">
-              <div class="step-time">8:00 PM</div>
-              <div class="step-title">🌙 Final Dinner + Night Walk Through Johari Bazaar</div>
-              <div class="step-desc">Niros on MI Road for the final Rajasthani dinner. After dinner — the Johari Bazaar and Bapu Bazaar at night have completely different energy. Lit by bulbs, cooler air, people out in force.</div>
+
+          <div class="task-connector"><div class="task-connector-line"><div class="tc-dot"></div><div class="tc-dot"></div><div class="tc-arrow">↓</div></div></div>
+
+          <div class="task-node">
+            <div class="node-icon ni-gold">🌙</div>
+            <div class="node-card">
+              <div class="node-time">8:00 PM · FINAL DINNER + NIGHT WALK</div>
+              <div class="node-title">Niros + Johari Bazaar at Night</div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> <strong>Niros MI Road</strong> — dal baati churma, laal maas, malpua <span class="chip">₹250–350</span></li>
+                <li><span class="tb-arrow gold">›</span> After dinner: <strong>Johari + Bapu Bazaar at night</strong> — lit by bulbs, 28°C, city fully alive</li>
+                <li><span class="tb-arrow">›</span> Walk slowly. This is Jaipur at its most alive.</li>
+              </ul>
             </div>
           </div>
+
         </div>
       </div>
     </div>
 
-    <div class="day-card reveal" id="d4-27">
-      <div class="day-card-header" onclick="toggleCard(this)">
-        <div class="day-number">04</div>
-        <div class="day-sticker">🏠</div>
+    <div class="day-block reveal" id="d4-27">
+      <div class="day-header" onclick="toggleDay(this)">
+        <div class="day-circle grey"><span class="dc-num">04</span><span class="dc-lbl">Mar 31</span></div>
+        <div class="day-emoji">🏠</div>
         <div class="day-info">
-          <div class="day-lbl">March 31 — The Return</div>
+          <div class="day-date-lbl">March 31 — The Return</div>
           <div class="day-title">Jaipur → Delhi → Everyone Goes Home</div>
-          <div class="day-sub">Morning train · Part ways at NDLS · Metro to Greater Noida</div>
+          <div class="day-subtitle">Morning train · Part at NDLS · Metro to Noida · Varanasi train</div>
         </div>
-        <div class="day-toggle">▼</div>
+        <div class="day-chev">▼</div>
       </div>
       <div class="day-body">
-        <div class="steps">
-          <div class="step">
-            <div class="step-icon">🚆</div>
-            <div class="step-body">
-              <div class="step-time">MARCH 31 — RETURN OPTIONS</div>
-              <div class="step-title">Jaipur → Delhi Trains</div>
+        <div class="task-flow">
+          <div class="task-node">
+            <div class="node-icon ni-blue">🚆</div>
+            <div class="node-card">
+              <div class="node-time">MAR 31 · RETURN OPTIONS</div>
+              <div class="node-title">Jaipur → Delhi Trains</div>
               <div class="tbl-wrap">
                 <table class="tbl">
-                  <tr><th>Train</th><th>Departs JP</th><th>Arrives NDLS</th><th>Fare</th></tr>
-                  <tr><td><span class="rec">✦ Ashram Express 12915</span></td><td>8:00 AM</td><td>1:15 PM</td><td>SL ~₹175</td></tr>
+                  <tr><th>Train</th><th>Dep JP</th><th>Arr NDLS</th><th>Fare</th></tr>
+                  <tr><td><span class="rec">✦ Ashram Exp 12915</span></td><td>8:00 AM</td><td>1:15 PM</td><td>SL ~₹175</td></tr>
                   <tr><td>Vande Bharat 20977</td><td>2:45 PM</td><td>6:25 PM</td><td>CC ~₹850</td></tr>
                 </table>
               </div>
-              <div class="info-box">
-                <strong>Best:</strong> Ashram Express 8:00 AM — arrive NDLS by 1:15 PM. You take metro home. Friend catches Shiv Ganga towards Varanasi from NDLS in evening.
-              </div>
+              <ul class="task-bullets">
+                <li><span class="tb-arrow green">✓</span> <strong>Best:</strong> Ashram 8 AM → arrive NDLS 1:15 PM → perfect split timing</li>
+                <li><span class="tb-arrow">›</span> <strong>You</strong> → Metro home to Greater Noida by evening</li>
+                <li><span class="tb-arrow">›</span> <strong>Friend</strong> → Shiv Ganga from NDLS ~6 PM → Varanasi morning</li>
+              </ul>
+              <div class="node-tags"><span class="ntag cost">SL ₹175</span><span class="ntag warn">📱 Book IRCTC</span></div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-  </div><!-- end days -->
+  </div><!-- end roadmap -->
 
   <!-- BUDGET 2 -->
-  <div class="budget-block reveal">
-    <h3>💰 Budget Breakdown · Per Person · March 27</h3>
-    <div class="brow"><span>Varanasi → Delhi Night Train · Shiv Ganga 3AC</span><span class="amt">₹1,100</span></div>
-    <div class="brow"><span>Greater Noida → Delhi Metro (You)</span><span class="amt">₹80</span></div>
-    <div class="brow"><span>Delhi → Jaipur · Vande Bharat CC</span><span class="amt">₹850</span></div>
-    <div class="brow"><span>Hotel · 3 nights · Twin sharing per person</span><span class="amt">₹900–1,200</span></div>
-    <div class="brow"><span>Composite Ticket · Fort + Museum pass</span><span class="amt">₹300</span></div>
-    <div class="brow"><span>Food · 3 days avg</span><span class="amt">₹1,200</span></div>
-    <div class="brow"><span>Local Transport · Autos + apps</span><span class="amt">₹400</span></div>
-    <div class="brow"><span>Shopping + Misc</span><span class="amt">₹500</span></div>
-    <div class="brow"><span>Return Train · Ashram SL</span><span class="amt">₹175</span></div>
-    <div class="brow"><span>Light & Sound Show</span><span class="amt">₹295</span></div>
-    <div class="brow"><span>🎯 TOTAL ESTIMATED PER PERSON</span><span class="amt">₹4,500–5,300</span></div>
+  <div class="budget-card reveal">
+    <div class="budget-title">💰 Budget Breakdown — Per Person · Mar 27 Trip</div>
+    <div class="budget-rows">
+      <div class="b-row"><div class="b-label"><span class="b-icon">🚂</span>Varanasi → Delhi · 3AC (Friend)</div><span class="b-amt">₹1,100</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🚇</span>Noida → Delhi Metro (You)</div><span class="b-amt">₹80</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🚆</span>Delhi → Jaipur · Vande Bharat CC</div><span class="b-amt">₹850</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🏨</span>Hotel · 3 nights twin sharing pp</div><span class="b-amt">₹900–1,200</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🎫</span>Composite Fort + Museum Ticket</div><span class="b-amt">₹300</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🍽️</span>Food · 3 days</div><span class="b-amt">₹1,200</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🛺</span>Local transport</div><span class="b-amt">₹400</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🛍️</span>Shopping + misc</div><span class="b-amt">₹500</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🚆</span>Return train · Ashram SL</div><span class="b-amt">₹175</span></div>
+      <div class="b-row"><div class="b-label"><span class="b-icon">🎭</span>Light & Sound Show</div><span class="b-amt">₹295</span></div>
+      <div class="b-row"><div class="b-label">🎯 TOTAL ESTIMATE PER PERSON</div><span class="b-amt">₹4,500–5,300</span></div>
+    </div>
   </div>
 
 </div>
 </section>
 
-<!-- ==================== SHARED TIPS + CHECKLIST ==================== -->
-<div id="shared-section" style="display:none">
-<div class="main-content">
+<!-- ======== SHARED SECTION ======== -->
+<div id="shared-section" style="display:none;">
+<div class="main">
 
-  <div class="section-banner reveal">
-    <div class="section-banner-inner">
-      <span class="banner-emoji">📖</span>
+  <div class="sec-head reveal">
+    <div class="sec-head-inner">
+      <span class="sec-emoji">📖</span>
       <div>
-        <div class="banner-title">Know Before You Go — Traveler's Briefing</div>
-        <div class="banner-sub">Rajput history, practical tips, booking checklist, and what to pack</div>
+        <div class="sec-title">Before You Go — Essentials</div>
+        <div class="sec-sub">History · Apps · Food · Negotiation · Packing</div>
       </div>
     </div>
   </div>
 
   <div class="tips-grid reveal">
     <div class="tip-card">
-      <span class="ti">⚔️</span>
-      <h4>Who Were the Rajputs?</h4>
-      <p>Warrior-aristocratic clans of northern India. Mewar, Marwar, Jaipur (Kachwaha) — kingdoms that resisted Mughal conquest for decades, then negotiated alliances. Amber Fort embodies that complexity.</p>
+      <span class="tip-icon">⚔️</span>
+      <div class="tip-title">Who Were the Rajputs?</div>
+      <ul class="tip-bullets">
+        <li>Warrior-aristocrat clans — Mewar, Marwar, Kachwaha (Jaipur)</li>
+        <li>Resisted Mughals for decades, then negotiated alliances</li>
+        <li>Amber Fort = Rajput kings commanding Mughal armies while building Hindu temples</li>
+      </ul>
     </div>
     <div class="tip-card">
-      <span class="ti">🏰</span>
-      <h4>The Fort Trinity Explained</h4>
-      <p>Amber (royal residence), Jaigarh (armory + defense), Nahargarh (watchtower + retreat) — three forts functioning as one system. Medieval defence architecture at its most brilliant.</p>
+      <span class="tip-icon">🏰</span>
+      <div class="tip-title">The Fort System</div>
+      <ul class="tip-bullets">
+        <li>Amber = royal palace · Jaigarh = armory + guns · Nahargarh = watchtower</li>
+        <li>All three connected — functioned as one defense system</li>
+        <li>Secret tunnel: Amber → Jaigarh (royal escape route)</li>
+      </ul>
     </div>
     <div class="tip-card">
-      <span class="ti">👑</span>
-      <h4>The Kachwaha Clan</h4>
-      <p>Jaipur's royal family — claim descent from Kush, son of Ram. Most politically sophisticated Rajput clan. Jai Singh II founded Jaipur and built observatories across India.</p>
+      <span class="tip-icon">📱</span>
+      <div class="tip-title">Essential Apps</div>
+      <ul class="tip-bullets">
+        <li>IRCTC Rail Connect — train booking</li>
+        <li>Rapido / Ola — autos in Jaipur</li>
+        <li>Google Maps — download Jaipur offline before leaving Delhi</li>
+        <li>Zostel / MakeMyTrip — hotel booking</li>
+      </ul>
     </div>
     <div class="tip-card">
-      <span class="ti">🎨</span>
-      <h4>Jaipur Miniature Paintings</h4>
-      <p>Bold colors, elaborate floral borders, narrative hunting and battle scenes. The Jaipur school blended Rajput and Mughal aesthetics. See them throughout Albert Hall Museum.</p>
+      <span class="tip-icon">🎒</span>
+      <div class="tip-title">Pack Right</div>
+      <ul class="tip-bullets">
+        <li>Cotton clothes only — no synthetics</li>
+        <li>Comfortable walking shoes — forts = 10,000+ steps</li>
+        <li>Sunscreen + cap (non-negotiable for forts)</li>
+        <li>1L reusable bottle · Powerbank · Small daypack</li>
+      </ul>
     </div>
     <div class="tip-card">
-      <span class="ti">📱</span>
-      <h4>Essential Apps</h4>
-      <p><strong>IRCTC Rail Connect</strong> — train booking. <strong>Rapido/Ola</strong> — auto and cab in Jaipur. <strong>Google Maps</strong> — download Jaipur offline. <strong>Zostel/MakeMyTrip</strong> — hostel booking.</p>
+      <span class="tip-icon">🤝</span>
+      <div class="tip-title">Negotiate Everything</div>
+      <ul class="tip-bullets">
+        <li>Autos: First price = 2x. Offer 50%. Settle at 65%.</li>
+        <li>Shopping: Walk away slowly. They'll call you back.</li>
+        <li>Target: 55–65% of first price. Smile, stay cheerful.</li>
+        <li>Restaurants with printed menus: fixed price, don't negotiate</li>
+      </ul>
     </div>
     <div class="tip-card">
-      <span class="ti">🎒</span>
-      <h4>Pack Right</h4>
-      <p>Light cotton clothes only. Comfortable walking shoes (forts = 10,000+ steps). Sunscreen + cap. 1L reusable water bottle. Powerbank. Small daypack.</p>
-    </div>
-    <div class="tip-card">
-      <span class="ti">🤝</span>
-      <h4>Negotiation 101</h4>
-      <p>Auto-rickshaws: First price is 2x — offer 50%, settle at 65%. Shopping: First price is 2–3x — walk away slowly, they'll call you back. Never show excitement before asking price.</p>
-    </div>
-    <div class="tip-card">
-      <span class="ti">🍽️</span>
-      <h4>What to Eat (Don't Miss)</h4>
-      <p><strong>Dal Baati Churma</strong> — soul of Rajasthani food. <strong>Pyaaz ki Kachori</strong> — Rawat's specialty. <strong>Laal Maas</strong> — fiery mutton. <strong>Ghevar</strong> — honeycomb sweet. <strong>Kulhad Chai</strong> ₹15.</p>
+      <span class="tip-icon">🍽️</span>
+      <div class="tip-title">Must Eat</div>
+      <ul class="tip-bullets">
+        <li>Dal Baati Churma — soul of Rajasthani food</li>
+        <li>Pyaaz ki Kachori at Rawat — ₹20 each</li>
+        <li>Laal Maas — fiery mutton curry (non-veg)</li>
+        <li>Ghevar (sweet) · Kulhad chai ₹15 · Mirchi Bada</li>
+      </ul>
     </div>
   </div>
 
-  <!-- BOOKING CHECKLIST -->
-  <div class="section-banner reveal" style="margin-top:36px">
-    <div class="section-banner-inner">
-      <span class="banner-emoji">✅</span>
+  <!-- CHECKLIST -->
+  <div class="sec-head reveal" style="margin-top:32px;">
+    <div class="sec-head-inner">
+      <span class="sec-emoji">✅</span>
       <div>
-        <div class="banner-title">Must-Do Booking Checklist — Do This Today</div>
-        <div class="banner-sub">Everything you need to book before the trip, in order of priority</div>
+        <div class="sec-title">Must-Do Booking Checklist</div>
+        <div class="sec-sub">Do these in order — right now</div>
       </div>
     </div>
   </div>
 
-  <ul class="checklist reveal">
-    <li><span class="ck">🚂</span><div><strong>Book Varanasi → Delhi Night Train (Friend)</strong> — Shiv Ganga Express 12559. 3AC for comfort. Book on IRCTC.co.in immediately.</div></li>
-    <li><span class="ck">🚆</span><div><strong>Book Delhi → Jaipur Train (Both)</strong> — Vande Bharat 26482 at 3:10 PM (recommended) or Ashram Express 12916.</div></li>
-    <li><span class="ck">🏨</span><div><strong>Book Jaipur Hotel (3 nights)</strong> — Hotel Pearl Palace Heritage or Moustache Jaipur. Check Zostel.com or Booking.com.</div></li>
-    <li><span class="ck">🚆</span><div><strong>Book Jaipur → Delhi Return Train</strong> — Ashram Express 12915 (8 AM) recommended.</div></li>
-    <li><span class="ck">📱</span><div><strong>Install IRCTC Rail Connect App + Link Aadhaar</strong> — Aadhaar required for Tatkal bookings.</div></li>
-    <li><span class="ck">🎭</span><div><strong>Book Amber Light & Sound Show</strong> — Book at rajasthantourism.gov.in or at fort entrance on Day 1. Hindi ₹295.</div></li>
-    <li><span class="ck">🗺️</span><div><strong>Download Google Maps Offline — Jaipur</strong> — Open Maps → Jaipur → Download offline map.</div></li>
-    <li><span class="ck">💊</span><div><strong>Pack ORS Packets + Basic Medicines</strong> — Especially for March 27 timeline. ORS packets (10 sachets, ₹30) are essential.</div></li>
-  </ul>
+  <div class="checklist-grid reveal">
+    <div class="cl-item">
+      <span class="cl-icon">🚂</span>
+      <div class="cl-text">
+        <strong>Book Varanasi → Delhi Night Train (Friend)</strong>
+        <span>Shiv Ganga 12559 · Night before trip · 3AC recommended · IRCTC.co.in</span>
+      </div>
+      <span class="cl-priority now">DO NOW</span>
+    </div>
+    <div class="cl-item">
+      <span class="cl-icon">🚆</span>
+      <div class="cl-text">
+        <strong>Book Delhi → Jaipur Train (Both)</strong>
+        <span>Vande Bharat 26482, 3:10 PM or Ashram Exp 12916 · IRCTC</span>
+      </div>
+      <span class="cl-priority now">DO NOW</span>
+    </div>
+    <div class="cl-item">
+      <span class="cl-icon">🚆</span>
+      <div class="cl-text">
+        <strong>Book Jaipur → Delhi Return (Both)</strong>
+        <span>Ashram Express 12915 · 8:00 AM · SL ₹175 · IRCTC</span>
+      </div>
+      <span class="cl-priority now">DO NOW</span>
+    </div>
+    <div class="cl-item">
+      <span class="cl-icon">🏨</span>
+      <div class="cl-text">
+        <strong>Book Hotel — 3 Nights Jaipur</strong>
+        <span>Hotel Pearl Palace or Moustache Hostel · Zostel.com or Booking.com</span>
+      </div>
+      <span class="cl-priority now">DO NOW</span>
+    </div>
+    <div class="cl-item">
+      <span class="cl-icon">📱</span>
+      <div class="cl-text">
+        <strong>Setup IRCTC + Link Aadhaar</strong>
+        <span>Required for bookings. Install IRCTC Rail Connect app.</span>
+      </div>
+      <span class="cl-priority pre">PRE-TRIP</span>
+    </div>
+    <div class="cl-item">
+      <span class="cl-icon">🗺️</span>
+      <div class="cl-text">
+        <strong>Download Jaipur Offline Map</strong>
+        <span>Google Maps → Jaipur → Download. Works without data.</span>
+      </div>
+      <span class="cl-priority pre">PRE-TRIP</span>
+    </div>
+    <div class="cl-item">
+      <span class="cl-icon">🎭</span>
+      <div class="cl-text">
+        <strong>Amber Light & Sound Show</strong>
+        <span>Book at fort gate on Day 1 morning · Hindi ₹295 · 7 PM or 7:30 PM</span>
+      </div>
+      <span class="cl-priority pre">ON ARRIVAL</span>
+    </div>
+    <div class="cl-item">
+      <span class="cl-icon">💊</span>
+      <div class="cl-text">
+        <strong>Pack ORS Packets + Basic Meds</strong>
+        <span>10 ORS sachets ₹30 · Paracetamol · Band-aids · Antacid</span>
+      </div>
+      <span class="cl-priority pre">PRE-TRIP</span>
+    </div>
+  </div>
 
 </div>
 </div>
 
 <!-- FOOTER -->
 <footer class="site-footer">
-  <div class="footer-stickers">🏰 ⚔️ 🐫 🌅 🦚 🎆</div>
+  <div class="footer-row">🏰 ⚔️ 🐫 🌅 🦚</div>
   <p>Built with care for <strong>Vaibhav</strong> — your royal Rajasthan roadmap 🏯</p>
-  <p style="margin-top:8px; font-size:0.7rem; line-height:1.6;">All train fares are approximate 2025 estimates. Verify and book on IRCTC. Hotel prices vary seasonally. Composite ticket prices subject to change at fort gates.</p>
+  <p style="margin-top:8px;font-size:0.68rem;line-height:1.6;">Train fares are approximate 2025 estimates. Verify on IRCTC. Hotel prices vary seasonally. Composite ticket prices subject to change at fort gates.</p>
 </footer>
 
 <script>
-// ============ PARTICLES ============
-const emojis = ['🌸','✨','🏵️','🌺','⭐','💫','🌟','🔆','🌙'];
-const container = document.getElementById('particles');
-for(let i = 0; i < 18; i++){
+// PARTICLES
+const emojis = ['🌸','✨','🏵️','🌺','⭐','💫','🌟'];
+const pc = document.getElementById('particles');
+for(let i = 0; i < 16; i++){
   const p = document.createElement('div');
   p.className = 'particle';
-  p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-  p.style.left = Math.random() * 100 + '%';
-  p.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
-  p.style.animationDuration = (18 + Math.random() * 25) + 's';
-  p.style.animationDelay = (-Math.random() * 25) + 's';
-  container.appendChild(p);
+  p.textContent = emojis[i % emojis.length];
+  p.style.cssText = `left:${Math.random()*100}%;font-size:${0.7+Math.random()*1}rem;animation-duration:${20+Math.random()*22}s;animation-delay:${-Math.random()*22}s;`;
+  pc.appendChild(p);
 }
 
-// ============ TIMELINE SELECT ============
+// TIMELINE SELECT
 function selectTL(id) {
-  // Hide all timeline sections
   document.querySelectorAll('.tl-section').forEach(s => s.classList.remove('visible'));
-  // Remove active from all buttons
-  document.querySelectorAll('.timeline-btn').forEach(b => b.classList.remove('active'));
-  // Show selected section
+  document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
   const section = document.getElementById('section-' + id);
-  if(section) section.classList.add('visible');
-  // Activate button
   const btn = document.getElementById('btn-' + id);
+  if(section) section.classList.add('visible');
   if(btn) btn.classList.add('active');
-  // Show shared section
-  const shared = document.getElementById('shared-section');
-  if(shared) shared.style.display = 'block';
-  // Scroll to section after short delay
+  document.getElementById('shared-section').style.display = 'block';
   setTimeout(() => {
-    if(section) {
-      const offset = section.getBoundingClientRect().top + window.pageYOffset - 16;
-      window.scrollTo({ top: offset, behavior: 'smooth' });
+    if(section){
+      const top = section.getBoundingClientRect().top + window.pageYOffset - 12;
+      window.scrollTo({ top, behavior: 'smooth' });
     }
-  }, 150);
-  // Trigger reveal animations
+  }, 120);
   setTimeout(triggerReveal, 300);
 }
 
-// ============ CARD TOGGLE ============
-function toggleCard(hdr) {
-  const card = hdr.parentElement;
-  card.classList.toggle('open');
-  // Re-trigger reveal for newly opened content
+// TOGGLE DAY
+function toggleDay(hdr) {
+  const block = hdr.parentElement;
+  block.classList.toggle('open');
   setTimeout(triggerReveal, 100);
 }
 
-// ============ SCROLL TO ID ============
-function scrollToId(id) {
-  const el = document.getElementById(id);
-  if(el) {
-    const offset = el.getBoundingClientRect().top + window.pageYOffset - 16;
-    window.scrollTo({ top: offset, behavior: 'smooth' });
-  }
-}
-
-// ============ SCROLL REVEAL ============
-let revealObserver = null;
-
+// REVEAL
+let ro = null;
 function triggerReveal() {
   const els = document.querySelectorAll('.reveal:not(.shown)');
   if(!els.length) return;
-
-  if(!revealObserver) {
-    revealObserver = new IntersectionObserver((entries) => {
+  if(!ro) {
+    ro = new IntersectionObserver(entries => {
       entries.forEach(e => {
-        if(e.isIntersecting) {
-          e.target.classList.add('shown');
-          revealObserver.unobserve(e.target);
-        }
+        if(e.isIntersecting){ e.target.classList.add('shown'); ro.unobserve(e.target); }
       });
-    }, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
+    }, { threshold: 0.05, rootMargin: '0px 0px -10px 0px' });
   }
-
-  els.forEach(el => revealObserver.observe(el));
+  els.forEach(el => ro.observe(el));
 }
-
-// Initial reveal trigger
 triggerReveal();
-
-// Also trigger on scroll for safety
 window.addEventListener('scroll', triggerReveal, { passive: true });
 
-// Auto-open first card in each timeline section
-document.querySelectorAll('#section-mar18 .day-card').forEach((c, i) => {
-  if(i === 0) c.classList.add('open');
-});
-document.querySelectorAll('#section-mar27 .day-card').forEach((c, i) => {
-  if(i === 0) c.classList.add('open');
-});
+// Auto-open first day block per section
+document.querySelectorAll('#section-mar18 .day-block')[0]?.classList.add('open');
+document.querySelectorAll('#section-mar27 .day-block')[0]?.classList.add('open');
 </script>
 </body>
 </html>
